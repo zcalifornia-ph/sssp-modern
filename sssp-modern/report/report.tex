@@ -1,0 +1,80 @@
+\documentclass[12pt]{article}
+
+% ---------- Packages ----------
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{mathptmx}              % Times New Roman font
+\usepackage{setspace}               % Double spacing
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xurl}
+\urlstyle{same}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{fancyhdr}
+\usepackage{cite}                    % IEEE-style numeric citations
+\usepackage{makecell}               % Multi-line table headers
+
+% ---------- Spacing ----------
+\doublespacing
+\setlength{\parindent}{0.5in}      % MLA half-inch indent
+\setlength{\parskip}{0pt}          % No extra space between paragraphs
+
+% ---------- Header / Footer (UP: Image + Page Number, upper right) ----------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\includegraphics[height=24pt]{up-header.png}}
+\rhead{\raisebox{0.90ex}{\makebox[\linewidth][r]{TITLE GOES HERE - \thepage}}}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{40pt}
+
+% ---------- Hyperlink setup ----------
+\hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black}
+
+% ---------- URL breaking configuration ----------
+\Urlmuskip=0mu plus 1mu
+
+\begin{document}
+
+% ---------- Header Block ----------
+\noindent NAME 1 GOES HERE\\
+NAME 2 GOES HERE\\
+FACULTY IN CHARGE NAME GOES HERE\\
+Portfolio Study\\
+\today
+
+% ---------- Centered Title ----------
+\begin{center}
+\textbf{TITLE GOES HERE: A Subtitle Can Go Here Too}
+\end{center}
+
+% ---------- Body ----------
+
+\begin{quote}
+\centering
+\textit{``Insert quote here''} \cite{INSERT CITATION HERE}\par
+\end{quote}
+
+INTRODUCTION BODY GOES HERE
+
+\noindent\textbf{Section 1 Name Goes Here}
+
+\noindent\textbf{Section 2 Name Goes Here}
+
+\noindent\textbf{Section 3 Name Goes Here}
+
+\noindent\textbf{Section 4 Name Goes Here}
+
+\noindent\textbf{Coda}
+
+\newpage
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}
