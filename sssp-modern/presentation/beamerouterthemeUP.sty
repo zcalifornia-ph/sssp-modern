@@ -1,0 +1,130 @@
+% beamerouterthemeUP.sty
+% Copyright 2026 Zildjian E. California
+%
+% This file is part of the beamer-up derivative work and adapts the
+% original beamer-uu sources by A.J.H. (Jos) Zuijderwijk to the
+% maintained University of the Philippines `UP` theme surface.
+%
+% This work may be distributed and/or modified under the conditions of
+% the LaTeX Project Public License, either version 1.3c of this license
+% or (at your option) any later version. The latest version of this
+% license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Zildjian E. California.
+% Issue reports for this maintained derivative may be sent via
+%   https://github.com/zcalifornia-ph/beamer-up/issues
+%
+% This work consists of the files beamercolorthemeUP.sty,
+% beamerinnerthemeUP.sty, beamerouterthemeUP.sty, beamerthemeUP.sty,
+% main.tex, and references.bib.
+%
+% Branding note: distributed UP-branded assets should follow the UP
+% branding guidelines and are intended for UP constituents/internal
+% use. No official endorsement is implied.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerouterthemeUP}[2026/04/03 UP outer theme for the beamer-up derivative]
+
+\RequirePackage{tikz}
+\newcommand{\@upheaderlineshotenginclude}[1]{%
+  \includegraphics[width=#1]{logos/up-inline-lineshot-eng-runtime-black.png}%
+}
+\newcommand{\@upheaderlineshottaginclude}[1]{%
+  \includegraphics[width=#1]{logos/up-inline-lineshot-tag-runtime-black.png}%
+}
+\newcommand{\@upheaderlogolockupblack}[1]{%
+  \if@UUfilipino
+    \@upheaderlineshottaginclude{#1}%
+  \else
+    \@upheaderlineshotenginclude{#1}%
+  \fi
+}
+\newcommand{\@upclosinglogoenginclude}[1]{%
+  \includegraphics[height=#1, trim=12bp 596bp 11bp 641bp, clip]%
+    {logos/up-horizontal-logo-with-white-engtype.png}%
+}
+\newcommand{\@upclosinglogotaginclude}[1]{%
+  \includegraphics[height=#1, trim=212bp 596bp 211bp 641bp, clip]%
+    {logos/up-horizontal-logo-with-white-tagtype.png}%
+}
+\newcommand{\@upclosinglogoinclude}[1]{%
+  \if@UUfilipino
+    \@upclosinglogotaginclude{#1}%
+  \else
+    \@upclosinglogoenginclude{#1}%
+  \fi
+}
+\newcommand{\@upclosinglogoheight}{1.10cm}
+
+% -- Frame Title -----------------------------------------------------------
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip%
+  \begin{beamercolorbox}[wd=\paperwidth, ht=3.2ex, dp=1.2ex, leftskip=0.6cm, rightskip=0.6cm]{frametitle}%
+    \usebeamerfont{frametitle}\insertframetitle%
+    \ifx\insertframesubtitle\@empty\else
+      \quad{\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle}%
+    \fi
+  \end{beamercolorbox}%
+  \nointerlineskip%
+  \begin{tikzpicture}[overlay]
+    \draw[UPForestGreen, line width=2.4pt] (-0.4cm,0) -- (\paperwidth,0);
+  \end{tikzpicture}%
+  \vskip 4pt%
+}
+
+% -- Footline -----------------------------------------------------------
+\setbeamertemplate{footline}{%
+  \leavevmode%
+    \hbox{%
+      \begin{beamercolorbox}[wd=.33\paperwidth,ht=2.8ex,dp=1.2ex,left,leftskip=.6cm]{footline}%
+        \usebeamerfont{footline}\insertshortauthor
+      \end{beamercolorbox}%
+      \begin{beamercolorbox}[wd=.34\paperwidth,ht=2.8ex,dp=1.2ex,center]{footline}%
+        \usebeamerfont{footline}\insertshorttitle
+      \end{beamercolorbox}%
+      \begin{beamercolorbox}[wd=.33\paperwidth,ht=2.8ex,dp=1.2ex,right,rightskip=.6cm]{footline}%
+        \usebeamerfont{footline}\insertframenumber\,/\,\inserttotalframenumber
+      \end{beamercolorbox}%
+    }%
+  \if@UUshowlogo
+    \begin{tikzpicture}[overlay, remember picture]
+      \ifx\@uulogoblackpath\@empty\else
+        \node[anchor=north east, inner sep=0pt]
+          at ([xshift=\dimexpr-\beamer@rightmargin+0.08cm\relax, yshift=-0.15cm]current page.north east)
+          {\if@UUfilipino\@upheaderlogolockupblack{3.45cm}\else\@upheaderlogolockupblack{3.85cm}\fi};
+      \fi
+    \end{tikzpicture}%
+  \fi
+}
+
+% -- Thank-you / closing frame --------------------------------
+\newcommand{\thankframe}[2]{%
+  \begingroup
+  \setbeamercolor{background canvas}{bg=UPMaroon}
+  \setbeamercolor{normal text}{fg=UPWhite}
+  \begin{frame}[plain]
+    \centering
+    \vspace*{1.45cm}
+    {\color{UPWhite}\Huge\upheadingfont\bfseries #1\par}
+    \vspace{0.55cm}
+    {\color{UPGold}\rule{2.7cm}{1pt}\par}
+    \vspace{0.95cm}
+    \parbox{0.74\paperwidth}{%
+      \centering
+      {\begingroup\hypersetup{urlcolor=UPGold}\color{UPWhite}\normalsize\rmfamily #2\par\endgroup}%
+    }\par
+    \vfill
+    \raisebox{0cm}{%
+      \@upclosinglogoinclude{\@upclosinglogoheight}%
+    }\par
+    \vspace*{0.10cm}
+  \end{frame}
+  \endgroup
+}
+
+\endinput
