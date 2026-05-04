@@ -1,0 +1,324 @@
+% beamerinnerthemeUP.sty
+% Copyright 2026 Zildjian E. California
+%
+% This file is part of the beamer-up derivative work and adapts the
+% original beamer-uu sources by A.J.H. (Jos) Zuijderwijk to the
+% maintained University of the Philippines `UP` theme surface.
+%
+% This work may be distributed and/or modified under the conditions of
+% the LaTeX Project Public License, either version 1.3c of this license
+% or (at your option) any later version. The latest version of this
+% license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Zildjian E. California.
+% Issue reports for this maintained derivative may be sent via
+%   https://github.com/zcalifornia-ph/beamer-up/issues
+%
+% This work consists of the files beamercolorthemeUP.sty,
+% beamerinnerthemeUP.sty, beamerouterthemeUP.sty, beamerthemeUP.sty,
+% main.tex, and references.bib.
+%
+% Branding note: distributed UP-branded assets should follow the UP
+% branding guidelines and are intended for UP constituents/internal
+% use. No official endorsement is implied.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerinnerthemeUP}[2026/04/03 UP inner theme for the beamer-up derivative]
+
+\RequirePackage{tikz}
+\usetikzlibrary{positioning}
+\RequirePackage{calc}
+\RequirePackage{setspace}
+\RequirePackage{etoolbox}
+
+% -- Internal: logo path storage (set by beamerthemeUP.sty) -----------
+\newcommand{\@uulogopath}{}
+\newcommand{\@uulogoblackpath}{}
+\newcommand{\@uulogowhitepath}{}
+\newcommand{\@uulogoinclude}[1]{\includegraphics[height=#1]{\@uulogopath}}
+\newcommand{\@uulogoblackinclude}[1]{\includegraphics[height=#1]{\@uulogoblackpath}}
+\newcommand{\@uulogowhiteinclude}[1]{\includegraphics[height=#1]{\@uulogowhitepath}}
+\newcommand{\@uutitlelogoinclude}[1]{\@uulogowhiteinclude{#1}}
+\newcommand{\@uutitlelogosize}{5.5cm}
+\newcommand{\@uutitlelogoxshift}{1.2cm}
+\newcommand{\@uutitlelogoyshift}{-0.6cm}
+\newcommand{\@uutitlecontentleftskip}{1.5cm}
+\newcommand{\@uutitlecontenttopskip}{2.8cm}
+\newcommand{\@uutitlecontentbottomskip}{1.15cm}
+\newcommand{\@uutitlecontentlinebuffer}{14pt}
+\newcommand{\@uutitlecontentwidth}{12.6cm}
+
+% -- Conference author switch -----------------------------------------
+% Enable conference-style multi-author formatting explicitly with:
+%   \multiauthor
+% Reset to single-author layout with:
+%   \singleauthor
+\newif\if@uumultiauthor
+\@uumultiauthorfalse
+\newcommand{\multiauthor}{\@uumultiauthortrue}
+\newcommand{\singleauthor}{\@uumultiauthorfalse}
+
+% -- Conference institute list ----------------------------------------
+\newcommand{\@uuconfinstitute}{}
+\newcommand{\@uuconfinstitutehangindent}{1.7em}
+\newcommand{\confinstitute}[1]{\renewcommand{\@uuconfinstitute}{#1}}
+
+\newcommand{\uuconfinstituterow}[2]{%
+  \par
+  \noindent
+  \makebox[\@uuconfinstitutehangindent][l]{{\scriptsize\color{UPForestGreen}#1}}%
+  \parbox[t]{\dimexpr\linewidth-\@uuconfinstitutehangindent\relax}{%
+    \raggedright
+    #2%
+  }\par
+}
+
+\newif\if@uufirstinstitute
+\@uufirstinstitutetrue
+
+\newcommand{\addinstitute}[2]{%
+  \if@uufirstinstitute
+    \gappto\@uuconfinstitute{\uuconfinstituterow{#1}{#2}}%
+    \global\@uufirstinstitutefalse
+  \else
+    \gappto\@uuconfinstitute{\uuconfinstituterow{#1}{#2}}%
+  \fi
+}
+
+\newcommand{\clearinstitutes}{%
+  \gdef\@uuconfinstitute{}%
+  \global\@uufirstinstitutetrue
+}
+
+% -- Venue metadata ----------------------------------------------------
+\newif\if@uuvenuepresent
+\@uuvenuepresentfalse
+\newcommand{\@uuvenue}{}
+\newcommand{\venue}[1]{%
+  \@uuvenuepresenttrue
+  \renewcommand{\@uuvenue}{#1}%
+}
+\newcommand{\uutitlemeta}{%
+  \if@uuvenuepresent
+    \vskip 2pt%
+    \@uuvenue
+    \ifx\insertdate\@empty\else
+      \enspace{\color{UPForestGreen}$\cdot$}\enspace\insertdate
+    \fi
+  \else
+    \insertdate
+  \fi
+}
+
+% -- Itemize -----------------------------------------------------------
+\setbeamertemplate{itemize item}{\scriptsize\raise1.5pt\hbox{\color{UPGold}\vrule width 6pt height 6pt}}
+\setbeamertemplate{itemize subitem}{\scriptsize\raise1.5pt\hbox{\color{UPGold}\vrule width 5pt height 5pt}}
+\setbeamertemplate{itemize subsubitem}{\scriptsize\raise1.5pt\hbox{\color{UPGold}\vrule width 4pt height 4pt}}
+
+% -- Enumerate ---------------------------------------------------------
+\setbeamertemplate{enumerate item}{%
+  \tikz[baseline=(num.base)]{
+    \node[fill=UPGold, text=UPBlack, font=\footnotesize\bfseries,
+          minimum size=1.4em, inner sep=0pt] (num) {\insertenumlabel};
+  }%
+}
+\setbeamertemplate{enumerate subitem}{%
+  \tikz[baseline=(num.base)]{
+    \node[fill=UPGoldTint, text=UPMaroon, font=\footnotesize\bfseries,
+          minimum size=1.2em, inner sep=0pt] (num) {\insertenumlabel};
+  }%
+}
+
+% -- Blocks ------------------------------------------------------------
+\setbeamertemplate{block begin}{%
+  \vskip 6pt%
+  \begin{beamercolorbox}[ht=2.6ex, dp=1ex, leftskip=0.6em, rightskip=0.6em]{block title}%
+    \usebeamerfont{block title}\insertblocktitle%
+  \end{beamercolorbox}%
+  \nointerlineskip%
+  \begin{beamercolorbox}[dp=1ex, leftskip=0.6em, rightskip=0.6em, vmode]{block body}%
+    \vskip 4pt%
+}
+\setbeamertemplate{block end}{%
+    \vskip 4pt%
+  \end{beamercolorbox}%
+  \vskip 4pt%
+}
+\setbeamertemplate{block alerted begin}{%
+  \vskip 6pt%
+  \begin{beamercolorbox}[ht=2.6ex, dp=1ex, leftskip=0.6em, rightskip=0.6em]{block title alerted}%
+    \usebeamerfont{block title}\insertblocktitle%
+  \end{beamercolorbox}%
+  \nointerlineskip%
+  \begin{beamercolorbox}[dp=1ex, leftskip=0.6em, rightskip=0.6em, vmode]{block body alerted}%
+    \vskip 4pt%
+}
+\setbeamertemplate{block alerted end}{%
+    \vskip 4pt%
+  \end{beamercolorbox}%
+  \vskip 4pt%
+}
+\setbeamertemplate{block example begin}{%
+  \vskip 6pt%
+  \begin{beamercolorbox}[ht=2.6ex, dp=1ex, leftskip=0.6em, rightskip=0.6em]{block title example}%
+    \usebeamerfont{block title}\insertblocktitle%
+  \end{beamercolorbox}%
+  \nointerlineskip%
+  \begin{beamercolorbox}[dp=1ex, leftskip=0.6em, rightskip=0.6em, vmode]{block body example}%
+    \vskip 4pt%
+}
+\setbeamertemplate{block example end}{%
+    \vskip 4pt%
+  \end{beamercolorbox}%
+  \vskip 4pt%
+}
+
+% ======================================================================
+%  TITLE PAGE
+% ======================================================================
+\setbeamertemplate{title page}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    % Vertical bar on left (like beamer-uu) - 8mm width
+    \fill[UPMaroon]
+      (current page.north west) rectangle
+      ([xshift=8mm]current page.south west);
+
+    % Main content area background
+    \fill[UPWhite]
+      ([xshift=8mm]current page.north west) rectangle
+      (current page.south east);
+
+    % Subtle forest-green wash inspired by the original UU title page.
+    \shade[left color=UPForestGreen!28!UPWhite, right color=UPWhite]
+      ([xshift=8mm]current page.north west) rectangle
+      ([xshift=0.80\paperwidth]current page.south west);
+
+    % Logo placement (top left, next to vertical bar)
+    \ifx\@uulogopath\@empty\else
+      \ifx\@uulogowhitepath\@empty
+        \node[anchor=north west, fill=UPWhite, rounded corners=3pt, inner sep=6pt]
+          at ([xshift=1.2cm, yshift=-0.8cm]current page.north west)
+          {\@uulogoinclude{1.65cm}};
+      \else
+        \node[anchor=north west, inner sep=0pt]
+          at ([xshift=\@uutitlelogoxshift, yshift=\@uutitlelogoyshift]current page.north west)
+          {\@uutitlelogoinclude{\@uutitlelogosize}};
+      \fi
+    \fi
+  \end{tikzpicture}%
+  %
+  % Content positioning
+  \vskip \@uutitlecontenttopskip%
+  \hspace*{\@uutitlecontentleftskip}%
+  \begingroup
+  \setbeamercolor{title}{fg=UPMaroon}%
+  \setbeamercolor{subtitle}{fg=UPBlack}%
+  \setbeamercolor{author}{fg=UPMaroon}%
+  \setbeamercolor{institute}{fg=UPBlack}%
+  \setbeamercolor{date}{fg=UPMaroon}%
+  \begin{minipage}[t][\dimexpr\paperheight-\@uutitlecontenttopskip-\@uutitlecontentbottomskip-\@uutitlecontentlinebuffer\relax][b]{\@uutitlecontentwidth}
+    \raggedright
+    {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par}%
+    \ifx\insertsubtitle\@empty\else
+      \vskip 6pt%
+      {\usebeamerfont{subtitle}\bfseries\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+    \fi
+    \vskip 10pt%
+    {\color{UPMaroon}\rule{3cm}{1.5pt}\par}%
+    \vskip 14pt%
+    \if@uumultiauthor
+      {\usebeamerfont{author}\color{UPMaroon}\bfseries%
+        \def\beamer@insttitle##1{\textsuperscript{{\footnotesize\color{UPForestGreen}##1}}}%
+        \insertauthor\par}%
+      \vskip 6pt%
+      {\usebeamerfont{institute}\color{UPBlack}\footnotesize%
+        \parindent=0pt\relax
+        \parskip=0pt\relax
+        \@uuconfinstitute\par}%
+      \vskip 6pt%
+      {\usebeamerfont{date}\color{UPMaroon}\bfseries\uutitlemeta\par}%
+    \else
+      {\usebeamerfont{author}\color{UPMaroon}\bfseries\insertauthor\par}%
+      \vskip 4pt%
+      {\usebeamerfont{institute}\color{UPBlack}\insertinstitute\par}%
+      \vskip 4pt%
+      {\usebeamerfont{date}\color{UPMaroon}\bfseries\uutitlemeta\par}%
+    \fi
+  \end{minipage}%
+  \endgroup
+}
+
+% ======================================
+%  SECTION PAGE
+% ======================================
+\if@UUnosection\else
+\AtBeginSection[]{%
+  \begingroup
+  \setbeamercolor{background canvas}{bg=UPMaroon}
+  \setbeamercolor{normal text}{fg=UPWhite}
+  \begin{frame}[plain]
+    \vfill
+    \hspace{0.08\paperwidth}%
+    {\color{UPGold}\rule{4cm}{2pt}}\\[10pt]%
+    \hspace{0.08\paperwidth}%
+    {\color{UPWhite}\LARGE\sffamily\bfseries\secname}%
+    \vfill
+  \end{frame}
+  \endgroup
+}
+\fi
+
+% ======================================
+%  STANDOUT FRAME
+% ======================================
+\newcommand{\standoutframe}[1]{%
+  \begingroup
+  \setbeamercolor{background canvas}{bg=UPMaroon}
+  \begin{frame}[plain]
+    \vfill
+    \begin{center}
+      {\color{UPGold}\rule{3cm}{1.5pt}}\\[14pt]
+      {\color{UPWhite}\LARGE\sffamily\bfseries #1\par}%
+      \vskip 14pt%
+      {\color{UPGold}\rule{3cm}{1.5pt}}%
+    \end{center}
+    \vfill
+  \end{frame}
+  \endgroup
+}
+
+% ======================================
+%  MANUAL SECTION PAGE
+% ======================================
+\newcommand{\sectionframe}[1]{%
+  \begingroup
+  \setbeamercolor{background canvas}{bg=UPMaroon}
+  \begin{frame}[plain]
+    \vfill
+    \hspace{0.08\paperwidth}%
+    {\color{UPGold}\rule{4cm}{2pt}}\\[10pt]%
+    \hspace{0.08\paperwidth}%
+    {\color{UPWhite}\LARGE\sffamily\bfseries #1}%
+    \vfill
+  \end{frame}
+  \endgroup
+}
+
+% -- Table of contents styling -----------------------------------------
+\setbeamertemplate{section in toc}{%
+  \tikz[baseline=(num.base)]{
+    \node[fill=UPGold, text=UPBlack, font=\footnotesize\bfseries,
+          minimum size=1.4em, inner sep=0pt] (num) {\inserttocsectionnumber};
+  }\hspace{0.5em}\inserttocsection\par
+}
+\setbeamertemplate{subsection in toc}{%
+  \hspace{2em}{\color{UPGold}\rule{4pt}{4pt}}\hspace{0.5em}%
+  {\small\inserttocsubsection}\par
+}
+
+\endinput

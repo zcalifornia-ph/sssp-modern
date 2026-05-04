@@ -1,0 +1,98 @@
+% beamercolorthemeUP.sty
+% Copyright 2026 Zildjian E. California
+%
+% This file is part of the beamer-up derivative work and adapts the
+% original beamer-uu sources by A.J.H. (Jos) Zuijderwijk to the
+% maintained University of the Philippines `UP` theme surface.
+%
+% This work may be distributed and/or modified under the conditions of
+% the LaTeX Project Public License, either version 1.3c of this license
+% or (at your option) any later version. The latest version of this
+% license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Zildjian E. California.
+% Issue reports for this maintained derivative may be sent via
+%   https://github.com/zcalifornia-ph/beamer-up/issues
+%
+% This work consists of the files beamercolorthemeUP.sty,
+% beamerinnerthemeUP.sty, beamerouterthemeUP.sty, beamerthemeUP.sty,
+% main.tex, and references.bib.
+%
+% Branding note: distributed UP-branded assets should follow the UP
+% branding guidelines and are intended for UP constituents/internal
+% use. No official endorsement is implied.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamercolorthemeUP}[2026/04/03 UP color theme for the beamer-up derivative]
+\RequirePackage{xcolor}
+
+\definecolor{UPMaroon}{HTML}{8E1537}
+\definecolor{UPForestGreen}{HTML}{005740}
+\definecolor{UPYellow}{HTML}{FFB81D}
+\colorlet{UPGold}{UPYellow}
+\definecolor{UPBlack}{HTML}{231F20}
+\definecolor{UPWhite}{HTML}{FFFFFF}
+\definecolor{UPBlack80}{HTML}{666666}
+\colorlet{UPMaroonTint}{UPMaroon!8!UPWhite}
+\colorlet{UPForestGreenTint}{UPForestGreen!8!UPWhite}
+\colorlet{UPYellowTint}{UPYellow!12!UPWhite}
+\colorlet{UPGoldTint}{UPYellowTint}
+\colorlet{UPDivider}{UPYellow!80!UPBlack}
+\colorlet{UPMutedLine}{UPBlack!20!UPWhite}
+
+% Legacy compatibility aliases for inherited demo content and internal references.
+\colorlet{UUyellow}{UPGold}
+\colorlet{UUred}{UPMaroon}
+\colorlet{UUblack}{UPBlack}
+\colorlet{UUwhite}{UPWhite}
+\colorlet{UUcream}{UPGoldTint}
+\colorlet{UUorange}{UPGold}
+\colorlet{UUburgundy}{UPMaroon}
+\colorlet{UUbrown}{UPMaroon!70!UPBlack}
+\colorlet{UUgreen}{UPForestGreen}
+\colorlet{UUblue}{UPForestGreen}
+\colorlet{UUdarkblue}{UPMaroon}
+\colorlet{UUpurple}{UPForestGreen}
+\colorlet{UUlightgray}{UPGoldTint}
+\colorlet{UUmidgray}{UPMutedLine}
+\colorlet{UUdarkgray}{UPBlack80}
+
+\setbeamercolor{structure}{fg=UPMaroon}
+\setbeamercolor{title}{fg=UPWhite}
+\setbeamercolor{subtitle}{fg=UPGold}
+\setbeamercolor{author}{fg=UPWhite}
+\setbeamercolor{institute}{fg=UPGold}
+\setbeamercolor{date}{fg=UPWhite}
+\setbeamercolor{frametitle}{fg=UPMaroon,bg=UPWhite}
+\setbeamercolor{framesubtitle}{fg=UPBlack80}
+\setbeamercolor{normal text}{fg=UPBlack,bg=UPWhite}
+\setbeamercolor{alerted text}{fg=UPMaroon}
+\setbeamercolor{example text}{fg=UPForestGreen}
+\setbeamercolor{block title}{fg=UPWhite,bg=UPMaroon}
+\setbeamercolor{block body}{fg=UPBlack,bg=UPMaroonTint}
+\setbeamercolor{block title alerted}{fg=UPBlack,bg=UPGold}
+\setbeamercolor{block body alerted}{fg=UPBlack,bg=UPGoldTint}
+\setbeamercolor{block title example}{fg=UPWhite,bg=UPForestGreen}
+\setbeamercolor{block body example}{fg=UPBlack,bg=UPForestGreenTint}
+\setbeamercolor{item}{fg=UPGold}
+\setbeamercolor{subitem}{fg=UPGold}
+\setbeamercolor{subsubitem}{fg=UPGold}
+\setbeamercolor{item projected}{fg=UPBlack,bg=UPGold}
+\setbeamercolor{footline}{fg=UPBlack80,bg=UPWhite}
+\setbeamercolor{headline}{fg=UPMaroon,bg=UPWhite}
+\setbeamercolor{section in toc}{fg=UPMaroon}
+\setbeamercolor{subsection in toc}{fg=UPBlack80}
+\setbeamercolor{section number projected}{fg=UPBlack,bg=UPGold}
+\setbeamercolor{caption name}{fg=UPMaroon}
+\setbeamercolor{caption}{fg=UPBlack80}
+\setbeamercolor{bibliography item}{fg=UPBlack80,bg=UPWhite}
+\setbeamercolor{bibliography entry author}{fg=UPMaroon}
+\setbeamercolor{bibliography entry title}{fg=UPBlack}
+\setbeamercolor{bibliography entry location}{fg=UPBlack80}
+\setbeamercolor{bibliography entry note}{fg=UPBlack80}
+\endinput

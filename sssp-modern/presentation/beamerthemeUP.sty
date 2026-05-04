@@ -1,0 +1,239 @@
+% beamerthemeUP.sty
+% Copyright 2026 Zildjian E. California
+%
+% This file is part of the beamer-up derivative work and adapts the
+% original beamer-uu sources by A.J.H. (Jos) Zuijderwijk to the
+% maintained University of the Philippines `UP` theme surface.
+%
+% This work may be distributed and/or modified under the conditions of
+% the LaTeX Project Public License, either version 1.3c of this license
+% or (at your option) any later version. The latest version of this
+% license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Zildjian E. California.
+% Issue reports for this maintained derivative may be sent via
+%   https://github.com/zcalifornia-ph/beamer-up/issues
+%
+% This work consists of the files beamercolorthemeUP.sty,
+% beamerinnerthemeUP.sty, beamerouterthemeUP.sty, beamerthemeUP.sty,
+% main.tex, and references.bib.
+%
+% Supported public theme identifier: UP
+% Older decks that still mention \usetheme{UU} should be updated to the
+% supported UP entry path.
+% Branding note: distributed UP-branded assets should follow the UP
+% branding guidelines and are intended for UP constituents/internal
+% use. No official endorsement is implied.
+%
+% Supported options:
+%   english       - use the English UP logotype (default)
+%   filipino      - use the Unibersidad ng Pilipinas logotype
+%   showlogo      - show the approved corner logo on content slides
+%   nosectionpage - suppress automatic section divider slides
+%
+% Helper commands:
+%   \standoutframe{Text}
+%   \thankframe{Title}{Contact}
+%   \venue{Conference, City}
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemeUP}[2026/04/03 Canonical public theme package for the beamer-up derivative]
+
+% -- Options -----------------------------------------------------------
+\newif\if@UUnosection\@UUnosectionfalse
+\newif\if@UUfilipino\@UUfilipinofalse
+\newif\if@UUshowlogo\@UUshowlogofalse
+
+\DeclareOption{nosectionpage}{\@UUnosectiontrue}
+\DeclareOption{english}{\@UUfilipinofalse}
+\DeclareOption{filipino}{\@UUfilipinotrue}
+\DeclareOption{tagalog}{\@UUfilipinotrue}
+\DeclareOption{showlogo}{\@UUshowlogotrue}
+\ProcessOptions\relax
+
+% -- Sub-themes --------------------------------------------------------
+\usecolortheme{UP}
+\useinnertheme{UP}
+\useoutertheme{UP}
+
+% -- Code listings -----------------------------------------------------
+\RequirePackage{listings}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\bfseries\color{UPMaroon},
+  stringstyle=\color{UPForestGreen},
+  commentstyle=\itshape\color{UPBlack80},
+  numberstyle=\tiny\color{UPBlack80},
+  backgroundcolor=\color{UPGoldTint},
+  frame=none,
+  numbers=left,
+  numbersep=8pt,
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=2,
+  xleftmargin=1.5em,
+}
+
+% -- bibliography ------------------------------------------------------
+\usepackage[
+  backend=biber,
+  style=numeric,
+  sorting=none
+]{biblatex}
+
+\addbibresource{references.bib}
+
+% -- Font setup --------------------------------------------------------
+% UP Typeface Guidelines Hierarchy:
+%   - Optima: for titles and headings (official documents)
+%   - Palatino: for body text (official documents)
+%   - Avenir/Helvetica: for unofficial documents and materials
+%
+% This theme implements a tiered fallback strategy:
+%   1. Optima (preferred for headings per UP guidelines)
+%   2. Avenir (acceptable alternative for unofficial materials)
+%   3. Helvetica (widely available fallback)
+%
+% Engine detection: XeLaTeX/LuaLaTeX can access system fonts directly.
+% pdfLaTeX uses the fallback chain with TeX font packages.
+
+\usepackage[T1]{fontenc}
+\usepackage{palatino}
+\renewcommand{\familydefault}{\rmdefault}
+
+\newcommand{\up@xetex@or@luatex@font@setup}{%
+  \typeout{beamerthemeUP: XeLaTeX/LuaLaTeX engine detected, attempting Optima...}%
+}%
+
+\ifxetex
+  \IfFontExistsTF{Optima}{%
+    \usepackage{fontspec}
+    \setmainfont{Palatino Linotype}
+    \setsansfont{Optima}
+    \newcommand{\upheadingfont}{\fontspec{Optima}}
+    \typeout{beamerthemeUP: Using Optima for headings (UP guidelines compliant)}
+  }{%
+    \IfFontExistsTF{Avenir}{%
+      \usepackage{fontspec}
+      \setmainfont{Palatino Linotype}
+      \setsansfont{Avenir}
+      \newcommand{\upheadingfont}{\fontspec{Avenir}}
+      \typeout{beamerthemeUP: Using Avenir for headings (Optima not available)}
+    }{%
+      \usepackage{fontspec}
+      \setmainfont{Palatino Linotype}
+      \setsansfont{Helvetica}
+      \newcommand{\upheadingfont}{\fontspec{Helvetica}}
+      \typeout{beamerthemeUP: Using Helvetica for headings (Optima/Avenir not available)}
+    }%
+  }%
+\else
+  \ifluatex
+    \IfFontExistsTF{Optima}{%
+      \usepackage{fontspec}
+      \setmainfont{Palatino}
+      \setsansfont{Optima}
+      \newcommand{\upheadingfont}{\fontspec{Optima}}
+      \typeout{beamerthemeUP: Using Optima for headings (UP guidelines compliant)}
+    }{%
+      \IfFontExistsTF{Avenir}{%
+        \usepackage{fontspec}
+        \setmainfont{Palatino}
+        \setsansfont{Avenir}
+        \newcommand{\upheadingfont}{\fontspec{Avenir}}
+        \typeout{beamerthemeUP: Using Avenir for headings (Optima not available)}
+      }{%
+        \usepackage{fontspec}
+        \setmainfont{Palatino}
+        \setsansfont{Helvetica}
+        \newcommand{\upheadingfont}{\fontspec{Helvetica}}
+        \typeout{beamerthemeUP: Using Helvetica for headings (Optima/Avenir not available)}
+      }%
+    }%
+  \else
+    \IfFileExists{helvet.sty}{%
+      \usepackage[scaled=0.94]{helvet}%
+      \newcommand{\upheadingfont}{\sffamily}%
+      \typeout{beamerthemeUP: Using Helvetica for headings (pdfLaTeX engine; use XeLaTeX/LuaLaTeX for Optima)}%
+    }{%
+      \newcommand{\upheadingfont}{\sffamily}%
+      \typeout{beamerthemeUP: Using default sans-serif for headings (helvet.sty not found)}%
+    }%
+  \fi
+\fi
+
+\usefonttheme{professionalfonts}
+
+\setbeamerfont{title}{family=\upheadingfont, series=\bfseries, size=\LARGE}
+\setbeamerfont{subtitle}{family=\upheadingfont, series=\mdseries, size=\normalsize}
+\setbeamerfont{frametitle}{family=\upheadingfont, series=\bfseries, size=\large}
+\setbeamerfont{author}{family=\rmfamily, size=\normalsize}
+\setbeamerfont{institute}{family=\rmfamily, size=\small}
+\setbeamerfont{date}{family=\rmfamily, size=\small}
+\setbeamerfont{block title}{family=\upheadingfont, series=\bfseries, size=\normalsize}
+\setbeamerfont{footline}{family=\upheadingfont, size=\scriptsize}
+\setbeamerfont{caption}{size=\footnotesize}
+\setbeamerfont{footnote}{size=\tiny}
+
+% -- Default logo paths ------------------------------------------------
+\if@UUfilipino
+  \renewcommand{\@uulogopath}{logos/up-logotype-tag-runtime-black.png}
+  \renewcommand{\@uulogoblackpath}{logos/up-logotype-tag-runtime-black.png}
+  \renewcommand{\@uulogowhitepath}{logos/up-logotype-tag-runtime-white.png}
+  \renewcommand{\@uutitlelogoinclude}[1]{%
+    \includegraphics[height=#1]{logos/up-inline-logo-tag-runtime-black.png}}
+  \renewcommand{\@uutitlelogosize}{0.84cm}
+  \renewcommand{\@uulogoinclude}[1]{%
+    \includegraphics[width=#1]{\@uulogopath}}
+  \renewcommand{\@uulogoblackinclude}[1]{%
+    \includegraphics[width=#1]{\@uulogoblackpath}}
+  \renewcommand{\@uulogowhiteinclude}[1]{%
+    \includegraphics[width=#1]{\@uulogowhitepath}}
+\else
+  % The UP logotype PNGs are re-cropped into runtime assets so the outer/inner
+  % themes can place them deterministically without large transparent padding.
+  \renewcommand{\@uulogopath}{logos/up-logotype-eng-runtime-black.png}
+  \renewcommand{\@uulogoblackpath}{logos/up-logotype-eng-runtime-black.png}
+  \renewcommand{\@uulogowhitepath}{logos/up-logotype-eng-runtime-white.png}
+  \renewcommand{\@uutitlelogoinclude}[1]{%
+    \includegraphics[height=#1]{logos/up-inline-logo-eng-runtime-black.png}}
+  \renewcommand{\@uutitlelogosize}{0.84cm}
+  \renewcommand{\@uulogoinclude}[1]{%
+    \includegraphics[width=#1]{\@uulogopath}}
+  \renewcommand{\@uulogoblackinclude}[1]{%
+    \includegraphics[width=#1]{\@uulogoblackpath}}
+  \renewcommand{\@uulogowhiteinclude}[1]{%
+    \includegraphics[width=#1]{\@uulogowhitepath}}
+\fi
+\renewcommand{\@uutitlelogoxshift}{1.22cm}
+\renewcommand{\@uutitlelogoyshift}{-0.68cm}
+\renewcommand{\@uutitlecontenttopskip}{2.55cm}
+\renewcommand{\@uutitlecontentwidth}{12.2cm}
+
+% -- Numbered captions (Table 1, Figure 1, ...) -----------------------
+\setbeamertemplate{caption}[numbered]
+
+% -- Bibliography font size -------------------------------------------
+\setbeamerfont{bibliography item}{size=\small}
+\setbeamerfont{bibliography entry author}{size=\small}
+\setbeamerfont{bibliography entry title}{size=\small}
+\setbeamerfont{bibliography entry location}{size=\small}
+\setbeamerfont{bibliography entry note}{size=\small}
+
+% -- Navigation symbols off -------------------------------------------
+\setbeamertemplate{navigation symbols}{}
+
+% -- Hyperref colors ---------------------------------------------------
+\hypersetup{
+  colorlinks=true,
+  linkcolor=UPMaroon,
+  urlcolor=UPForestGreen,
+  citecolor=UPMaroon,
+}
+
+\endinput

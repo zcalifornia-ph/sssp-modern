@@ -1,0 +1,470 @@
+% main.tex
+% Copyright 2026 Zildjian E. California
+%
+% This file is part of the beamer-up derivative work and adapts the
+% original beamer-uu sources by A.J.H. (Jos) Zuijderwijk to the
+% maintained University of the Philippines `UP` theme surface.
+%
+% This work may be distributed and/or modified under the conditions of
+% the LaTeX Project Public License, either version 1.3c of this license
+% or (at your option) any later version. The latest version of this
+% license is in
+%   https://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Zildjian E. California.
+% Issue reports for this maintained derivative may be sent via
+%   https://github.com/zcalifornia-ph/beamer-up/issues
+%
+% This work consists of the files beamercolorthemeUP.sty,
+% beamerinnerthemeUP.sty, beamerouterthemeUP.sty, beamerthemeUP.sty,
+% main.tex, and references.bib.
+%
+% Current checkout note: this deck exercises the supported
+% \usetheme{UP} interface.
+% Older decks that still mention \usetheme{UU} should be updated to
+% \usetheme{UP}.
+% Branding note: distributed UP-branded assets should follow the UP
+% branding guidelines and are intended for UP constituents/internal
+% use. No official endorsement is implied.
+% This file now serves both as a compile-validation surface and as a
+% starter template for common UP academic use cases.
+\documentclass[aspectratio=169]{beamer}
+\usetheme[showlogo,english]{UP}
+
+% -- Metadata -----------------------------------
+\title[Beamer Theme for UP]{Beamer Theme for UP {\footnotesize \quad \textcolor{UPForestGreen}{v1.0.0}}}
+\subtitle{\textbf{A \LaTeX\ slide template for the University of the Philippines System\\for thesis defenses, class reports, and research talks.}}
+\author[J. C. M. Ibarra]{Juan Crisóstomo M. Ibarra}
+\institute{Department of Mathematics, Physics, and Computer Science\\College of Science and Mathematics\\University of the Philippines - Mindanao}
+\venue{UP System Research Colloquium 2026}
+\date{\today}
+
+
+\begin{document}
+% ===========================================
+%  TITLE SLIDES  (single-author, then multi-author)
+% ===========================================
+
+% -- Single-author title --
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% -- Multi-author / conference title --
+\author[Gómez et al.]{%
+  Mariano C. Gómez\inst{1} \and
+  José A. Burgos\inst{1} \and
+  Jacinto D. Zamora\inst{2}%
+}
+\addinstitute{1}{Department of Computer Science, College of Engineering,\\University of the Philippines - Diliman}
+\addinstitute{2}{Department of Mathematics, Physics, and Computer Science,\\College of Science and Mathematics, University of the Philippines - Mindanao}
+\multiauthor
+\venue{UP System Research Colloquium 2026}
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% -- Reset to single-author for the rest of the demo --
+\author[J. C. M. Ibarra]{Juan Crisóstomo M. Ibarra}
+\institute{Department of Mathematics, Physics, and Computer Science,\\College of Science and Mathematics, University of the Philippines Mindanao}
+\clearinstitutes
+\singleauthor
+
+% ===========================================
+%  TABLE OF CONTENTS
+% ===========================================
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+% ===========================================
+\section{Getting Started}
+% ===========================================
+
+\begin{frame}{Using the Theme}
+  Load the theme in your preamble, set your metadata, and compile from the checked-in
+  \texttt{beamer-up/} directory:
+
+  \begin{itemize}
+    \item \texttt{\textbackslash usetheme\{UP\}} --- basic usage
+    \item \texttt{\textbackslash usetheme[showlogo]\{UP\}} --- logo on every slide
+    \item \texttt{\textbackslash usetheme[showlogo,english]\{UP\}} --- English UP logotype
+    \item \texttt{\textbackslash usetheme[showlogo,filipino]\{UP\}} --- Filipino UP logotype
+  \end{itemize}
+
+  \vskip 6pt
+  Recommended compile path: \texttt{latexmk -pdf main.tex}.\\
+  Fallback path: \texttt{pdflatex}, \texttt{biber}, \texttt{pdflatex}, \texttt{pdflatex}.
+
+  \vskip 6pt
+  For a fuller walkthrough, see the repository usage guide at
+  \texttt{docs/usage-guide.md}.
+\end{frame}
+
+\begin{frame}{Theme Options at a Glance}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Flags} \footnotesize
+        Pass as options to \texttt{\textbackslash usetheme[...]}\texttt{\{UP\}}:
+        \texttt{showlogo}, \texttt{english}, \texttt{filipino}, \texttt{nl}, \texttt{nosectionpage}.
+      \end{block}
+      \vskip 6pt
+      \begin{block}{Special Frames} \footnotesize
+        \texttt{\textbackslash standoutframe\{...\}} for emphasis.\\
+        \texttt{\textbackslash thankframe\{...\}\{...\}} to close.\\
+        \texttt{\textbackslash sectionframe\{...\}} for a manual divider.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth} \footnotesize
+      \begin{block}{Conference Title Support}
+        \texttt{\textbackslash multiauthor} activates the multi-author layout.
+        Use \texttt{\textbackslash addinstitute\{n\}\{Name\}} to list affiliations
+        and \texttt{\textbackslash venue\{...\}} for the event label.
+      \end{block}
+      \vskip 6pt
+      \begin{exampleblock}{Public Contract}
+        The supported public loader is \texttt{UP}.
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+
+  \vskip 10pt
+  The \texttt{showlogo} flag is active in this demo, so the top-right identity mark
+  remains visible on normal content slides.
+\end{frame}
+
+\begin{frame}{Common Academic Starting Points}
+  \begin{columns}[T]
+    \begin{column}{0.31\textwidth}
+      \begin{exampleblock}{Thesis Defense}
+        Start with the single-author title path, then use section dividers to separate
+        problem, method, results, and contribution.
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{0.31\textwidth}
+      \begin{alertblock}{Class Report}
+        Use concise bullets, tables, and diagrams. The content surfaces are designed to
+        stay readable while keeping the UP visual direction.
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.31\textwidth}
+      \begin{block}{Research Talk}
+        Use the multi-author title page, optional venue, numbered figures, citations,
+        and bibliography frame for colloquia or conference presentations.
+      \end{block}
+    \end{column}
+  \end{columns}
+
+  \vskip 8pt
+  This checked-in deck now tries to demonstrate all three paths in one reusable source.
+\end{frame}
+
+% Manual section divider demo (same style as automatic \AtBeginSection pages)
+\sectionframe{Manual \textbackslash sectionframe for proposal milestones}
+
+% ===========================================
+\section{Defense and Class Report Patterns}
+% ===========================================
+
+\begin{frame}{Thesis Defense Narrative}
+  A common defense structure can fit the template without custom macros:
+
+  \begin{enumerate}
+    \item Problem statement and scope
+    \item Related work or institutional context
+    \item Method or system design
+    \item Results, limitations, and next steps
+    \item Contribution summary and committee discussion prompts
+  \end{enumerate}
+
+  \vskip 8pt
+  Use automatic section pages for the major milestones and a manual
+  \texttt{\textbackslash sectionframe\{...\}} when you need an explicit pivot slide.
+\end{frame}
+
+\begin{frame}{Class Report Slide Pattern}
+  \begin{columns}[T]
+    \begin{column}{0.50\textwidth}
+      \begin{block}{Recommended rhythm}
+        \begin{itemize}
+          \item one headline claim per slide
+          \item short bullets instead of paragraph walls
+          \item figures or tables when comparison matters
+          \item one takeaway at the bottom when the result is easy to miss
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{exampleblock}{Example takeaway}
+        For weekly reports or laboratory updates, a simple title, three bullets, and one
+        chart is often stronger than a dense text slide.
+      \end{exampleblock}
+      \vskip 6pt
+      \begin{alertblock}{Migration reminder}
+        If your older deck still uses other themes, consider migrating them to
+        \texttt{\textbackslash usetheme\{UP\}} before reusing this template.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ===========================================
+\section{Colour Palette and Typography}
+% ===========================================
+
+\begin{frame}{UP Institutional Colours}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{alertblock}{Core Palette}
+        \textcolor{UPMaroon}{\rule{1em}{1em}}~Maroon \texttt{\#8E1537}\\[3pt]
+        \textcolor{UPForestGreen}{\rule{1em}{1em}}~Forest green \texttt{\#005740}\\[3pt]
+        \textcolor{UPYellow}{\rule{1em}{1em}}~Yellow \texttt{\#FFB81D}\\[3pt]
+        \textcolor{UPBlack}{\rule{1em}{1em}}~Spot black \texttt{\#231F20}\\[3pt]
+        \textcolor{white}{\rule{1em}{1em}}~White \texttt{\#FFFFFF}
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+    \begin{exampleblock}{Usage Rules}
+        \begin{itemize}
+          \item Maroon carries hero surfaces and alerts.
+          \item Forest green supports section structure and examples.
+          \item Yellow stays an accent for rules, bullets, and emphasis.
+          \item Spot black anchors body text and labels on yellow.
+        \end{itemize}
+    \end{exampleblock}
+    \end{column}
+  \end{columns}
+
+  \vskip 8pt
+  The public theme stays inside the UP four-colour system as defined by the UP Visual Identity Guidebook~\cite{upvig2017}.
+\end{frame}
+
+\begin{frame}{Typography and Body Copy}
+  \begin{enumerate}
+    \item \textbf{Optima} for titles and headings when locally available
+    \item \textbf{Palatino} for body text on the validated baseline
+    \item \textbf{Avenir/Helvetica} as documented heading fallbacks
+  \end{enumerate}
+
+  \vskip 10pt
+  \begin{exampleblock}{Tiered Font Fallback}
+    The theme selects a practical fallback chain rather than assuming every system has
+    the same commercial fonts installed:
+    \begin{itemize}
+      \item \textbf{XeLaTeX/LuaLaTeX:} Optima -> Avenir -> Helvetica
+      \item \textbf{pdfLaTeX:} Helvetica-style sans fallback with Palatino body text
+    \end{itemize}
+  \end{exampleblock}
+
+  \vskip 6pt
+  \footnotesize
+  \textcolor{UPBlack80}{Compile with \texttt{xelatex} or \texttt{lualatex} for Optima when it exists on your system.}
+\end{frame}
+
+\begin{frame}{Lists and Blocks for Class Reports}
+  Itemize now uses a single yellow marker family across levels:
+
+  \begin{itemize}
+    \item First-level items use \textcolor{UPYellow}{yellow} squares
+    \begin{itemize}
+      \item Second-level items stay yellow and shrink with depth
+      \begin{itemize}
+        \item Third-level items keep the same accent hue for consistency
+      \end{itemize}
+    \end{itemize}
+    \item Items can contain \textbf{bold}, \emph{italic}, or \alert{alerted} text
+    \item Keep bullets concise and let spacing carry hierarchy
+  \end{itemize}
+
+  \vskip 8pt
+  Enumerate uses dark labels on yellow chips:
+  \begin{enumerate}
+    \item Background or objective
+    \item Method or implementation note
+    \item Result or recommendation
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Method Snapshot}
+  The theme supports mathematical typesetting for technical defenses and research talks
+  \cite{tai1994mathematical}:
+
+$$
+\int_{a}^{b} f(x)\,dx \approx
+\frac{h}{2}\left[f(x_0) + 2\sum_{i=1}^{n-1} f(x_i) + f(x_n)\right]
+$$
+
+  \begin{alertblock}{Note}
+    This is an alert block, suitable for assumptions, constraints, or a result that the
+    audience should not miss during a defense or report.
+  \end{alertblock}
+\end{frame}
+
+% ===========================================
+\section{Research Talk Content}
+% ===========================================
+
+\begin{frame}{Research Workflow Diagram}
+  \begin{figure}
+  \centering
+  \begin{tikzpicture}[
+    node distance=0.6cm and 1.0cm,
+    box/.style={
+      rectangle, rounded corners=3pt,
+      minimum height=2em, minimum width=4.5em,
+      text centered, font=\sffamily\footnotesize,
+      draw=none
+    },
+    arr/.style={->, >=stealth, semithick, UPBlack80},
+    scale=0.95, transform shape
+  ]
+    \node[box, fill=UPYellow, text=UPBlack] (data) {Dataset};
+    \node[box, fill=UPForestGreen, text=white, right=of data] (preprocess) {Pre-process};
+    \node[box, fill=UPMaroon, text=white, right=of preprocess] (model) {Model};
+    \node[box, fill=UPForestGreen!85!UPBlack, text=white, right=of model] (evaluate) {Validate};
+    \node[box, fill=UPMaroon!85!UPBlack, text=white, right=of evaluate] (deploy) {Report};
+
+    \draw[arr] (data) -- (preprocess);
+    \draw[arr] (preprocess) -- (model);
+    \draw[arr] (model) -- (evaluate);
+    \draw[arr] (evaluate) -- (deploy);
+
+    \draw[arr, UPYellow!85!UPBlack, dashed]
+      (evaluate.south) -- ++(0,-0.7) -| node[below, pos=0.25, font=\tiny\sffamily, UPMaroon] {iterate} (model.south);
+  \end{tikzpicture}
+  \caption{Example research pipeline with a numbered figure caption.}
+  \end{figure}
+
+  \vskip 6pt
+  TikZ diagrams stay inside the mapped UP token set.
+  Use \texttt{UPYellow}, \texttt{UPForestGreen}, \texttt{UPMaroon}, and \texttt{UPBlack} directly.
+\end{frame}
+
+\begin{frame}[fragile]{Analysis Script Snippet}
+The \texttt{listings} package is pre-configured with UP colours.
+  Specify the language and write code verbatim:
+
+  \begin{lstlisting}[language=Python]
+def fibonacci(n):
+    """Return the n-th Fibonacci number."""
+    if n <= 1:
+        return n
+    a, b = 0, 1
+    for _ in range(2, n + 1):
+        a, b = b, a + b  # shift window
+    return b
+
+print(fibonacci(10))  # 55
+  \end{lstlisting}
+\end{frame}
+
+% ===========================================
+\section{Tables and Figures}
+% ===========================================
+
+\begin{frame}{Theme Files and Reuse Surface}
+  \begin{table}
+    \centering
+    \caption{Theme files overview}
+    \begin{tabular}{ll}
+      \hline
+      \textbf{File} & \textbf{Purpose} \\
+      \hline
+      \texttt{beamerthemeUP.sty}       & Canonical public theme entry \\
+      \texttt{beamercolorthemeUP.sty}  & Current UP-directed colour theme \\
+      \texttt{beamerinnerthemeUP.sty}  & Title page, blocks, special frames \\
+      \texttt{beamerouterthemeUP.sty}  & Frame title, footline, logo \\
+      \hline
+    \end{tabular}
+  \end{table}
+\end{frame}
+
+\begin{frame}{Results Figure in a Column Layout}
+  \begin{columns}[T]
+    \begin{column}{0.46\textwidth}
+      Pair figures with text using \texttt{columns}:
+      \begin{itemize}
+        \item left column carries the narrative
+        \item right column holds the figure
+        \item caption numbering stays automatic
+      \end{itemize}
+
+      \vskip 8pt
+      This pattern works well for class reports, proposal updates, and research results
+      where one compact figure has to sit beside the argument.
+    \end{column}
+    \begin{column}{0.50\textwidth}
+      \begin{figure}
+        \centering
+        \begin{tikzpicture}[scale=0.82]
+          \foreach \x/\h/\col in {
+            0.4/1.2/UPMaroon,
+            1.1/2.4/UPMaroon,
+            1.8/1.8/UPMaroon,
+            2.5/2.9/UPForestGreen,
+            3.2/2.1/UPForestGreen,
+            3.9/3.0/UPForestGreen}{
+            \fill[\col!80] (\x,0) rectangle (\x+0.55,\h);
+          }
+          \draw[UPBlack80, thin] (0,0) -- (4.5,0) node[right,font=\tiny\sffamily]{$x$};
+          \draw[UPBlack80, thin] (0,0) -- (0,3.2) node[above,font=\tiny\sffamily]{$y$};
+          \fill[UPMaroon!80]  (0.3,3.05) rectangle (0.65,3.25);
+          \node[right,font=\tiny\sffamily] at (0.7,3.15) {Group A};
+          \fill[UPForestGreen!80] (2.0,3.05) rectangle (2.35,3.25);
+          \node[right,font=\tiny\sffamily] at (2.4,3.15) {Group B};
+        \end{tikzpicture}
+        \caption{Sample bar chart with UP colours.}
+      \end{figure}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -- Standout --------------------------
+\standoutframe{Honor. Excellence. Service.}
+
+% ===========================================
+\section{Closing}
+% ===========================================
+
+\begin{frame}{Compile and Distribution Notes}
+  \begin{itemize}
+    \item Preferred command from \texttt{beamer-up/}: \texttt{latexmk -pdf main.tex}
+    \item Fallback command chain: \texttt{pdflatex}, \texttt{biber}, \texttt{pdflatex}, \texttt{pdflatex}
+    \item Public quick-start and migration notes live in \texttt{README.md} and \texttt{docs/usage-guide.md}
+    \item UP-branded assets remain subject to branding guidance beyond the software license
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Summary}
+  \begin{enumerate}
+    \item Supported public loader: \texttt{\textbackslash usetheme\{UP\}}
+    \item Starter patterns now cover thesis defenses, class reports, and research talks
+    \item Special frames: \texttt{\textbackslash standoutframe}, \texttt{\textbackslash thankframe}, \texttt{\textbackslash sectionframe}
+    \item Options: \texttt{showlogo}, \texttt{english}, \texttt{filipino}, \texttt{nl}, \texttt{nosectionpage}
+    \item Multi-author slides: \texttt{\textbackslash addinstitute\{n\}\{Name\}} + \texttt{\textbackslash multiauthor}
+    \item Public usage and migration guidance now live alongside the checked-in showcase source
+  \end{enumerate}
+
+  \vskip 12pt
+  {\small Source and documentation: \url{https://github.com/zcalifornia-ph/beamer-up}}
+\end{frame}
+
+% -- Closing -----------------------------------
+\thankframe{Feedback?}{Please contribute \\ \url{https://github.com/zcalifornia-ph/beamer-up}}
+
+% -- references -----------------------------
+\begin{frame}[allowframebreaks]{References}
+  The Beamer class~\cite{tantau2004} provides the foundation.
+  The UP Visual Identity Guidebook~\cite{upvig2017} defines the colour palette,
+  typography, and logo usage rules.
+
+  \vskip 6pt
+  \printbibliography
+\end{frame}
+
+\end{document}
+
