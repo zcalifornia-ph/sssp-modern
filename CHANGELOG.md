@@ -1,6 +1,21 @@
 # Changelog
 
-Status: foundation implementation (graph and weight primitives in place; reference algorithms pending).
+Status: foundation implementation (graph primitives, weight checks, IO fixtures, and tests in place; reference algorithms pending).
+
+## v0.1.1
+
+### Added or Changed
+
+- Added pure-stdlib JSON graph IO helpers under `sssp-modern/src/sssp/io.py`.
+- Added edge-list and adjacency-list fixture formats for deterministic graph examples.
+- Added sample directed graph fixtures under `sssp-modern/examples/graphs/`.
+- Added pytest coverage for graph IO round trips, fixture loading, malformed fixture validation, and `Weight` serialization into fixture output.
+- Updated `README.md` status, quick-start test command, repository layout, and roadmap for the graph IO baseline.
+- Added `docs/version-0.1.1-docs.md` with a detailed walkthrough of the graph IO and fixture release.
+
+### For Deletion
+
+- Local Python cache and test-runner outputs generated during validation are intentionally uncommitted and can be cleaned manually when convenient.
 
 ## v0.1.0
 
