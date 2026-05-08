@@ -1,6 +1,21 @@
 # Changelog
 
-Status: bootstrap (governance docs in place; reference implementations pending).
+Status: foundation implementation (graph and weight primitives in place; reference algorithms pending).
+
+## v0.1.0
+
+### Added or Changed
+
+- Added pure-stdlib Python package scaffolding under `sssp-modern/src/sssp`.
+- Added immutable `Edge` records and a minimal adjacency-list `Graph` type supporting directed and undirected weighted graphs.
+- Added a `Weight` value object that permits equality, strict less-than comparison, and addition while rejecting unrelated numeric operations.
+- Added focused pytest coverage for graph construction, adjacency behavior, immutable query snapshots, malformed graph inputs, allowed weight operations, forbidden weight operations, and monkeypatch interception of a forbidden operation.
+- Updated `README.md` status, quick-start commands, repository layout, and roadmap to reflect the first implementation baseline.
+- Added `docs/version-0.1.0-docs.md` with a detailed public walkthrough of the foundation release.
+
+### For Deletion
+
+- Local Python test cache artifacts generated during validation are intentionally uncommitted and can be cleaned manually when convenient.
 
 ## v0.0.1
 
