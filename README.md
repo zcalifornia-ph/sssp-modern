@@ -22,9 +22,9 @@
   <p align="center">
     <strong>A study of single-source shortest-path algorithms from Dijkstra's 1959 baseline to the 2025 result that broke its sorting barrier on sparse directed graphs, with reference implementations and comparative complexity analysis.</strong>
     <br />
-    Version: v0.0.1
+    Version: v0.1.3
     <br />
-    Status: Bootstrap (governance docs in place; reference implementations pending)
+    Status: Foundation implementation (graph primitives, weight checks, IO fixtures, generators, test harness, and tests)
     <br />
     <a href="https://github.com/zcalifornia-ph/sssp-modern"><strong>Explore the docs »</strong></a>
     <br />
@@ -91,12 +91,13 @@ Planned reference implementations and comparative notes include:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Status: bootstrap (`v0.0.1`). The repository currently carries governance documents and project metadata. Reference implementations and comparative-analysis artifacts will land in subsequent versions.
+Status: foundation implementation (`v0.1.3`). The repository now includes the first pure-stdlib Python primitives used by the planned shortest-path implementations: weighted graph structures, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, and reusable pytest scaffolding for later algorithm checks.
 
 ### Prerequisites
 
 - Git for cloning the repository.
-- A working development environment for whichever reference implementation you want to study or run. Specific language and toolchain requirements will be documented per implementation as they land.
+- CPython 3.11 or later.
+- `pytest` for the current test suite.
 
 ### Quick Start
 
@@ -107,10 +108,29 @@ Status: bootstrap (`v0.0.1`). The repository currently carries governance docume
    cd sssp-modern
    ```
 
-2. Read this `README.md` to understand the project scope and current state.
-3. Review `CHANGELOG.md` for the latest notable changes.
-4. Check `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` before opening issues or pull requests.
-5. Once reference implementations land, follow the per-implementation README under each algorithm directory for build and run instructions.
+2. Install test tooling if needed.
+
+   ```sh
+   python -m pip install pytest
+   ```
+
+3. Run the current foundation tests.
+
+   ```sh
+   cd sssp-modern
+   PYTHONPATH=src python -m pytest tests/test_graph.py tests/test_weights.py tests/test_io.py tests/test_generators.py tests/test_harness.py tests/test_no_third_party_imports.py
+   ```
+
+   PowerShell equivalent:
+
+   ```powershell
+   cd sssp-modern
+   $env:PYTHONPATH='src'
+   python -m pytest tests/test_graph.py tests/test_weights.py tests/test_io.py tests/test_generators.py tests/test_harness.py tests/test_no_third_party_imports.py
+   ```
+
+4. Review `CHANGELOG.md` for the latest notable changes.
+5. Check `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` before opening issues or pull requests.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -121,7 +141,10 @@ The repository keeps governance, supporting assets, and study material in clearl
 - Root governance files: `README.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `LICENSE.txt`, and `THIRD-PARTY-NOTICES.md`.
 - `docs/`: per-version detail documents tracking what shipped in each release.
 - `repo/images/`: repository-owned image assets, including the project screenshot.
-- Algorithm and analysis trees will be added under dedicated subdirectories as reference implementations land.
+- `sssp-modern/src/sssp/`: pure-stdlib Python graph, weight, IO, and generator primitives for reference implementations.
+- `sssp-modern/tests/`: pytest coverage, shared fixtures, golden test inputs, and dependency-boundary checks for the current Python foundation.
+- `sssp-modern/examples/graphs/`: small JSON graph fixtures for manual inspection and IO round-trip tests.
+- Algorithm modules, benchmark tooling, and report/deck content will expand from this foundation in later versions.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -129,11 +152,15 @@ The repository keeps governance, supporting assets, and study material in clearl
 ## Roadmap
 
 - [x] v0.0.1 - Repository bootstrap: governance documents, MIT licensing, and initial project metadata.
-- [ ] v0.1.0 - Dijkstra 1959 baseline reference implementation with correctness tests and walkthrough notes.
-- [ ] v0.2.0 - Binary-heap and Fibonacci-heap Dijkstra variants with comparative complexity notes.
+- [x] v0.1.0 - Foundation graph and weight primitives with focused pytest coverage.
+- [x] v0.1.1 - Graph IO helpers and sample fixtures.
+- [x] v0.1.2 - Deterministic random graph generators for benchmark inputs.
+- [x] v0.1.3 - Test harness scaffolding and oracle boundaries.
+- [ ] v0.2.0 - Dijkstra 1959 baseline reference implementation with correctness tests and walkthrough notes.
 - [ ] v0.3.0 - Bellman–Ford reference implementation and negative-edge context discussion.
-- [ ] v0.4.0 - Reference implementation following the 2025 sub-`O(m + n log n)` directed-sparse SSSP result.
-- [ ] v0.5.0 - Comparative complexity analysis artifact tying baseline, intermediate, and modern results together.
+- [ ] v0.4.0 - A* and Thorup reference modules with model-specific notes.
+- [ ] v0.5.0 - Reference implementation following the 2025 sub-`O(m + n log n)` directed-sparse SSSP result.
+- [ ] v0.6.0 - Comparative complexity analysis artifact tying baseline, intermediate, and modern results together.
 
 See the [open issues](https://github.com/zcalifornia-ph/sssp-modern/issues) for proposed features and known gaps.
 

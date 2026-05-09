@@ -1,6 +1,67 @@
 # Changelog
 
-Status: bootstrap (governance docs in place; reference implementations pending).
+Status: foundation implementation (graph primitives, weight checks, IO fixtures, generators, test harness, and tests in place; reference algorithms pending).
+
+## v0.1.3
+
+### Added or Changed
+
+- Added shared pytest fixtures for resolving the nested Python project root, golden fixture directory, and a tiny directed graph fixture.
+- Added golden test inputs and expected source-distance data for later algorithm correctness checks.
+- Added a test-only optional NetworkX oracle adapter for future shortest-path comparisons without adding runtime package dependencies.
+- Added a static import test that confirms runtime source modules use only Python standard-library and local package imports.
+- Added harness coverage for golden fixture loading, expected-distance loading, optional oracle skip behavior, and runtime dependency-boundary checks.
+- Updated `README.md` status, quick-start test command, repository layout, and roadmap for the test harness baseline.
+- Added `docs/version-0.1.3-docs.md` with a detailed walkthrough of the test harness release.
+
+### For Deletion
+
+- Local validation byproducts generated during test and compile runs are intentionally uncommitted and can be cleaned manually when convenient.
+
+## v0.1.2
+
+### Added or Changed
+
+- Added pure-stdlib deterministic graph generators under `sssp-modern/src/sssp/generators.py`.
+- Added seeded generator coverage for Erdos-Renyi, random geometric, directed acyclic, Barabasi-Albert, and signed-edge graph families.
+- Exported generator helpers from the package root for easier use by later benchmarks and examples.
+- Added pytest coverage for fixed-seed reproducibility, local random-state isolation, graph shape invariants, directedness behavior, signed weights, and parameter validation.
+- Updated `README.md` status, quick-start test command, repository layout, and roadmap for the generator baseline.
+- Added `docs/version-0.1.2-docs.md` with a detailed walkthrough of the generator release.
+
+### For Deletion
+
+- Local Python cache and test-runner outputs generated during validation are intentionally uncommitted and can be cleaned manually when convenient.
+
+## v0.1.1
+
+### Added or Changed
+
+- Added pure-stdlib JSON graph IO helpers under `sssp-modern/src/sssp/io.py`.
+- Added edge-list and adjacency-list fixture formats for deterministic graph examples.
+- Added sample directed graph fixtures under `sssp-modern/examples/graphs/`.
+- Added pytest coverage for graph IO round trips, fixture loading, malformed fixture validation, and `Weight` serialization into fixture output.
+- Updated `README.md` status, quick-start test command, repository layout, and roadmap for the graph IO baseline.
+- Added `docs/version-0.1.1-docs.md` with a detailed walkthrough of the graph IO and fixture release.
+
+### For Deletion
+
+- Local Python cache and test-runner outputs generated during validation are intentionally uncommitted and can be cleaned manually when convenient.
+
+## v0.1.0
+
+### Added or Changed
+
+- Added pure-stdlib Python package scaffolding under `sssp-modern/src/sssp`.
+- Added immutable `Edge` records and a minimal adjacency-list `Graph` type supporting directed and undirected weighted graphs.
+- Added a `Weight` value object that permits equality, strict less-than comparison, and addition while rejecting unrelated numeric operations.
+- Added focused pytest coverage for graph construction, adjacency behavior, immutable query snapshots, malformed graph inputs, allowed weight operations, forbidden weight operations, and monkeypatch interception of a forbidden operation.
+- Updated `README.md` status, quick-start commands, repository layout, and roadmap to reflect the first implementation baseline.
+- Added `docs/version-0.1.0-docs.md` with a detailed public walkthrough of the foundation release.
+
+### For Deletion
+
+- Local Python test cache artifacts generated during validation are intentionally uncommitted and can be cleaned manually when convenient.
 
 ## v0.0.1
 

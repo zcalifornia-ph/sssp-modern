@@ -1,0 +1,24 @@
+{
+  "format": "sssp.adjacency-list.v1",
+  "directed": true,
+  "adjacency": {
+    "s": [
+      {
+        "target": "a",
+        "weight": 1.0
+      },
+      {
+        "target": "b",
+        "weight": 4.5
+      }
+    ],
+    "a": [
+      {
+        "target": "b",
+        "weight": 2.0
+      }
+    ],
+    "b": [],
+    "isolated": []
+  }
+}
