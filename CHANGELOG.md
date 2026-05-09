@@ -1,6 +1,21 @@
 # Changelog
 
-Status: foundation implementation (graph primitives, weight checks, IO fixtures, and tests in place; reference algorithms pending).
+Status: foundation implementation (graph primitives, weight checks, IO fixtures, generators, and tests in place; reference algorithms pending).
+
+## v0.1.2
+
+### Added or Changed
+
+- Added pure-stdlib deterministic graph generators under `sssp-modern/src/sssp/generators.py`.
+- Added seeded generator coverage for Erdos-Renyi, random geometric, directed acyclic, Barabasi-Albert, and signed-edge graph families.
+- Exported generator helpers from the package root for easier use by later benchmarks and examples.
+- Added pytest coverage for fixed-seed reproducibility, local random-state isolation, graph shape invariants, directedness behavior, signed weights, and parameter validation.
+- Updated `README.md` status, quick-start test command, repository layout, and roadmap for the generator baseline.
+- Added `docs/version-0.1.2-docs.md` with a detailed walkthrough of the generator release.
+
+### For Deletion
+
+- Local Python cache and test-runner outputs generated during validation are intentionally uncommitted and can be cleaned manually when convenient.
 
 ## v0.1.1
 
