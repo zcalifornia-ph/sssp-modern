@@ -1,6 +1,22 @@
 # Changelog
 
-Status: foundation implementation (graph primitives, weight checks, IO fixtures, generators, and tests in place; reference algorithms pending).
+Status: foundation implementation (graph primitives, weight checks, IO fixtures, generators, test harness, and tests in place; reference algorithms pending).
+
+## v0.1.3
+
+### Added or Changed
+
+- Added shared pytest fixtures for resolving the nested Python project root, golden fixture directory, and a tiny directed graph fixture.
+- Added golden test inputs and expected source-distance data for later algorithm correctness checks.
+- Added a test-only optional NetworkX oracle adapter for future shortest-path comparisons without adding runtime package dependencies.
+- Added a static import test that confirms runtime source modules use only Python standard-library and local package imports.
+- Added harness coverage for golden fixture loading, expected-distance loading, optional oracle skip behavior, and runtime dependency-boundary checks.
+- Updated `README.md` status, quick-start test command, repository layout, and roadmap for the test harness baseline.
+- Added `docs/version-0.1.3-docs.md` with a detailed walkthrough of the test harness release.
+
+### For Deletion
+
+- Local validation byproducts generated during test and compile runs are intentionally uncommitted and can be cleaned manually when convenient.
 
 ## v0.1.2
 

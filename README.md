@@ -22,9 +22,9 @@
   <p align="center">
     <strong>A study of single-source shortest-path algorithms from Dijkstra's 1959 baseline to the 2025 result that broke its sorting barrier on sparse directed graphs, with reference implementations and comparative complexity analysis.</strong>
     <br />
-    Version: v0.1.2
+    Version: v0.1.3
     <br />
-    Status: Foundation implementation (graph primitives, weight checks, IO fixtures, generators, and tests)
+    Status: Foundation implementation (graph primitives, weight checks, IO fixtures, generators, test harness, and tests)
     <br />
     <a href="https://github.com/zcalifornia-ph/sssp-modern"><strong>Explore the docs »</strong></a>
     <br />
@@ -91,7 +91,7 @@ Planned reference implementations and comparative notes include:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Status: foundation implementation (`v0.1.2`). The repository now includes the first pure-stdlib Python primitives used by the planned shortest-path implementations: weighted graph structures, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, and seeded graph generators for repeatable benchmark inputs.
+Status: foundation implementation (`v0.1.3`). The repository now includes the first pure-stdlib Python primitives used by the planned shortest-path implementations: weighted graph structures, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, and reusable pytest scaffolding for later algorithm checks.
 
 ### Prerequisites
 
@@ -118,7 +118,7 @@ Status: foundation implementation (`v0.1.2`). The repository now includes the fi
 
    ```sh
    cd sssp-modern
-   PYTHONPATH=src python -m pytest tests/test_graph.py tests/test_weights.py tests/test_io.py tests/test_generators.py
+   PYTHONPATH=src python -m pytest tests/test_graph.py tests/test_weights.py tests/test_io.py tests/test_generators.py tests/test_harness.py tests/test_no_third_party_imports.py
    ```
 
    PowerShell equivalent:
@@ -126,7 +126,7 @@ Status: foundation implementation (`v0.1.2`). The repository now includes the fi
    ```powershell
    cd sssp-modern
    $env:PYTHONPATH='src'
-   python -m pytest tests/test_graph.py tests/test_weights.py tests/test_io.py tests/test_generators.py
+   python -m pytest tests/test_graph.py tests/test_weights.py tests/test_io.py tests/test_generators.py tests/test_harness.py tests/test_no_third_party_imports.py
    ```
 
 4. Review `CHANGELOG.md` for the latest notable changes.
@@ -142,7 +142,7 @@ The repository keeps governance, supporting assets, and study material in clearl
 - `docs/`: per-version detail documents tracking what shipped in each release.
 - `repo/images/`: repository-owned image assets, including the project screenshot.
 - `sssp-modern/src/sssp/`: pure-stdlib Python graph, weight, IO, and generator primitives for reference implementations.
-- `sssp-modern/tests/`: pytest coverage for the current Python foundation.
+- `sssp-modern/tests/`: pytest coverage, shared fixtures, golden test inputs, and dependency-boundary checks for the current Python foundation.
 - `sssp-modern/examples/graphs/`: small JSON graph fixtures for manual inspection and IO round-trip tests.
 - Algorithm modules, benchmark tooling, and report/deck content will expand from this foundation in later versions.
 
@@ -155,7 +155,7 @@ The repository keeps governance, supporting assets, and study material in clearl
 - [x] v0.1.0 - Foundation graph and weight primitives with focused pytest coverage.
 - [x] v0.1.1 - Graph IO helpers and sample fixtures.
 - [x] v0.1.2 - Deterministic random graph generators for benchmark inputs.
-- [ ] v0.1.3 - Test harness scaffolding and oracle boundaries.
+- [x] v0.1.3 - Test harness scaffolding and oracle boundaries.
 - [ ] v0.2.0 - Dijkstra 1959 baseline reference implementation with correctness tests and walkthrough notes.
 - [ ] v0.3.0 - Bellman–Ford reference implementation and negative-edge context discussion.
 - [ ] v0.4.0 - A* and Thorup reference modules with model-specific notes.

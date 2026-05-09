@@ -1,0 +1,11 @@
+{
+  "source": "s",
+  "distances": {
+    "s": 0.0,
+    "a": 1.0,
+    "b": 3.0
+  },
+  "unreachable": [
+    "isolated"
+  ]
+}
