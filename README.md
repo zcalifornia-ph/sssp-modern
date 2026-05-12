@@ -22,9 +22,9 @@
   <p align="center">
     <strong>A study of single-source shortest-path algorithms from Dijkstra's 1959 baseline to the 2025 result that broke its sorting barrier on sparse directed graphs, with reference implementations and comparative complexity analysis.</strong>
     <br />
-    Version: v0.2.0
+    Version: v0.2.2
     <br />
-    Status: Dijkstra baseline implemented with graph foundation, fixtures, oracle checks, and tests
+    Status: Dijkstra baseline implemented; Bellman-Ford and Thorup work scoped in public issue artifacts
     <br />
     <a href="https://github.com/zcalifornia-ph/sssp-modern"><strong>Explore the docs »</strong></a>
     <br />
@@ -91,7 +91,7 @@ Planned reference implementations and comparative notes include:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Status: Dijkstra baseline implementation (`v0.2.0`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, and a binary-heap Dijkstra reference implementation.
+Status: Dijkstra baseline implementation plus reference-algorithm issue scoping (`v0.2.2`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, a binary-heap Dijkstra reference implementation, and structured implementation issues for the Bellman-Ford and Thorup reference algorithms.
 
 ### Prerequisites
 
@@ -150,6 +150,7 @@ The repository keeps governance, supporting assets, and study material in clearl
 - Root governance files: `README.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `LICENSE.txt`, and `THIRD-PARTY-NOTICES.md`.
 - `docs/`: per-version detail documents tracking what shipped in each release.
 - `repo/images/`: repository-owned image assets, including the project screenshot.
+- `sssp-modern/docs/issues/`: structured issue artifacts that capture scoped implementation work before coding begins.
 - `sssp-modern/src/sssp/`: pure-stdlib Python graph, weight, IO, generator, and Dijkstra reference modules.
 - `sssp-modern/tests/`: pytest coverage, shared fixtures, golden test inputs, oracle comparisons, and dependency-boundary checks for the current Python implementation.
 - `sssp-modern/examples/graphs/`: small JSON graph fixtures for manual inspection and IO round-trip tests.
@@ -167,6 +168,8 @@ The repository keeps governance, supporting assets, and study material in clearl
 - [x] v0.1.2 - Deterministic random graph generators for benchmark inputs.
 - [x] v0.1.3 - Test harness scaffolding and oracle boundaries.
 - [x] v0.2.0 - Dijkstra 1959 baseline reference implementation with correctness tests and walkthrough notes.
+- [x] v0.2.1 - Bellman-Ford implementation issue artifact and GitHub issue publication.
+- [x] v0.2.2 - Thorup implementation issue artifact and GitHub issue publication.
 - [ ] v0.3.0 - Bellman-Ford reference implementation and negative-edge context discussion.
 - [ ] v0.4.0 - A* and Thorup reference modules with model-specific notes.
 - [ ] v0.5.0 - Reference implementation following the 2025 sub-`O(m + n log n)` directed-sparse SSSP result.
