@@ -22,9 +22,9 @@
   <p align="center">
     <strong>A study of single-source shortest-path algorithms from Dijkstra's 1959 baseline to the 2025 result that broke its sorting barrier on sparse directed graphs, with reference implementations and comparative complexity analysis.</strong>
     <br />
-    Version: v0.1.3
+    Version: v0.2.0
     <br />
-    Status: Foundation implementation (graph primitives, weight checks, IO fixtures, generators, test harness, and tests)
+    Status: Dijkstra baseline implemented with graph foundation, fixtures, oracle checks, and tests
     <br />
     <a href="https://github.com/zcalifornia-ph/sssp-modern"><strong>Explore the docs »</strong></a>
     <br />
@@ -91,13 +91,15 @@ Planned reference implementations and comparative notes include:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Status: foundation implementation (`v0.1.3`). The repository now includes the first pure-stdlib Python primitives used by the planned shortest-path implementations: weighted graph structures, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, and reusable pytest scaffolding for later algorithm checks.
+Status: Dijkstra baseline implementation (`v0.2.0`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, and a binary-heap Dijkstra reference implementation.
 
 ### Prerequisites
 
 - Git for cloning the repository.
 - CPython 3.11 or later.
 - `pytest` for the current test suite.
+- Optional: `networkx` for oracle comparisons in tests.
+- Optional: `coverage` for line-coverage measurement.
 
 ### Quick Start
 
@@ -111,14 +113,14 @@ Status: foundation implementation (`v0.1.3`). The repository now includes the fi
 2. Install test tooling if needed.
 
    ```sh
-   python -m pip install pytest
+   python -m pip install pytest networkx coverage
    ```
 
-3. Run the current foundation tests.
+3. Run the current Dijkstra and foundation tests.
 
    ```sh
    cd sssp-modern
-   PYTHONPATH=src python -m pytest tests/test_graph.py tests/test_weights.py tests/test_io.py tests/test_generators.py tests/test_harness.py tests/test_no_third_party_imports.py
+   PYTHONPATH=src python -m pytest tests/test_graph.py tests/test_weights.py tests/test_io.py tests/test_generators.py tests/test_harness.py tests/test_no_third_party_imports.py tests/test_dijkstra.py
    ```
 
    PowerShell equivalent:
@@ -126,11 +128,18 @@ Status: foundation implementation (`v0.1.3`). The repository now includes the fi
    ```powershell
    cd sssp-modern
    $env:PYTHONPATH='src'
-   python -m pytest tests/test_graph.py tests/test_weights.py tests/test_io.py tests/test_generators.py tests/test_harness.py tests/test_no_third_party_imports.py
+   python -m pytest tests/test_graph.py tests/test_weights.py tests/test_io.py tests/test_generators.py tests/test_harness.py tests/test_no_third_party_imports.py tests/test_dijkstra.py
    ```
 
-4. Review `CHANGELOG.md` for the latest notable changes.
-5. Check `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` before opening issues or pull requests.
+4. Measure Dijkstra coverage when `coverage` is installed.
+
+   ```powershell
+   python -m coverage run --include='src/sssp/dijkstra.py' -m pytest tests/test_dijkstra.py
+   python -m coverage report --include='src/sssp/dijkstra.py'
+   ```
+
+5. Review `CHANGELOG.md` for the latest notable changes.
+6. Check `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` before opening issues or pull requests.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -141,9 +150,10 @@ The repository keeps governance, supporting assets, and study material in clearl
 - Root governance files: `README.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `LICENSE.txt`, and `THIRD-PARTY-NOTICES.md`.
 - `docs/`: per-version detail documents tracking what shipped in each release.
 - `repo/images/`: repository-owned image assets, including the project screenshot.
-- `sssp-modern/src/sssp/`: pure-stdlib Python graph, weight, IO, and generator primitives for reference implementations.
-- `sssp-modern/tests/`: pytest coverage, shared fixtures, golden test inputs, and dependency-boundary checks for the current Python foundation.
+- `sssp-modern/src/sssp/`: pure-stdlib Python graph, weight, IO, generator, and Dijkstra reference modules.
+- `sssp-modern/tests/`: pytest coverage, shared fixtures, golden test inputs, oracle comparisons, and dependency-boundary checks for the current Python implementation.
 - `sssp-modern/examples/graphs/`: small JSON graph fixtures for manual inspection and IO round-trip tests.
+- `sssp-modern/examples/dijkstra/`: sample Dijkstra source-distance output for the tiny directed graph.
 - Algorithm modules, benchmark tooling, and report/deck content will expand from this foundation in later versions.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -156,8 +166,8 @@ The repository keeps governance, supporting assets, and study material in clearl
 - [x] v0.1.1 - Graph IO helpers and sample fixtures.
 - [x] v0.1.2 - Deterministic random graph generators for benchmark inputs.
 - [x] v0.1.3 - Test harness scaffolding and oracle boundaries.
-- [ ] v0.2.0 - Dijkstra 1959 baseline reference implementation with correctness tests and walkthrough notes.
-- [ ] v0.3.0 - Bellman–Ford reference implementation and negative-edge context discussion.
+- [x] v0.2.0 - Dijkstra 1959 baseline reference implementation with correctness tests and walkthrough notes.
+- [ ] v0.3.0 - Bellman-Ford reference implementation and negative-edge context discussion.
 - [ ] v0.4.0 - A* and Thorup reference modules with model-specific notes.
 - [ ] v0.5.0 - Reference implementation following the 2025 sub-`O(m + n log n)` directed-sparse SSSP result.
 - [ ] v0.6.0 - Comparative complexity analysis artifact tying baseline, intermediate, and modern results together.
