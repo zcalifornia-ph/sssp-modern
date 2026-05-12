@@ -22,9 +22,9 @@
   <p align="center">
     <strong>A study of single-source shortest-path algorithms from Dijkstra's 1959 baseline to the 2025 result that broke its sorting barrier on sparse directed graphs, with reference implementations and comparative complexity analysis.</strong>
     <br />
-    Version: v0.2.1
+    Version: v0.2.2
     <br />
-    Status: Dijkstra baseline implemented; Bellman-Ford work scoped in a public issue artifact
+    Status: Dijkstra baseline implemented; Bellman-Ford and Thorup work scoped in public issue artifacts
     <br />
     <a href="https://github.com/zcalifornia-ph/sssp-modern"><strong>Explore the docs »</strong></a>
     <br />
@@ -91,7 +91,7 @@ Planned reference implementations and comparative notes include:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Status: Dijkstra baseline implementation plus Bellman-Ford issue scoping (`v0.2.1`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, a binary-heap Dijkstra reference implementation, and a structured Bellman-Ford implementation issue for the next reference algorithm.
+Status: Dijkstra baseline implementation plus reference-algorithm issue scoping (`v0.2.2`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, a binary-heap Dijkstra reference implementation, and structured implementation issues for the Bellman-Ford and Thorup reference algorithms.
 
 ### Prerequisites
 
@@ -169,6 +169,7 @@ The repository keeps governance, supporting assets, and study material in clearl
 - [x] v0.1.3 - Test harness scaffolding and oracle boundaries.
 - [x] v0.2.0 - Dijkstra 1959 baseline reference implementation with correctness tests and walkthrough notes.
 - [x] v0.2.1 - Bellman-Ford implementation issue artifact and GitHub issue publication.
+- [x] v0.2.2 - Thorup implementation issue artifact and GitHub issue publication.
 - [ ] v0.3.0 - Bellman-Ford reference implementation and negative-edge context discussion.
 - [ ] v0.4.0 - A* and Thorup reference modules with model-specific notes.
 - [ ] v0.5.0 - Reference implementation following the 2025 sub-`O(m + n log n)` directed-sparse SSSP result.
