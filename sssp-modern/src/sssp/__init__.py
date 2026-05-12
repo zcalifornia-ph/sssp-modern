@@ -1,5 +1,6 @@
 """Pure-stdlib shortest-path study package for the CMSC 142 portfolio."""
 
+from sssp.dijkstra import dijkstra
 from sssp.graph import Edge, Graph
 from sssp.generators import (
     barabasi_albert_graph,
@@ -16,6 +17,7 @@ __all__ = [
     "Weight",
     "barabasi_albert_graph",
     "dag_graph",
+    "dijkstra",
     "erdos_renyi_graph",
     "random_geometric_graph",
     "signed_edge_graph",

@@ -1,6 +1,21 @@
 # Changelog
 
-Status: foundation implementation (graph primitives, weight checks, IO fixtures, generators, test harness, and tests in place; reference algorithms pending).
+Status: Dijkstra baseline implementation in place; remaining reference algorithms, benchmark tooling, and report/deck content pending.
+
+## v0.2.0
+
+### Added or Changed
+
+- Added a pure-stdlib binary-heap Dijkstra reference implementation under `sssp-modern/src/sssp/dijkstra.py`.
+- Exported `dijkstra` from the package root for easier use by later examples and benchmarks.
+- Added focused Dijkstra tests for golden-fixture correctness, seeded NetworkX oracle agreement, isolated-source behavior, missing-source validation, and negative-edge rejection.
+- Added sample Dijkstra source-distance output under `sssp-modern/examples/dijkstra/`.
+- Updated `README.md` version, status, quick-start commands, repository layout, and roadmap for the Dijkstra baseline.
+- Added `docs/version-0.2.0-docs.md` with a detailed walkthrough of the Dijkstra release.
+
+### For Deletion
+
+- Local validation byproducts generated during test, compile, and coverage runs are intentionally uncommitted and can be cleaned manually when convenient.
 
 ## v0.1.3
 
