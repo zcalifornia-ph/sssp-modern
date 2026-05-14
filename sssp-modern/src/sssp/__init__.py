@@ -1,7 +1,9 @@
 """Pure-stdlib shortest-path study package for the CMSC 142 portfolio."""
 
+from sssp.astar import astar
 from sssp.bellman_ford import bellman_ford, NegativeCycleReport
 from sssp.dijkstra import dijkstra
+from sssp.thorup99 import thorup_sssp
 from sssp.graph import Edge, Graph
 from sssp.generators import (
     barabasi_albert_graph,
@@ -10,6 +12,7 @@ from sssp.generators import (
     random_geometric_graph,
     signed_edge_graph,
 )
+from sssp.heuristics import manhattan, zero
 from sssp.weights import Weight
 
 __all__ = [
@@ -17,11 +20,15 @@ __all__ = [
     "Graph",
     "NegativeCycleReport",
     "Weight",
+    "astar",
     "barabasi_albert_graph",
     "bellman_ford",
     "dag_graph",
     "dijkstra",
     "erdos_renyi_graph",
+    "manhattan",
     "random_geometric_graph",
     "signed_edge_graph",
+    "thorup_sssp",
+    "zero",
 ]

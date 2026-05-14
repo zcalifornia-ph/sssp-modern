@@ -149,22 +149,22 @@ Keep NetworkX and any other third-party shortest-path implementation out of prod
 
 ## Acceptance Criteria
 
-- [ ] `thorup_sssp(graph, source)` exists in `src/sssp/thorup99.py`.
-- [ ] `thorup_sssp(graph, source)` returns a reachable distance map.
-- [ ] The public contract accepts undirected graphs with non-negative integer weights.
-- [ ] Directed graphs are rejected or handled according to documented behavior.
-- [ ] Negative weights are rejected with a clear error.
-- [ ] Non-integer weights are rejected with a clear error.
-- [ ] Missing source vertices raise a clear `ValueError`.
-- [ ] T-08 covers correctness on an integer-weight undirected golden set.
-- [ ] Tests include at least one unreachable vertex case.
-- [ ] Tests include at least one multi-hop path that beats a direct heavier edge.
-- [ ] A test-only oracle or independently checked fixture validates expected distances.
-- [ ] The module docstring cites the Thorup 1999 source and states the Python runtime-model caveat.
-- [ ] The required runtime-model decision note exists or is updated.
-- [ ] The public API meets the >=90% line coverage quality target.
-- [ ] Production source imports remain standard-library or local package imports only.
-- [ ] Existing graph and Dijkstra behavior remains unchanged.
+- [x] `thorup_sssp(graph, source)` exists in `src/sssp/thorup99.py`.
+- [x] `thorup_sssp(graph, source)` returns a reachable distance map.
+- [x] The public contract accepts undirected graphs with non-negative integer weights.
+- [x] Directed graphs are rejected or handled according to documented behavior.
+- [x] Negative weights are rejected with a clear error.
+- [x] Non-integer weights are rejected with a clear error.
+- [x] Missing source vertices raise a clear `ValueError`.
+- [x] T-08 covers correctness on an integer-weight undirected golden set.
+- [x] Tests include at least one unreachable vertex case.
+- [x] Tests include at least one multi-hop path that beats a direct heavier edge.
+- [x] A test-only oracle or independently checked fixture validates expected distances.
+- [x] The module docstring cites the Thorup 1999 source and states the Python runtime-model caveat.
+- [x] The required runtime-model decision note exists or is updated.
+- [x] The public API meets the >=90% line coverage quality target.
+- [x] Production source imports remain standard-library or local package imports only.
+- [x] Existing graph and Dijkstra behavior remains unchanged.
 
 ## Test / Verification Plan
 
@@ -223,19 +223,36 @@ Goal or source brief -> Story IDs -> Work coordinate -> Blocker references -> Ac
 
 Thorup 1999 hierarchical bucket SSSP -> US-01, US-02, US-03, US-05 -> W5 / S5.1 -> no unresolved blocker issue identified -> acceptance criteria in this issue -> T-08 -> DC-01, DC-04 -> OS-01, OS-02, OS-03
 
+## Resolution Evidence
+
+Resolved on 2026-05-14 PHT after fixing the failed scrutiny blockers:
+
+- Fixed `tests/conftest.py` to load the undirected golden fixture through the existing `read_edge_list(path)` contract.
+- Converted `tests/golden/tiny-undirected.edge-list.json` to the `sssp.edge-list.v1` object schema with `"directed": false`.
+- Added upfront full-graph weight validation in `src/sssp/thorup99.py`, including disconnected invalid-weight components.
+- Added tests for negative and non-integer edges in unreachable components.
+- Reworded `docs/decision-thorup-runtime-model.md` so the simplified bucket design is described as a structural analogue, not a Python word-RAM runtime guarantee.
+
+Validation data:
+
+- `$env:PYTHONPATH='src'; python -m pytest tests/test_thorup99.py` -> 11 passed.
+- `$env:PYTHONPATH='src'; python -m pytest tests` -> 70 passed.
+- `python -m compileall src tests` -> completed successfully.
+- `$env:PYTHONPATH='src'; python -m coverage run --source=sssp.thorup99 -m pytest tests/test_thorup99.py; python -m coverage report --include='src/sssp/thorup99.py'` -> 11 passed, `src/sssp/thorup99.py` 99% line coverage.
+
 ## Open Questions
 
-- Blocking, for implementer/reviewer: Which exact hierarchy invariants and simplifications, if any, will be documented before coding starts?
-- Blocking, for implementer/reviewer: Should `thorup_sssp` reject all non-`int` weights, or should integer-valued numeric wrappers be accepted when they compare and add correctly?
-- Non-blocking, for reviewer: Should `thorup_sssp` be exported immediately from `src/sssp/__init__.py`, or should direct module import be accepted until the next public API pass?
+- Resolved: hierarchy invariants and simplifications are documented in `src/sssp/thorup99.py` and `docs/decision-thorup-runtime-model.md`.
+- Resolved: `thorup_sssp` rejects all non-`int` weights and rejects `bool`, including invalid weights in unreachable graph components.
+- Resolved: `thorup_sssp` is exported from `src/sssp/__init__.py`.
 
 ## Definition of Done
 
-- [ ] Code change is scoped to the in-scope list.
-- [ ] All acceptance criteria are observably met.
-- [ ] Tests in the verification plan are added or updated and passing.
-- [ ] Documentation, decision notes, or runbooks are updated when the change requires it.
-- [ ] Reviewer focus areas from the risk section are addressed.
-- [ ] Work-mapping links are populated.
-- [ ] Blocker/dependency status is resolved or explicitly carried forward.
-- [ ] Issue is closed with a brief evidence summary referencing the verifying tests, commands, or screenshots.
+- [x] Code change is scoped to the in-scope list.
+- [x] All acceptance criteria are observably met.
+- [x] Tests in the verification plan are added or updated and passing.
+- [x] Documentation, decision notes, or runbooks are updated when the change requires it.
+- [x] Reviewer focus areas from the risk section are addressed.
+- [x] Work-mapping links are populated.
+- [x] Blocker/dependency status is resolved or explicitly carried forward.
+- [x] Issue is closed with a brief evidence summary referencing the verifying tests, commands, or screenshots.
