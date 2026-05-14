@@ -24,7 +24,7 @@
     <br />
     Version: v0.3.0
     <br />
-    Status: Dijkstra baseline and Thorup reference implementation validated; Bellman-Ford, A*, benchmarks, report, and deck remain pending
+    Status: Dijkstra and A* reference implementations in place; Bellman-Ford and Thorup work scoped in public issue artifacts
     <br />
     <a href="https://github.com/zcalifornia-ph/sssp-modern"><strong>Explore the docs »</strong></a>
     <br />
@@ -76,6 +76,7 @@ This repository targets the directed, non-negative-weight SSSP problem unless a 
 Planned reference implementations and comparative notes include:
 
 - Dijkstra's algorithm (1959 baseline, binary-heap, and Fibonacci-heap variants).
+- A* search with pluggable heuristics, including zero and Manhattan heuristics for goal-directed path demos.
 - Bellman–Ford for context on negative edges and dynamic-programming structure.
 - Thorup-style results for integer-weight undirected SSSP under the word-RAM model, implemented as a documented Python reference with an explicit runtime-model caveat.
 - The 2025 sub-`O(m + n log n)` directed-sparse SSSP result, with implementation following the published structure.
@@ -155,6 +156,7 @@ The repository keeps governance, supporting assets, and study material in clearl
 - `sssp-modern/tests/`: pytest coverage, shared fixtures, golden test inputs, oracle comparisons, and dependency-boundary checks for the current Python implementation.
 - `sssp-modern/examples/graphs/`: small JSON graph fixtures for manual inspection and IO round-trip tests.
 - `sssp-modern/examples/dijkstra/`: sample Dijkstra source-distance output for the tiny directed graph.
+- `sssp-modern/examples/astar/`: small grid fixture for A* and Manhattan-heuristic inspection.
 - Algorithm modules, benchmark tooling, and report/deck content will expand from this foundation in later versions.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
