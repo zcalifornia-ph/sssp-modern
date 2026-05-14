@@ -1,11 +1,24 @@
 # Changelog
 
+Status: Dijkstra baseline and Thorup reference implementation in place; remaining reference algorithms, benchmark tooling, and report/deck content pending.
 Status: Dijkstra and A* reference implementations in place; remaining reference algorithms, benchmark tooling, and report/deck content pending.
 
 ## v0.3.0
 
 ### Added or Changed
 
+- Added `sssp-modern/src/sssp/thorup99.py` as a Thorup-style hierarchical bucket reference implementation for undirected graphs with non-negative integer weights.
+- Exported `thorup_sssp` from the package root for public use alongside the existing graph helpers and Dijkstra baseline.
+- Converted the tiny undirected golden graph fixture to the public edge-list JSON schema and wired it through the existing fixture loader.
+- Added Thorup tests for golden correctness, unreachable vertices, multi-hop paths, missing sources, directed graph rejection, reachable invalid weights, disconnected invalid weights, and optional oracle agreement.
+- Clarified the Thorup runtime-model decision note so the Python implementation is framed as a structural reference, not a claim of word-RAM linear-time performance.
+- Updated the public issue record for GitHub issue #5 with completion evidence and closed the issue after validation.
+- Updated `README.md` version, status, quick-start commands, repository layout, and roadmap for the Thorup implementation release.
+- Added `docs/version-0.3.0-docs.md` with a detailed walkthrough of the Thorup release and validation evidence.
+
+### For Deletion
+
+- Local validation byproducts generated during test, compile, and coverage runs are intentionally uncommitted and can be cleaned manually when convenient.
 - Added a pure-stdlib A* reference implementation under `sssp-modern/src/sssp/astar.py`.
 - Added reusable zero and Manhattan heuristics under `sssp-modern/src/sssp/heuristics.py`.
 - Exported `astar`, `zero`, and `manhattan` from the package root for easier use by examples, tests, and future benchmark code.

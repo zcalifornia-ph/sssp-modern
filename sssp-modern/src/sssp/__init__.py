@@ -2,6 +2,7 @@
 
 from sssp.astar import astar
 from sssp.dijkstra import dijkstra
+from sssp.thorup99 import thorup_sssp
 from sssp.graph import Edge, Graph
 from sssp.generators import (
     barabasi_albert_graph,
@@ -25,5 +26,6 @@ __all__ = [
     "manhattan",
     "random_geometric_graph",
     "signed_edge_graph",
+    "thorup_sssp",
     "zero",
 ]

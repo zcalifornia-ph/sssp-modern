@@ -33,3 +33,18 @@ def tiny_directed_expected_distances(golden_dir: Path) -> dict[str, Any]:
     if not isinstance(data, dict):
         raise TypeError("golden distance fixture root must be an object")
     return data
+
+
+@pytest.fixture
+def tiny_undirected_graph(golden_dir: Path) -> Graph:
+    return read_edge_list(golden_dir / "tiny-undirected.edge-list.json")
+
+
+@pytest.fixture
+def tiny_undirected_expected_distances(golden_dir: Path) -> dict[str, Any]:
+    path = golden_dir / "tiny-undirected.distances-s.json"
+    with path.open("r", encoding="utf-8") as file:
+        data = json.load(file)
+    if not isinstance(data, dict):
+        raise TypeError("golden distance fixture root must be an object")
+    return data

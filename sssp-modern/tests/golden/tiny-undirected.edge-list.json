@@ -1,0 +1,45 @@
+{
+  "format": "sssp.edge-list.v1",
+  "directed": false,
+  "vertices": [
+    "s",
+    "a",
+    "c",
+    "b",
+    "d",
+    "isolated_1",
+    "isolated_2"
+  ],
+  "edges": [
+    {
+      "source": "s",
+      "target": "a",
+      "weight": 10
+    },
+    {
+      "source": "s",
+      "target": "c",
+      "weight": 3
+    },
+    {
+      "source": "c",
+      "target": "b",
+      "weight": 2
+    },
+    {
+      "source": "b",
+      "target": "a",
+      "weight": 2
+    },
+    {
+      "source": "a",
+      "target": "d",
+      "weight": 1
+    },
+    {
+      "source": "isolated_1",
+      "target": "isolated_2",
+      "weight": 1
+    }
+  ]
+}

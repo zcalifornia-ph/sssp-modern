@@ -78,7 +78,7 @@ Planned reference implementations and comparative notes include:
 - Dijkstra's algorithm (1959 baseline, binary-heap, and Fibonacci-heap variants).
 - A* search with pluggable heuristics, including zero and Manhattan heuristics for goal-directed path demos.
 - Bellman–Ford for context on negative edges and dynamic-programming structure.
-- Thorup-style results for integer-weight SSSP under the word-RAM model (reference notes only).
+- Thorup-style results for integer-weight undirected SSSP under the word-RAM model, implemented as a documented Python reference with an explicit runtime-model caveat.
 - The 2025 sub-`O(m + n log n)` directed-sparse SSSP result, with implementation following the published structure.
 
 ### What sssp-modern Is Not
@@ -92,7 +92,7 @@ Planned reference implementations and comparative notes include:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Status: Dijkstra and A* reference implementations plus reference-algorithm issue scoping (`v0.3.0`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, a binary-heap Dijkstra reference implementation, an A* implementation with zero and Manhattan heuristics, and structured implementation issues for the Bellman-Ford and Thorup reference algorithms.
+Status: Dijkstra baseline plus Thorup reference implementation (`v0.3.0`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, a binary-heap Dijkstra reference implementation, a Thorup-style hierarchical bucket reference for undirected integer-weight graphs, and a closed public issue record for the Thorup validation evidence.
 
 ### Prerequisites
 
@@ -117,11 +117,11 @@ Status: Dijkstra and A* reference implementations plus reference-algorithm issue
    python -m pip install pytest networkx coverage
    ```
 
-3. Run the current algorithm and foundation tests.
+3. Run the current implementation test suite.
 
    ```sh
    cd sssp-modern
-   PYTHONPATH=src python -m pytest tests/test_graph.py tests/test_weights.py tests/test_io.py tests/test_generators.py tests/test_harness.py tests/test_no_third_party_imports.py tests/test_dijkstra.py tests/test_astar.py
+   PYTHONPATH=src python -m pytest tests
    ```
 
    PowerShell equivalent:
@@ -129,14 +129,14 @@ Status: Dijkstra and A* reference implementations plus reference-algorithm issue
    ```powershell
    cd sssp-modern
    $env:PYTHONPATH='src'
-   python -m pytest tests/test_graph.py tests/test_weights.py tests/test_io.py tests/test_generators.py tests/test_harness.py tests/test_no_third_party_imports.py tests/test_dijkstra.py tests/test_astar.py
+   python -m pytest tests
    ```
 
-4. Measure algorithm-module coverage when `coverage` is installed.
+4. Measure Thorup coverage when `coverage` is installed.
 
    ```powershell
-   python -m coverage run --include='src/sssp/dijkstra.py,src/sssp/astar.py,src/sssp/heuristics.py' -m pytest tests/test_dijkstra.py tests/test_astar.py
-   python -m coverage report --include='src/sssp/dijkstra.py,src/sssp/astar.py,src/sssp/heuristics.py'
+   python -m coverage run --source=sssp.thorup99 -m pytest tests/test_thorup99.py
+   python -m coverage report --include='src/sssp/thorup99.py'
    ```
 
 5. Review `CHANGELOG.md` for the latest notable changes.
@@ -152,7 +152,7 @@ The repository keeps governance, supporting assets, and study material in clearl
 - `docs/`: per-version detail documents tracking what shipped in each release.
 - `repo/images/`: repository-owned image assets, including the project screenshot.
 - `sssp-modern/docs/issues/`: structured issue artifacts that capture scoped implementation work before coding begins.
-- `sssp-modern/src/sssp/`: pure-stdlib Python graph, weight, IO, generator, Dijkstra, A*, and heuristic reference modules.
+- `sssp-modern/src/sssp/`: pure-stdlib Python graph, weight, IO, generator, Dijkstra, and Thorup reference modules.
 - `sssp-modern/tests/`: pytest coverage, shared fixtures, golden test inputs, oracle comparisons, and dependency-boundary checks for the current Python implementation.
 - `sssp-modern/examples/graphs/`: small JSON graph fixtures for manual inspection and IO round-trip tests.
 - `sssp-modern/examples/dijkstra/`: sample Dijkstra source-distance output for the tiny directed graph.
@@ -172,11 +172,11 @@ The repository keeps governance, supporting assets, and study material in clearl
 - [x] v0.2.0 - Dijkstra 1959 baseline reference implementation with correctness tests and walkthrough notes.
 - [x] v0.2.1 - Bellman-Ford implementation issue artifact and GitHub issue publication.
 - [x] v0.2.2 - Thorup implementation issue artifact and GitHub issue publication.
-- [x] v0.3.0 - A* reference implementation with zero and Manhattan heuristics.
-- [ ] v0.4.0 - Bellman-Ford reference implementation and negative-edge context discussion.
-- [ ] v0.5.0 - Thorup reference module with model-specific notes.
-- [ ] v0.6.0 - Reference implementation following the 2025 sub-`O(m + n log n)` directed-sparse SSSP result.
-- [ ] v0.7.0 - Comparative complexity analysis artifact tying baseline, intermediate, and modern results together.
+- [x] v0.3.0 - Thorup 1999 reference implementation with integer-weight validation, golden tests, and runtime-model caveat.
+- [ ] v0.3.1 - Bellman-Ford reference implementation and negative-edge context discussion.
+- [ ] v0.4.0 - A* reference module with heuristic notes.
+- [ ] v0.5.0 - Reference implementation following the 2025 sub-`O(m + n log n)` directed-sparse SSSP result.
+- [ ] v0.6.0 - Comparative complexity analysis artifact tying baseline, intermediate, and modern results together.
 
 See the [open issues](https://github.com/zcalifornia-ph/sssp-modern/issues) for proposed features and known gaps.
 
