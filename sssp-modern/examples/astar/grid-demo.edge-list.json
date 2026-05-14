@@ -1,0 +1,77 @@
+{
+  "format": "sssp.edge-list.v1",
+  "directed": false,
+  "vertices": [
+    "0,0",
+    "1,0",
+    "2,0",
+    "0,1",
+    "1,1",
+    "2,1",
+    "0,2",
+    "1,2",
+    "2,2"
+  ],
+  "edges": [
+    {
+      "source": "0,0",
+      "target": "1,0",
+      "weight": 1.0
+    },
+    {
+      "source": "1,0",
+      "target": "2,0",
+      "weight": 1.0
+    },
+    {
+      "source": "0,1",
+      "target": "1,1",
+      "weight": 1.0
+    },
+    {
+      "source": "1,1",
+      "target": "2,1",
+      "weight": 1.0
+    },
+    {
+      "source": "0,2",
+      "target": "1,2",
+      "weight": 1.0
+    },
+    {
+      "source": "1,2",
+      "target": "2,2",
+      "weight": 1.0
+    },
+    {
+      "source": "0,0",
+      "target": "0,1",
+      "weight": 1.0
+    },
+    {
+      "source": "0,1",
+      "target": "0,2",
+      "weight": 1.0
+    },
+    {
+      "source": "1,0",
+      "target": "1,1",
+      "weight": 1.0
+    },
+    {
+      "source": "1,1",
+      "target": "1,2",
+      "weight": 1.0
+    },
+    {
+      "source": "2,0",
+      "target": "2,1",
+      "weight": 1.0
+    },
+    {
+      "source": "2,1",
+      "target": "2,2",
+      "weight": 1.0
+    }
+  ]
+}
