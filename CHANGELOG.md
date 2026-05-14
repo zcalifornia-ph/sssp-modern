@@ -1,35 +1,55 @@
 # Changelog
 
-Status: Dijkstra baseline and Thorup reference implementation in place; remaining reference algorithms, benchmark tooling, and report/deck content pending.
-Status: Dijkstra and A* reference implementations in place; remaining reference algorithms, benchmark tooling, and report/deck content pending.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; remaining modern directed-sparse SSSP work, benchmark tooling, and report/deck content pending.
+
+## v0.3.2
+
+### Added or Changed
+
+- Reconciled public release notes and roadmap entries so A* and Thorup are both represented as completed reference implementations rather than pending work.
+- Expanded third-party notices to cover visible documentation adaptations and development-only validation tools.
+- Rewrote `docs/version-0.3.0-docs.md` so the version detail document accurately describes the combined A* and Thorup release.
+- Added `docs/version-0.3.2-docs.md` with a detailed record of the documentation reconciliation.
+
+### For Deletion
+
+- Local validation byproducts generated during test and coverage runs are intentionally uncommitted and can be cleaned manually when convenient.
+
+## v0.3.1
+
+### Added or Changed
+
+- Completed Bellman-Ford release validation with golden shortest-path behavior, curated negative-cycle coverage, import-boundary coverage, Dijkstra regression coverage, and targeted line-coverage evidence.
+- Updated `sssp-modern/src/sssp/bellman_ford.py` so the module docstring cites the source papers, states reachable negative-cycle semantics, and includes the O(mn) relaxation-loop complexity.
+- Updated the public issue record for GitHub issue #4 with completion evidence and closed the issue after validation.
+- Updated `README.md` version, status, quick-start coverage command, repository layout, and roadmap for the Bellman-Ford validation release.
+- Added `docs/version-0.3.1-docs.md` with a detailed walkthrough of the Bellman-Ford release and validation evidence.
+
+### For Deletion
+
+- Local validation byproducts generated during test and coverage runs are intentionally uncommitted and can be cleaned manually when convenient.
 
 ## v0.3.0
 
 ### Added or Changed
 
+- Added a pure-stdlib A* reference implementation under `sssp-modern/src/sssp/astar.py`.
+- Added reusable zero and Manhattan heuristics under `sssp-modern/src/sssp/heuristics.py`.
+- Exported `astar`, `zero`, and `manhattan` from the package root for easier use by examples, tests, and future benchmark code.
+- Added focused A* tests for zero-heuristic equivalence with Dijkstra target distances, Manhattan admissibility on a 4-connected unit-cost grid, path reconstruction, unreachable goals, missing-vertex validation, negative-edge rejection, and package exports.
+- Added a small grid fixture under `sssp-modern/examples/astar/` for manual inspection and future sample documentation.
 - Added `sssp-modern/src/sssp/thorup99.py` as a Thorup-style hierarchical bucket reference implementation for undirected graphs with non-negative integer weights.
 - Exported `thorup_sssp` from the package root for public use alongside the existing graph helpers and Dijkstra baseline.
 - Converted the tiny undirected golden graph fixture to the public edge-list JSON schema and wired it through the existing fixture loader.
 - Added Thorup tests for golden correctness, unreachable vertices, multi-hop paths, missing sources, directed graph rejection, reachable invalid weights, disconnected invalid weights, and optional oracle agreement.
 - Clarified the Thorup runtime-model decision note so the Python implementation is framed as a structural reference, not a claim of word-RAM linear-time performance.
 - Updated the public issue record for GitHub issue #5 with completion evidence and closed the issue after validation.
-- Updated `README.md` version, status, quick-start commands, repository layout, and roadmap for the Thorup implementation release.
-- Added `docs/version-0.3.0-docs.md` with a detailed walkthrough of the Thorup release and validation evidence.
+- Updated `README.md` version, status, quick-start commands, repository layout, and roadmap for the A* and Thorup implementation release.
+- Added `docs/version-0.3.0-docs.md` with a detailed walkthrough of the A* and Thorup release and validation evidence.
 
 ### For Deletion
 
-- Local validation byproducts generated during test, compile, and coverage runs are intentionally uncommitted and can be cleaned manually when convenient.
-- Added a pure-stdlib A* reference implementation under `sssp-modern/src/sssp/astar.py`.
-- Added reusable zero and Manhattan heuristics under `sssp-modern/src/sssp/heuristics.py`.
-- Exported `astar`, `zero`, and `manhattan` from the package root for easier use by examples, tests, and future benchmark code.
-- Added focused A* tests for zero-heuristic equivalence with Dijkstra target distances, Manhattan admissibility on a 4-connected unit-cost grid, path reconstruction, unreachable goals, missing-vertex validation, negative-edge rejection, and package exports.
-- Added a small grid fixture under `sssp-modern/examples/astar/` for manual inspection and future sample documentation.
-- Updated `README.md` version, status, quick-start commands, repository layout, and roadmap for the A* implementation release.
-- Added `docs/version-0.3.0-docs.md` with a detailed walkthrough of the A* release.
-
-### For Deletion
-
-- Local Python cache, coverage, and test-runner outputs generated during validation are intentionally uncommitted and can be cleaned manually when convenient.
+- Local Python cache, coverage, compile, and test-runner outputs generated during validation are intentionally uncommitted and can be cleaned manually when convenient.
 
 ## v0.2.2
 
