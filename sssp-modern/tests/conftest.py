@@ -37,7 +37,7 @@ def tiny_directed_expected_distances(golden_dir: Path) -> dict[str, Any]:
 
 @pytest.fixture
 def tiny_undirected_graph(golden_dir: Path) -> Graph:
-    return read_edge_list(golden_dir / "tiny-undirected.edge-list.json", directed=False)
+    return read_edge_list(golden_dir / "tiny-undirected.edge-list.json")
 
 
 @pytest.fixture

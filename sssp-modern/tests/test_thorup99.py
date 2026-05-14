@@ -76,8 +76,22 @@ def test_thorup_rejects_negative_edges() -> None:
         thorup_sssp(graph, "s")
 
 
+def test_thorup_rejects_negative_edges_in_unreachable_components() -> None:
+    graph = Graph.from_edges([("s", "a", 1), ("x", "y", -2)], directed=False)
+
+    with pytest.raises(ValueError, match="non-negative"):
+        thorup_sssp(graph, "s")
+
+
 def test_thorup_rejects_non_integer_edges() -> None:
     graph = Graph.from_edges([("s", "a", 1.5)], directed=False)
+
+    with pytest.raises(ValueError, match="integer"):
+        thorup_sssp(graph, "s")
+
+
+def test_thorup_rejects_non_integer_edges_in_unreachable_components() -> None:
+    graph = Graph.from_edges([("s", "a", 1), ("x", "y", 1.5)], directed=False)
 
     with pytest.raises(ValueError, match="integer"):
         thorup_sssp(graph, "s")

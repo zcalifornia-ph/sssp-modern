@@ -26,7 +26,6 @@ buckets are scanned.
 
 from __future__ import annotations
 
-import math
 from typing import Any
 
 from sssp.graph import Graph, Vertex
@@ -61,10 +60,9 @@ def thorup_sssp(graph: Graph, source: Vertex) -> Distances:
     if source not in set(graph.vertices()):
         raise ValueError("source must be a vertex in graph")
 
-    # Validate weights upfront for immediate failure, though typically checked during traversal.
-    # To avoid O(E) upfront scan, we'll check during relaxation, but to be safe for isolated tests,
-    # let's do a quick type check if there are any edges.
-    
+    for edge in graph.edges():
+        _require_non_negative_integer_weight(edge.weight)
+
     # We maintain distances and a radix heap of tentative distances
     distances: Distances = {source: 0}
     settled: set[Vertex] = set()
@@ -138,11 +136,6 @@ def thorup_sssp(graph: Graph, source: Vertex) -> Distances:
             
             for edge in graph.neighbors(u):
                 w = edge.weight
-                if not isinstance(w, int) or isinstance(w, bool):
-                    raise ValueError("thorup_sssp requires integer edge weights")
-                if w < 0:
-                    raise ValueError("thorup_sssp requires non-negative edge weights")
-                    
                 v = edge.target
                 if v in settled:
                     continue
@@ -165,3 +158,10 @@ def thorup_sssp(graph: Graph, source: Vertex) -> Distances:
     # Clean up distances to only return reachable vertices
     # Our algorithm actually sets distances exactly for reachable vertices
     return distances
+
+
+def _require_non_negative_integer_weight(weight: object) -> None:
+    if not isinstance(weight, int) or isinstance(weight, bool):
+        raise ValueError("thorup_sssp requires integer edge weights")
+    if weight < 0:
+        raise ValueError("thorup_sssp requires non-negative edge weights")
