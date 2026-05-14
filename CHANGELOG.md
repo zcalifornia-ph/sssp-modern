@@ -1,6 +1,20 @@
 # Changelog
 
-Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; remaining modern directed-sparse SSSP work, benchmark tooling, and report/deck content pending.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; modern directed-sparse SSSP support in progress; benchmark tooling and report/deck content pending.
+
+## v0.3.3
+
+### Added or Changed
+
+- Added `sssp-modern/src/sssp/dmmsy/` as the package area for the 2025 directed-sparse SSSP implementation work.
+- Added a constant-degree graph transformation that replaces high-degree vertices with deterministic zero-weight port cycles and preserves original shortest-path distances after projection.
+- Added focused tests for distance preservation, transformed in-degree/out-degree bounds, isolated vertices, and import-boundary compliance.
+- Updated `README.md` version, status, quick-start coverage command, repository layout, and roadmap for the new graph-transformation support.
+- Added `docs/version-0.3.3-docs.md` with a detailed walkthrough of the new transformation support and validation evidence.
+
+### For Deletion
+
+- Local validation byproducts generated during test, compile, and coverage runs are intentionally uncommitted and can be cleaned manually when convenient.
 
 ## v0.3.2
 
