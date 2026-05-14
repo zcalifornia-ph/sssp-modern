@@ -2,6 +2,7 @@
 
 Bellman 1958 and Ford 1956. This algorithm computes shortest paths from a single
 source vertex to all reachable vertices, and detects reachable negative cycles.
+The relaxation loop runs in O(mn) time for m edges and n vertices.
 """
 
 from __future__ import annotations

@@ -1,7 +1,20 @@
 # Changelog
 
-Status: Dijkstra baseline and Thorup reference implementation in place; remaining reference algorithms, benchmark tooling, and report/deck content pending.
-Status: Dijkstra and A* reference implementations in place; remaining reference algorithms, benchmark tooling, and report/deck content pending.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; remaining modern directed-sparse SSSP work, benchmark tooling, and report/deck content pending.
+
+## v0.3.1
+
+### Added or Changed
+
+- Completed Bellman-Ford release validation with golden shortest-path behavior, curated negative-cycle coverage, import-boundary coverage, Dijkstra regression coverage, and targeted line-coverage evidence.
+- Updated `sssp-modern/src/sssp/bellman_ford.py` so the module docstring cites the source papers, states reachable negative-cycle semantics, and includes the O(mn) relaxation-loop complexity.
+- Updated the public issue record for GitHub issue #4 with completion evidence and closed the issue after validation.
+- Updated `README.md` version, status, quick-start coverage command, repository layout, and roadmap for the Bellman-Ford validation release.
+- Added `docs/version-0.3.1-docs.md` with a detailed walkthrough of the Bellman-Ford release and validation evidence.
+
+### For Deletion
+
+- Local validation byproducts generated during test and coverage runs are intentionally uncommitted and can be cleaned manually when convenient.
 
 ## v0.3.0
 

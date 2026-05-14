@@ -22,9 +22,9 @@
   <p align="center">
     <strong>A study of single-source shortest-path algorithms from Dijkstra's 1959 baseline to the 2025 result that broke its sorting barrier on sparse directed graphs, with reference implementations and comparative complexity analysis.</strong>
     <br />
-    Version: v0.3.0
+    Version: v0.3.1
     <br />
-    Status: Dijkstra and A* reference implementations in place; Bellman-Ford and Thorup work scoped in public issue artifacts
+    Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; modern directed-sparse SSSP work pending
     <br />
     <a href="https://github.com/zcalifornia-ph/sssp-modern"><strong>Explore the docs »</strong></a>
     <br />
@@ -92,7 +92,7 @@ Planned reference implementations and comparative notes include:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Status: Dijkstra baseline plus Thorup reference implementation (`v0.3.0`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, a binary-heap Dijkstra reference implementation, a Thorup-style hierarchical bucket reference for undirected integer-weight graphs, and a closed public issue record for the Thorup validation evidence.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations (`v0.3.1`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, a binary-heap Dijkstra baseline, a Bellman-Ford implementation with negative-cycle reporting, an A* implementation with reusable heuristics, and a Thorup-style hierarchical bucket reference for undirected integer-weight graphs.
 
 ### Prerequisites
 
@@ -132,15 +132,22 @@ Status: Dijkstra baseline plus Thorup reference implementation (`v0.3.0`). The r
    python -m pytest tests
    ```
 
-4. Measure Thorup coverage when `coverage` is installed.
+4. Measure focused algorithm coverage when `coverage` is installed.
+
+   ```powershell
+   python -m coverage run --include='src/sssp/bellman_ford.py' -m pytest tests/test_bellman_ford.py
+   python -m coverage report -m src/sssp/bellman_ford.py
+   ```
+
+5. Measure Thorup coverage when needed.
 
    ```powershell
    python -m coverage run --source=sssp.thorup99 -m pytest tests/test_thorup99.py
    python -m coverage report --include='src/sssp/thorup99.py'
    ```
 
-5. Review `CHANGELOG.md` for the latest notable changes.
-6. Check `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` before opening issues or pull requests.
+6. Review `CHANGELOG.md` for the latest notable changes.
+7. Check `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` before opening issues or pull requests.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -152,7 +159,7 @@ The repository keeps governance, supporting assets, and study material in clearl
 - `docs/`: per-version detail documents tracking what shipped in each release.
 - `repo/images/`: repository-owned image assets, including the project screenshot.
 - `sssp-modern/docs/issues/`: structured issue artifacts that capture scoped implementation work before coding begins.
-- `sssp-modern/src/sssp/`: pure-stdlib Python graph, weight, IO, generator, Dijkstra, and Thorup reference modules.
+- `sssp-modern/src/sssp/`: pure-stdlib Python graph, weight, IO, generator, Dijkstra, Bellman-Ford, A*, and Thorup reference modules.
 - `sssp-modern/tests/`: pytest coverage, shared fixtures, golden test inputs, oracle comparisons, and dependency-boundary checks for the current Python implementation.
 - `sssp-modern/examples/graphs/`: small JSON graph fixtures for manual inspection and IO round-trip tests.
 - `sssp-modern/examples/dijkstra/`: sample Dijkstra source-distance output for the tiny directed graph.
@@ -173,7 +180,7 @@ The repository keeps governance, supporting assets, and study material in clearl
 - [x] v0.2.1 - Bellman-Ford implementation issue artifact and GitHub issue publication.
 - [x] v0.2.2 - Thorup implementation issue artifact and GitHub issue publication.
 - [x] v0.3.0 - Thorup 1999 reference implementation with integer-weight validation, golden tests, and runtime-model caveat.
-- [ ] v0.3.1 - Bellman-Ford reference implementation and negative-edge context discussion.
+- [x] v0.3.1 - Bellman-Ford reference implementation with negative-cycle reporting and validation evidence.
 - [ ] v0.4.0 - A* reference module with heuristic notes.
 - [ ] v0.5.0 - Reference implementation following the 2025 sub-`O(m + n log n)` directed-sparse SSSP result.
 - [ ] v0.6.0 - Comparative complexity analysis artifact tying baseline, intermediate, and modern results together.
