@@ -1,5 +1,6 @@
 """Pure-stdlib shortest-path study package for the CMSC 142 portfolio."""
 
+from sssp.bellman_ford import bellman_ford, NegativeCycleReport
 from sssp.dijkstra import dijkstra
 from sssp.graph import Edge, Graph
 from sssp.generators import (
@@ -14,8 +15,10 @@ from sssp.weights import Weight
 __all__ = [
     "Edge",
     "Graph",
+    "NegativeCycleReport",
     "Weight",
     "barabasi_albert_graph",
+    "bellman_ford",
     "dag_graph",
     "dijkstra",
     "erdos_renyi_graph",
