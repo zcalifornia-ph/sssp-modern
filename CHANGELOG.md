@@ -1,6 +1,22 @@
 # Changelog
 
-Status: Dijkstra baseline implementation in place; remaining reference algorithms, benchmark tooling, and report/deck content pending.
+Status: Dijkstra and A* reference implementations in place; remaining reference algorithms, benchmark tooling, and report/deck content pending.
+
+## v0.3.0
+
+### Added or Changed
+
+- Added a pure-stdlib A* reference implementation under `sssp-modern/src/sssp/astar.py`.
+- Added reusable zero and Manhattan heuristics under `sssp-modern/src/sssp/heuristics.py`.
+- Exported `astar`, `zero`, and `manhattan` from the package root for easier use by examples, tests, and future benchmark code.
+- Added focused A* tests for zero-heuristic equivalence with Dijkstra target distances, Manhattan admissibility on a 4-connected unit-cost grid, path reconstruction, unreachable goals, missing-vertex validation, negative-edge rejection, and package exports.
+- Added a small grid fixture under `sssp-modern/examples/astar/` for manual inspection and future sample documentation.
+- Updated `README.md` version, status, quick-start commands, repository layout, and roadmap for the A* implementation release.
+- Added `docs/version-0.3.0-docs.md` with a detailed walkthrough of the A* release.
+
+### For Deletion
+
+- Local Python cache, coverage, and test-runner outputs generated during validation are intentionally uncommitted and can be cleaned manually when convenient.
 
 ## v0.2.2
 
