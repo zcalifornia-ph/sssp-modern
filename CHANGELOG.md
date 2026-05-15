@@ -1,6 +1,78 @@
 # Changelog
 
-Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; remaining modern directed-sparse SSSP work, benchmark tooling, and report/deck content pending.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation now provides a top-level public driver; benchmark tooling and report/deck content pending.
+
+## v0.4.0
+
+### Added or Changed
+
+- Added the top-level public driver `dmmsy_sssp(graph, source)` in `sssp-modern/src/sssp/dmmsy/__init__.py`, wiring the recursive bounded multi-source shortest-path routine with paper-faithful parameters derived from graph order and an internal positive-infinity sentinel that preserves the strict comparison-addition behavior of the `Weight` wrapper.
+- Added pure parameter helpers `dmmsy_parameters(n)` and `dmmsy_top_level(n, t)` that expose the `k`, `t`, and top-level recursion-depth choices used by the driver for tests, the benchmark harness, and the eventual report.
+- Exported `dmmsy_sssp`, `dmmsy_parameters`, `dmmsy_top_level`, and `Distances` from the `sssp.dmmsy` package, while keeping the constant-degree transform, block-list, bounded pivot-selection, and recursive bounded shortest-path names available.
+- Added `sssp-modern/src/sssp/dmmsy/README.md` summarizing the public API surface and pointing readers at validation entry points.
+- Added focused tests for end-to-end agreement with the Dijkstra baseline on path and branching graphs, isolated-source behavior, single-vertex graphs, strict `Weight` compatibility, parameter-formula spot checks, top-level recursion-depth clamping, input validation, parameter overrides, oracle agreement on seeded real-weighted and integer-weighted random graphs, and a performance sanity check at one thousand vertices that asserts oracle agreement and a generous absolute wall-clock budget.
+- Updated `README.md` version, status sentence, repository layout, quick-start coverage commands, and roadmap for the new top-level driver release.
+- Added `docs/version-0.4.0-docs.md` with a detailed walkthrough of the driver, parameter helpers, validation evidence, and remaining benchmark-harness work.
+
+### For Deletion
+
+- Local validation byproducts generated during test, compile, and coverage runs are intentionally uncommitted and can be cleaned manually when convenient.
+
+## v0.3.6
+
+### Added or Changed
+
+- Added `sssp-modern/src/sssp/dmmsy/bmssp.py` with a recursive bounded multi-source shortest-path routine and its singleton-source base case for the modern directed-sparse SSSP implementation.
+- Exported `bmssp`, `BMSSP`, `base_case`, `BaseCase`, and `BMSSPResult` from the `sssp.dmmsy` package for later top-level driver integration.
+- Added focused tests for base-case success and partial-boundary behavior, single-level agreement with the Dijkstra baseline below the active bound, multi-level recursion, strict `Weight` compatibility, input validation, and the paper-named wrappers.
+- Updated `README.md` version, status sentence, quick-start coverage command, repository layout, and roadmap for the new recursive bounded shortest-path support.
+- Added `docs/version-0.3.6-docs.md` with a detailed walkthrough of the recursive bounded shortest-path routine and validation evidence.
+
+### For Deletion
+
+- Local validation byproducts generated during test, compile, and coverage runs are intentionally uncommitted and can be cleaned manually when convenient.
+
+## v0.3.5
+
+### Added or Changed
+
+- Added `sssp-modern/src/sssp/dmmsy/find_pivots.py` with bounded pivot selection for the modern directed-sparse SSSP implementation.
+- Exported `find_pivots`, `FindPivots`, and `FindPivotsResult` from the `sssp.dmmsy` package for later recursive shortest-path integration.
+- Added focused tests for bounded relaxation layers, early source-pivot return, pivot promotion, bound handling, existing shorter labels, strict `Weight` compatibility, input validation, and the paper-named wrapper.
+- Updated `README.md` version, quick-start coverage command, repository layout, and roadmap for the new pivot-selection support.
+- Added `docs/version-0.3.5-docs.md` with a detailed walkthrough of the pivot-selection helper and validation evidence.
+
+### For Deletion
+
+- Local validation byproducts generated during test, compile, and coverage runs are intentionally uncommitted and can be cleaned manually when convenient.
+
+## v0.3.4
+
+### Added or Changed
+
+- Added `sssp-modern/src/sssp/dmmsy/blocklist.py` with the block-list frontier partitioning data structure used by the modern directed-sparse SSSP implementation.
+- Exported `BlockList`, `BlockListSnapshot`, and `PullResult` from the `sssp.dmmsy` package for later shortest-path integration.
+- Added focused tests for duplicate-key handling, batch-prepend ordering rules, pull bounds, deterministic fuzz behavior against a sorted reference map, block-size invariants, and compatibility with the strict `Weight` wrapper.
+- Updated `README.md` version, quick-start coverage command, repository layout, and roadmap for the new block-list support.
+- Added `docs/version-0.3.4-docs.md` with a detailed walkthrough of the data structure and validation evidence.
+
+### For Deletion
+
+- Local validation byproducts generated during test, compile, and coverage runs are intentionally uncommitted and can be cleaned manually when convenient.
+
+## v0.3.3
+
+### Added or Changed
+
+- Added `sssp-modern/src/sssp/dmmsy/` as the package area for the 2025 directed-sparse SSSP implementation work.
+- Added a constant-degree graph transformation that replaces high-degree vertices with deterministic zero-weight port cycles and preserves original shortest-path distances after projection.
+- Added focused tests for distance preservation, transformed in-degree/out-degree bounds, isolated vertices, and import-boundary compliance.
+- Updated `README.md` version, status, quick-start coverage command, repository layout, and roadmap for the new graph-transformation support.
+- Added `docs/version-0.3.3-docs.md` with a detailed walkthrough of the new transformation support and validation evidence.
+
+### For Deletion
+
+- Local validation byproducts generated during test, compile, and coverage runs are intentionally uncommitted and can be cleaned manually when convenient.
 
 ## v0.3.2
 
