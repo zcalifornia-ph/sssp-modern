@@ -22,7 +22,7 @@
   <p align="center">
     <strong>A study of single-source shortest-path algorithms from Dijkstra's 1959 baseline to the 2025 result that broke its sorting barrier on sparse directed graphs, with reference implementations and comparative complexity analysis.</strong>
     <br />
-    Version: v0.3.3
+    Version: v0.3.4
     <br />
     Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; modern directed-sparse SSSP support in progress
     <br />
@@ -92,7 +92,7 @@ Implemented and planned reference implementations and comparative notes include:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations (`v0.3.3`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, a binary-heap Dijkstra baseline, a Bellman-Ford implementation with negative-cycle reporting, an A* implementation with reusable heuristics, a Thorup-style hierarchical bucket reference for undirected integer-weight graphs, and the first graph-transformation support for the modern directed-sparse SSSP implementation.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations (`v0.3.4`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, a binary-heap Dijkstra baseline, a Bellman-Ford implementation with negative-cycle reporting, an A* implementation with reusable heuristics, a Thorup-style hierarchical bucket reference for undirected integer-weight graphs, and early support modules for the modern directed-sparse SSSP implementation.
 
 ### Prerequisites
 
@@ -153,8 +153,15 @@ Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations (`v0.3.
    python -m coverage report --include='src/sssp/dmmsy/transform.py'
    ```
 
-7. Review `CHANGELOG.md` for the latest notable changes.
-8. Check `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` before opening issues or pull requests.
+7. Measure the modern directed-sparse block-list coverage when needed.
+
+   ```powershell
+   python -m coverage run --include='src/sssp/dmmsy/blocklist.py' -m pytest tests/test_dmmsy_blocklist.py
+   python -m coverage report --include='src/sssp/dmmsy/blocklist.py'
+   ```
+
+8. Review `CHANGELOG.md` for the latest notable changes.
+9. Check `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` before opening issues or pull requests.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -167,7 +174,7 @@ The repository keeps governance, supporting assets, and study material in clearl
 - `repo/images/`: repository-owned image assets, including the project screenshot.
 - `sssp-modern/docs/issues/`: structured issue artifacts that capture scoped implementation work before coding begins.
 - `sssp-modern/src/sssp/`: pure-stdlib Python graph, weight, IO, generator, Dijkstra, Bellman-Ford, A*, Thorup, and modern directed-sparse SSSP support modules.
-- `sssp-modern/src/sssp/dmmsy/`: support code for the 2025 directed-sparse SSSP implementation, currently including the constant-degree graph transformation.
+- `sssp-modern/src/sssp/dmmsy/`: support code for the 2025 directed-sparse SSSP implementation, currently including the constant-degree graph transformation and the block-list frontier partitioning data structure.
 - `sssp-modern/tests/`: pytest coverage, shared fixtures, golden test inputs, oracle comparisons, and dependency-boundary checks for the current Python implementation.
 - `sssp-modern/examples/graphs/`: small JSON graph fixtures for manual inspection and IO round-trip tests.
 - `sssp-modern/examples/dijkstra/`: sample Dijkstra source-distance output for the tiny directed graph.
@@ -191,7 +198,8 @@ The repository keeps governance, supporting assets, and study material in clearl
 - [x] v0.3.1 - Bellman-Ford reference implementation with negative-cycle reporting and validation evidence.
 - [x] v0.3.2 - Public documentation reconciliation for A*/Thorup release notes, roadmap status, and third-party notices.
 - [x] v0.3.3 - Constant-degree graph transformation support for the modern directed-sparse SSSP implementation.
-- [ ] v0.4.0 - Reference implementation following the 2025 sub-`O(m + n log n)` directed-sparse SSSP result.
+- [x] v0.3.4 - Block-list frontier partitioning support for the modern directed-sparse SSSP implementation.
+- [ ] v0.4.0 - Pivot selection and recursive shortest-path support following the 2025 sub-`O(m + n log n)` directed-sparse SSSP result.
 - [ ] v0.5.0 - Benchmark harness and comparative complexity analysis artifact tying baseline, intermediate, and modern results together.
 - [ ] v0.6.0 - Report and presentation completion with reproducible submission packaging.
 

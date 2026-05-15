@@ -2,6 +2,20 @@
 
 Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; modern directed-sparse SSSP support in progress; benchmark tooling and report/deck content pending.
 
+## v0.3.4
+
+### Added or Changed
+
+- Added `sssp-modern/src/sssp/dmmsy/blocklist.py` with the block-list frontier partitioning data structure used by the modern directed-sparse SSSP implementation.
+- Exported `BlockList`, `BlockListSnapshot`, and `PullResult` from the `sssp.dmmsy` package for later shortest-path integration.
+- Added focused tests for duplicate-key handling, batch-prepend ordering rules, pull bounds, deterministic fuzz behavior against a sorted reference map, block-size invariants, and compatibility with the strict `Weight` wrapper.
+- Updated `README.md` version, quick-start coverage command, repository layout, and roadmap for the new block-list support.
+- Added `docs/version-0.3.4-docs.md` with a detailed walkthrough of the data structure and validation evidence.
+
+### For Deletion
+
+- Local validation byproducts generated during test, compile, and coverage runs are intentionally uncommitted and can be cleaned manually when convenient.
+
 ## v0.3.3
 
 ### Added or Changed
