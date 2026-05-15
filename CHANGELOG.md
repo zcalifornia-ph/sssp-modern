@@ -1,6 +1,20 @@
 # Changelog
 
-Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation now provides a top-level public driver; benchmark tooling and report/deck content pending.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation now provides a top-level public driver; reusable benchmark timing support is available; benchmark datasets, CSV/chart output, and report/deck content pending.
+
+## v0.4.1
+
+### Added or Changed
+
+- Added `sssp-modern/src/bench/runner.py` with a reusable benchmark timing harness built around immutable configuration, workload, algorithm, and result records.
+- Added `sssp-modern/src/bench/__init__.py` to expose `BenchmarkConfig`, `BenchmarkCase`, `AlgorithmSpec`, `BenchmarkResult`, and `run_benchmark` from the benchmark package.
+- Added focused tests in `sssp-modern/tests/test_bench_runner.py` for fixed-seed reproducibility under an injected clock, warmup exclusion, setup outside the timed interval, median/IQR reporting, and protocol input validation.
+- Updated `README.md` version, status sentence, quick-start validation commands, repository layout, and roadmap for the benchmark timing harness release.
+- Added `docs/version-0.4.1-docs.md` with a detailed walkthrough of the harness API, timing methodology, validation evidence, and remaining benchmark-output work.
+
+### For Deletion
+
+- Local validation byproducts generated during test and compile runs are intentionally uncommitted and can be cleaned manually when convenient.
 
 ## v0.4.0
 
