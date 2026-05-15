@@ -1,6 +1,22 @@
 # Changelog
 
-Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; modern directed-sparse SSSP support in progress; benchmark tooling and report/deck content pending.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation now provides a top-level public driver; benchmark tooling and report/deck content pending.
+
+## v0.4.0
+
+### Added or Changed
+
+- Added the top-level public driver `dmmsy_sssp(graph, source)` in `sssp-modern/src/sssp/dmmsy/__init__.py`, wiring the recursive bounded multi-source shortest-path routine with paper-faithful parameters derived from graph order and an internal positive-infinity sentinel that preserves the strict comparison-addition behavior of the `Weight` wrapper.
+- Added pure parameter helpers `dmmsy_parameters(n)` and `dmmsy_top_level(n, t)` that expose the `k`, `t`, and top-level recursion-depth choices used by the driver for tests, the benchmark harness, and the eventual report.
+- Exported `dmmsy_sssp`, `dmmsy_parameters`, `dmmsy_top_level`, and `Distances` from the `sssp.dmmsy` package, while keeping the constant-degree transform, block-list, bounded pivot-selection, and recursive bounded shortest-path names available.
+- Added `sssp-modern/src/sssp/dmmsy/README.md` summarizing the public API surface and pointing readers at validation entry points.
+- Added focused tests for end-to-end agreement with the Dijkstra baseline on path and branching graphs, isolated-source behavior, single-vertex graphs, strict `Weight` compatibility, parameter-formula spot checks, top-level recursion-depth clamping, input validation, parameter overrides, oracle agreement on seeded real-weighted and integer-weighted random graphs, and a performance sanity check at one thousand vertices that asserts oracle agreement and a generous absolute wall-clock budget.
+- Updated `README.md` version, status sentence, repository layout, quick-start coverage commands, and roadmap for the new top-level driver release.
+- Added `docs/version-0.4.0-docs.md` with a detailed walkthrough of the driver, parameter helpers, validation evidence, and remaining benchmark-harness work.
+
+### For Deletion
+
+- Local validation byproducts generated during test, compile, and coverage runs are intentionally uncommitted and can be cleaned manually when convenient.
 
 ## v0.3.6
 
