@@ -2,6 +2,20 @@
 
 Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; modern directed-sparse SSSP support in progress; benchmark tooling and report/deck content pending.
 
+## v0.3.6
+
+### Added or Changed
+
+- Added `sssp-modern/src/sssp/dmmsy/bmssp.py` with a recursive bounded multi-source shortest-path routine and its singleton-source base case for the modern directed-sparse SSSP implementation.
+- Exported `bmssp`, `BMSSP`, `base_case`, `BaseCase`, and `BMSSPResult` from the `sssp.dmmsy` package for later top-level driver integration.
+- Added focused tests for base-case success and partial-boundary behavior, single-level agreement with the Dijkstra baseline below the active bound, multi-level recursion, strict `Weight` compatibility, input validation, and the paper-named wrappers.
+- Updated `README.md` version, status sentence, quick-start coverage command, repository layout, and roadmap for the new recursive bounded shortest-path support.
+- Added `docs/version-0.3.6-docs.md` with a detailed walkthrough of the recursive bounded shortest-path routine and validation evidence.
+
+### For Deletion
+
+- Local validation byproducts generated during test, compile, and coverage runs are intentionally uncommitted and can be cleaned manually when convenient.
+
 ## v0.3.5
 
 ### Added or Changed
