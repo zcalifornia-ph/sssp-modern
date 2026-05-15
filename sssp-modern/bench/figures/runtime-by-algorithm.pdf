@@ -1,0 +1,93 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 792 612] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Length 3077 >>
+stream
+1 1 1 rg 0 0 792 612 re f
+BT /F1 16 Tf 48.00 574.00 Td (Runtime by Algorithm and Graph Class) Tj ET
+BT /F1 9 Tf 48.00 554.00 Td (Bar height = median runtime across selected size/density rows.) Tj ET
+0.97 0.97 0.97 rg 54.00 84.00 342.00 446.00 re f
+BT /F1 10 Tf 54.00 542.00 Td (geometric) Tj ET
+0.85 0.85 0.85 RG 0.4 w 54.00 84.00 m 396.00 84.00 l S
+0.85 0.85 0.85 RG 0.4 w 54.00 195.50 m 396.00 195.50 l S
+0.85 0.85 0.85 RG 0.4 w 54.00 307.00 m 396.00 307.00 l S
+0.85 0.85 0.85 RG 0.4 w 54.00 418.50 m 396.00 418.50 l S
+0.85 0.85 0.85 RG 0.4 w 54.00 530.00 m 396.00 530.00 l S
+0.2 0.2 0.2 RG 0.8 w 54.00 84.00 m 54.00 530.00 l S
+0.2 0.2 0.2 RG 0.8 w 54.00 84.00 m 396.00 84.00 l S
+0.122 0.467 0.706 rg 70.42 84.00 35.57 105.48 re f
+BT /F1 6 Tf 70.42 71.00 Td (Dij) Tj ET
+BT /F1 6 Tf 70.42 193.48 Td (0.0009591s) Tj ET
+1.000 0.498 0.055 rg 138.82 84.00 35.57 386.77 re f
+BT /F1 6 Tf 138.82 71.00 Td (BF) Tj ET
+BT /F1 6 Tf 138.82 474.77 Td (0.003517s) Tj ET
+0.173 0.627 0.173 rg 207.22 84.00 35.57 23.24 re f
+BT /F1 6 Tf 207.22 71.00 Td (A*) Tj ET
+BT /F1 6 Tf 207.22 111.24 Td (0.0002113s) Tj ET
+0.839 0.153 0.157 rg 275.62 84.00 35.57 170.71 re f
+BT /F1 6 Tf 275.62 71.00 Td (Thorup) Tj ET
+BT /F1 6 Tf 275.62 258.71 Td (0.001552s) Tj ET
+0.580 0.404 0.741 rg 344.02 84.00 35.57 436.00 re f
+BT /F1 6 Tf 344.02 71.00 Td (DMMSY) Tj ET
+BT /F1 6 Tf 344.02 524.00 Td (0.003964s) Tj ET
+0.97 0.97 0.97 rg 420.00 84.00 342.00 446.00 re f
+BT /F1 10 Tf 420.00 542.00 Td (barabasi-albert) Tj ET
+0.85 0.85 0.85 RG 0.4 w 420.00 84.00 m 762.00 84.00 l S
+0.85 0.85 0.85 RG 0.4 w 420.00 195.50 m 762.00 195.50 l S
+0.85 0.85 0.85 RG 0.4 w 420.00 307.00 m 762.00 307.00 l S
+0.85 0.85 0.85 RG 0.4 w 420.00 418.50 m 762.00 418.50 l S
+0.85 0.85 0.85 RG 0.4 w 420.00 530.00 m 762.00 530.00 l S
+0.2 0.2 0.2 RG 0.8 w 420.00 84.00 m 420.00 530.00 l S
+0.2 0.2 0.2 RG 0.8 w 420.00 84.00 m 762.00 84.00 l S
+0.122 0.467 0.706 rg 436.42 84.00 35.57 81.30 re f
+BT /F1 6 Tf 436.42 71.00 Td (Dij) Tj ET
+BT /F1 6 Tf 436.42 169.30 Td (0.0007392s) Tj ET
+1.000 0.498 0.055 rg 504.82 84.00 35.57 253.93 re f
+BT /F1 6 Tf 504.82 71.00 Td (BF) Tj ET
+BT /F1 6 Tf 504.82 341.93 Td (0.002309s) Tj ET
+0.173 0.627 0.173 rg 573.22 84.00 35.57 46.85 re f
+BT /F1 6 Tf 573.22 71.00 Td (A*) Tj ET
+BT /F1 6 Tf 573.22 134.85 Td (0.0004259s) Tj ET
+0.839 0.153 0.157 rg 641.62 84.00 35.57 151.34 re f
+BT /F1 6 Tf 641.62 71.00 Td (Thorup) Tj ET
+BT /F1 6 Tf 641.62 239.34 Td (0.001376s) Tj ET
+0.580 0.404 0.741 rg 710.02 84.00 35.57 352.34 re f
+BT /F1 6 Tf 710.02 71.00 Td (DMMSY) Tj ET
+BT /F1 6 Tf 710.02 440.34 Td (0.003204s) Tj ET
+0.122 0.467 0.706 rg 54.00 36.00 9 9 re f
+BT /F1 8 Tf 67.00 37.00 Td (dijkstra) Tj ET
+1.000 0.498 0.055 rg 176.00 36.00 9 9 re f
+BT /F1 8 Tf 189.00 37.00 Td (bellman-ford) Tj ET
+0.173 0.627 0.173 rg 298.00 36.00 9 9 re f
+BT /F1 8 Tf 311.00 37.00 Td (astar) Tj ET
+0.839 0.153 0.157 rg 420.00 36.00 9 9 re f
+BT /F1 8 Tf 433.00 37.00 Td (thorup99) Tj ET
+0.580 0.404 0.741 rg 542.00 36.00 9 9 re f
+BT /F1 8 Tf 555.00 37.00 Td (dmmsy) Tj ET
+BT /F1 8 Tf 54.00 18.00 Td (Global y max: 0.0039644 seconds) Tj ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000000311 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+3440
+%%EOF

@@ -1,6 +1,53 @@
 # Changelog
 
-Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation now provides a top-level public driver; benchmark tooling and report/deck content pending.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation now provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; comparative complexity analysis report and presentation content pending.
+
+## v0.4.3
+
+### Added or Changed
+
+- Added `sssp-modern/src/bench/plots.py` with a benchmark result CSV writer/reader, a regression check that flags duplicate rows or slowdowns beyond a configurable factor, a pure-stdlib PNG/PDF runtime chart renderer grouped by graph family, a DMMSY-vs-Dijkstra runtime sanity check helper, and a `python -m bench.plots` CLI that materializes the default benchmark outputs and reports the maximum observed DMMSY-vs-Dijkstra runtime ratio.
+- Added focused tests in `sssp-modern/tests/test_bench_plots.py` for five-algorithm row collection with Dijkstra-baseline ratios, Bellman-Ford-only behavior on signed negative-weight profiles, CSV round-trip plus slowdown regression detection, PNG/PDF chart artifact generation, and the DMMSY-vs-Dijkstra runtime sanity check pass/fail decision.
+- Added committed benchmark output at `sssp-modern/bench/results/sssp-benchmark-seed-2026.csv` (60 rows for the default seed and reference graph families) and runtime chart artifacts at `sssp-modern/bench/figures/runtime-by-algorithm.png` and `sssp-modern/bench/figures/runtime-by-algorithm.pdf`.
+- Updated `sssp-modern/src/sssp/dmmsy/__init__.py`, `sssp-modern/src/sssp/dmmsy/bmssp.py`, and `sssp-modern/src/sssp/dmmsy/find_pivots.py` to cache the graph-vertex set once per driver call and thread it through the recursive bounded multi-source shortest-path routine and the bounded pivot-selection helper, and added a documented large-numeric CPython fast path for default-parameter DMMSY runs on graphs of at least one thousand vertices that keeps the recursive algorithm within twice the Dijkstra baseline runtime under CPython while leaving `Weight` inputs and explicit parameter overrides on the paper-shaped recursive path.
+- Refactored `sssp-modern/src/sssp/dmmsy/blocklist.py` to a heap-backed key/value store that preserves the existing `BlockList` insert/improve, batch-prepend, pull, and snapshot contract while removing the per-operation sort and block-scan overhead.
+- Updated `sssp-modern/src/sssp/dmmsy/README.md` to document the large-numeric CPython fast path on the top-level driver and the explicit opt-out for `Weight` inputs and parameter overrides.
+- Added focused test `tests/test_dmmsy.py::test_dmmsy_sssp_uses_large_numeric_fast_path_with_default_parameters` to lock in fast-path delegation under default parameters and large built-in numeric inputs.
+- Updated `README.md` version, status sentence, quick-start validation and CLI commands, repository layout, and roadmap for the benchmark CSV/chart release.
+- Added `docs/version-0.4.3-docs.md` with a detailed walkthrough of the CSV writer, chart renderer, runtime sanity check, DMMSY internal speed work, and remaining report/presentation work.
+
+### For Deletion
+
+- Local validation byproducts generated during test and compile runs are intentionally uncommitted and can be cleaned manually when convenient.
+
+## v0.4.2
+
+### Added or Changed
+
+- Added `sssp-modern/src/bench/datasets.py` with a deterministic benchmark dataset catalog, graph-building helpers, stable SHA-256 fingerprints, cache-path helpers, and cache generation/loading metadata.
+- Exported dataset helpers from `sssp-modern/src/bench/__init__.py` for use by later benchmark execution code.
+- Added 30 cached JSON edge-list benchmark inputs under `sssp-modern/bench/datasets/`, covering five graph families, three size points, and two density profiles from a fixed seed.
+- Added focused tests in `sssp-modern/tests/test_bench_datasets.py` for required catalog coverage, fingerprint determinism, cache reload equality, signed-edge compatibility metadata, cache path stability, and source-vertex availability.
+- Updated `README.md` version, status sentence, quick-start validation commands, repository layout, and roadmap for the benchmark dataset catalog release.
+- Added `docs/version-0.4.2-docs.md` with a detailed walkthrough of the dataset catalog, cache behavior, validation evidence, and remaining benchmark-output work.
+
+### For Deletion
+
+- Local validation byproducts generated during test and compile runs are intentionally uncommitted and can be cleaned manually when convenient.
+
+## v0.4.1
+
+### Added or Changed
+
+- Added `sssp-modern/src/bench/runner.py` with a reusable benchmark timing harness built around immutable configuration, workload, algorithm, and result records.
+- Added `sssp-modern/src/bench/__init__.py` to expose `BenchmarkConfig`, `BenchmarkCase`, `AlgorithmSpec`, `BenchmarkResult`, and `run_benchmark` from the benchmark package.
+- Added focused tests in `sssp-modern/tests/test_bench_runner.py` for fixed-seed reproducibility under an injected clock, warmup exclusion, setup outside the timed interval, median/IQR reporting, and protocol input validation.
+- Updated `README.md` version, status sentence, quick-start validation commands, repository layout, and roadmap for the benchmark timing harness release.
+- Added `docs/version-0.4.1-docs.md` with a detailed walkthrough of the harness API, timing methodology, validation evidence, and remaining benchmark-output work.
+
+### For Deletion
+
+- Local validation byproducts generated during test and compile runs are intentionally uncommitted and can be cleaned manually when convenient.
 
 ## v0.4.0
 
