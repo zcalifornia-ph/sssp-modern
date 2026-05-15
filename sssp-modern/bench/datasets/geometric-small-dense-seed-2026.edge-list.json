@@ -1,0 +1,887 @@
+{
+  "format": "sssp.edge-list.v1",
+  "directed": false,
+  "vertices": [
+    "v0",
+    "v1",
+    "v2",
+    "v3",
+    "v4",
+    "v5",
+    "v6",
+    "v7",
+    "v8",
+    "v9",
+    "v10",
+    "v11",
+    "v12",
+    "v13",
+    "v14",
+    "v15",
+    "v16",
+    "v17",
+    "v18",
+    "v19",
+    "v20",
+    "v21",
+    "v22",
+    "v23",
+    "v24",
+    "v25",
+    "v26",
+    "v27",
+    "v28",
+    "v29",
+    "v30",
+    "v31",
+    "v32",
+    "v33",
+    "v34",
+    "v35",
+    "v36",
+    "v37",
+    "v38",
+    "v39",
+    "v40",
+    "v41",
+    "v42",
+    "v43",
+    "v44",
+    "v45",
+    "v46",
+    "v47",
+    "v48",
+    "v49",
+    "v50",
+    "v51",
+    "v52",
+    "v53",
+    "v54",
+    "v55",
+    "v56",
+    "v57",
+    "v58",
+    "v59",
+    "v60",
+    "v61",
+    "v62",
+    "v63"
+  ],
+  "edges": [
+    {
+      "source": "v0",
+      "target": "v22",
+      "weight": 0.004680584279367711
+    },
+    {
+      "source": "v0",
+      "target": "v45",
+      "weight": 0.14200544466494322
+    },
+    {
+      "source": "v0",
+      "target": "v55",
+      "weight": 0.1474031475409926
+    },
+    {
+      "source": "v1",
+      "target": "v9",
+      "weight": 0.07688506266649467
+    },
+    {
+      "source": "v1",
+      "target": "v24",
+      "weight": 0.06044277847454182
+    },
+    {
+      "source": "v1",
+      "target": "v39",
+      "weight": 0.04101402961256206
+    },
+    {
+      "source": "v1",
+      "target": "v44",
+      "weight": 0.06542854791479503
+    },
+    {
+      "source": "v1",
+      "target": "v46",
+      "weight": 0.033831645193149004
+    },
+    {
+      "source": "v1",
+      "target": "v52",
+      "weight": 0.12062635501214419
+    },
+    {
+      "source": "v1",
+      "target": "v59",
+      "weight": 0.09972685614673285
+    },
+    {
+      "source": "v2",
+      "target": "v11",
+      "weight": 0.11122943801791103
+    },
+    {
+      "source": "v2",
+      "target": "v28",
+      "weight": 0.15409893938470903
+    },
+    {
+      "source": "v3",
+      "target": "v6",
+      "weight": 0.15295849988032964
+    },
+    {
+      "source": "v3",
+      "target": "v10",
+      "weight": 0.14888914297541866
+    },
+    {
+      "source": "v3",
+      "target": "v21",
+      "weight": 0.06008785705896486
+    },
+    {
+      "source": "v3",
+      "target": "v23",
+      "weight": 0.15536127401899905
+    },
+    {
+      "source": "v3",
+      "target": "v31",
+      "weight": 0.08909704280873723
+    },
+    {
+      "source": "v3",
+      "target": "v36",
+      "weight": 0.05549287731547128
+    },
+    {
+      "source": "v3",
+      "target": "v42",
+      "weight": 0.06811844358400004
+    },
+    {
+      "source": "v3",
+      "target": "v43",
+      "weight": 0.14671890359030873
+    },
+    {
+      "source": "v3",
+      "target": "v63",
+      "weight": 0.10376061629745625
+    },
+    {
+      "source": "v4",
+      "target": "v6",
+      "weight": 0.05044574176149234
+    },
+    {
+      "source": "v4",
+      "target": "v23",
+      "weight": 0.06200746710143438
+    },
+    {
+      "source": "v4",
+      "target": "v26",
+      "weight": 0.15848600372512558
+    },
+    {
+      "source": "v4",
+      "target": "v33",
+      "weight": 0.12936308316469178
+    },
+    {
+      "source": "v4",
+      "target": "v38",
+      "weight": 0.04876265796864005
+    },
+    {
+      "source": "v4",
+      "target": "v42",
+      "weight": 0.13697295539677284
+    },
+    {
+      "source": "v4",
+      "target": "v47",
+      "weight": 0.026551796701440603
+    },
+    {
+      "source": "v4",
+      "target": "v51",
+      "weight": 0.0326829210459516
+    },
+    {
+      "source": "v4",
+      "target": "v63",
+      "weight": 0.14447971644640445
+    },
+    {
+      "source": "v5",
+      "target": "v10",
+      "weight": 0.0996493054265753
+    },
+    {
+      "source": "v5",
+      "target": "v17",
+      "weight": 0.15940882800826922
+    },
+    {
+      "source": "v5",
+      "target": "v63",
+      "weight": 0.14650180605599572
+    },
+    {
+      "source": "v6",
+      "target": "v10",
+      "weight": 0.1138438755376265
+    },
+    {
+      "source": "v6",
+      "target": "v23",
+      "weight": 0.013672695451366866
+    },
+    {
+      "source": "v6",
+      "target": "v33",
+      "weight": 0.1407434705229243
+    },
+    {
+      "source": "v6",
+      "target": "v38",
+      "weight": 0.09767218503246891
+    },
+    {
+      "source": "v6",
+      "target": "v42",
+      "weight": 0.09598738205459137
+    },
+    {
+      "source": "v6",
+      "target": "v47",
+      "weight": 0.06375035794474383
+    },
+    {
+      "source": "v6",
+      "target": "v51",
+      "weight": 0.07905959807592855
+    },
+    {
+      "source": "v6",
+      "target": "v63",
+      "weight": 0.09593909606567264
+    },
+    {
+      "source": "v7",
+      "target": "v15",
+      "weight": 0.11538326580921707
+    },
+    {
+      "source": "v7",
+      "target": "v45",
+      "weight": 0.13020786701577086
+    },
+    {
+      "source": "v7",
+      "target": "v55",
+      "weight": 0.11878457383979023
+    },
+    {
+      "source": "v7",
+      "target": "v61",
+      "weight": 0.010472247036465687
+    },
+    {
+      "source": "v8",
+      "target": "v29",
+      "weight": 0.1280289031782098
+    },
+    {
+      "source": "v8",
+      "target": "v50",
+      "weight": 0.12802649874660058
+    },
+    {
+      "source": "v8",
+      "target": "v56",
+      "weight": 0.07062652442565424
+    },
+    {
+      "source": "v8",
+      "target": "v60",
+      "weight": 0.03597578971461022
+    },
+    {
+      "source": "v9",
+      "target": "v24",
+      "weight": 0.11006507582606438
+    },
+    {
+      "source": "v9",
+      "target": "v39",
+      "weight": 0.07557247985328558
+    },
+    {
+      "source": "v9",
+      "target": "v44",
+      "weight": 0.1139471965987385
+    },
+    {
+      "source": "v9",
+      "target": "v46",
+      "weight": 0.06265970847546048
+    },
+    {
+      "source": "v9",
+      "target": "v52",
+      "weight": 0.15054094460882117
+    },
+    {
+      "source": "v10",
+      "target": "v23",
+      "weight": 0.10245647325238631
+    },
+    {
+      "source": "v10",
+      "target": "v42",
+      "weight": 0.08726585831923078
+    },
+    {
+      "source": "v10",
+      "target": "v63",
+      "weight": 0.04704467913563765
+    },
+    {
+      "source": "v11",
+      "target": "v28",
+      "weight": 0.1233460086101757
+    },
+    {
+      "source": "v12",
+      "target": "v35",
+      "weight": 0.07680065192692948
+    },
+    {
+      "source": "v12",
+      "target": "v48",
+      "weight": 0.1219208128556535
+    },
+    {
+      "source": "v12",
+      "target": "v53",
+      "weight": 0.08779287458429985
+    },
+    {
+      "source": "v13",
+      "target": "v35",
+      "weight": 0.12494865008266341
+    },
+    {
+      "source": "v13",
+      "target": "v62",
+      "weight": 0.06864992043617735
+    },
+    {
+      "source": "v14",
+      "target": "v18",
+      "weight": 0.08207051333042699
+    },
+    {
+      "source": "v14",
+      "target": "v27",
+      "weight": 0.05113339674231003
+    },
+    {
+      "source": "v14",
+      "target": "v32",
+      "weight": 0.15581928138111611
+    },
+    {
+      "source": "v14",
+      "target": "v54",
+      "weight": 0.03648009712580388
+    },
+    {
+      "source": "v15",
+      "target": "v16",
+      "weight": 0.11104414035735227
+    },
+    {
+      "source": "v15",
+      "target": "v25",
+      "weight": 0.15995376004938086
+    },
+    {
+      "source": "v15",
+      "target": "v34",
+      "weight": 0.1459493301277571
+    },
+    {
+      "source": "v15",
+      "target": "v43",
+      "weight": 0.12279699157034053
+    },
+    {
+      "source": "v15",
+      "target": "v45",
+      "weight": 0.1077611476880237
+    },
+    {
+      "source": "v15",
+      "target": "v55",
+      "weight": 0.09460406006588866
+    },
+    {
+      "source": "v15",
+      "target": "v57",
+      "weight": 0.12924842738964593
+    },
+    {
+      "source": "v15",
+      "target": "v61",
+      "weight": 0.11231571684085374
+    },
+    {
+      "source": "v16",
+      "target": "v20",
+      "weight": 0.14271497628151505
+    },
+    {
+      "source": "v16",
+      "target": "v25",
+      "weight": 0.05025614383151457
+    },
+    {
+      "source": "v16",
+      "target": "v45",
+      "weight": 0.042609115446184856
+    },
+    {
+      "source": "v16",
+      "target": "v55",
+      "weight": 0.048342527169754845
+    },
+    {
+      "source": "v16",
+      "target": "v57",
+      "weight": 0.11946070286208216
+    },
+    {
+      "source": "v17",
+      "target": "v33",
+      "weight": 0.0778800536776723
+    },
+    {
+      "source": "v17",
+      "target": "v48",
+      "weight": 0.13109480735343798
+    },
+    {
+      "source": "v18",
+      "target": "v27",
+      "weight": 0.05943953548312529
+    },
+    {
+      "source": "v18",
+      "target": "v54",
+      "weight": 0.10593892500865369
+    },
+    {
+      "source": "v19",
+      "target": "v31",
+      "weight": 0.1385041983337526
+    },
+    {
+      "source": "v19",
+      "target": "v37",
+      "weight": 0.06940016342080318
+    },
+    {
+      "source": "v20",
+      "target": "v34",
+      "weight": 0.07864271422482023
+    },
+    {
+      "source": "v20",
+      "target": "v40",
+      "weight": 0.10496140884486833
+    },
+    {
+      "source": "v20",
+      "target": "v43",
+      "weight": 0.12923378036763203
+    },
+    {
+      "source": "v20",
+      "target": "v57",
+      "weight": 0.05178310717365916
+    },
+    {
+      "source": "v21",
+      "target": "v31",
+      "weight": 0.046328870958590965
+    },
+    {
+      "source": "v21",
+      "target": "v34",
+      "weight": 0.13215367097444933
+    },
+    {
+      "source": "v21",
+      "target": "v36",
+      "weight": 0.07327732084245743
+    },
+    {
+      "source": "v21",
+      "target": "v42",
+      "weight": 0.12105582940391234
+    },
+    {
+      "source": "v21",
+      "target": "v43",
+      "weight": 0.12981062884904707
+    },
+    {
+      "source": "v22",
+      "target": "v45",
+      "weight": 0.1451590267904567
+    },
+    {
+      "source": "v22",
+      "target": "v55",
+      "weight": 0.15022806324341578
+    },
+    {
+      "source": "v23",
+      "target": "v33",
+      "weight": 0.13833734896824965
+    },
+    {
+      "source": "v23",
+      "target": "v38",
+      "weight": 0.11009893276322083
+    },
+    {
+      "source": "v23",
+      "target": "v42",
+      "weight": 0.09454832149115852
+    },
+    {
+      "source": "v23",
+      "target": "v47",
+      "weight": 0.07165109187082888
+    },
+    {
+      "source": "v23",
+      "target": "v51",
+      "weight": 0.0918925256672131
+    },
+    {
+      "source": "v23",
+      "target": "v63",
+      "weight": 0.08894953143864945
+    },
+    {
+      "source": "v24",
+      "target": "v39",
+      "weight": 0.03450955938189776
+    },
+    {
+      "source": "v24",
+      "target": "v44",
+      "weight": 0.0049900456151383485
+    },
+    {
+      "source": "v24",
+      "target": "v46",
+      "weight": 0.0928140024730862
+    },
+    {
+      "source": "v24",
+      "target": "v52",
+      "weight": 0.0616922905532223
+    },
+    {
+      "source": "v24",
+      "target": "v59",
+      "weight": 0.09092697015305898
+    },
+    {
+      "source": "v25",
+      "target": "v45",
+      "weight": 0.0656193895056553
+    },
+    {
+      "source": "v25",
+      "target": "v55",
+      "weight": 0.07884364127263113
+    },
+    {
+      "source": "v25",
+      "target": "v57",
+      "weight": 0.15547791781531806
+    },
+    {
+      "source": "v26",
+      "target": "v33",
+      "weight": 0.1528906802447069
+    },
+    {
+      "source": "v26",
+      "target": "v38",
+      "weight": 0.1284544881218329
+    },
+    {
+      "source": "v26",
+      "target": "v47",
+      "weight": 0.14203596774221947
+    },
+    {
+      "source": "v26",
+      "target": "v51",
+      "weight": 0.14566354377484542
+    },
+    {
+      "source": "v27",
+      "target": "v54",
+      "weight": 0.05498465314330756
+    },
+    {
+      "source": "v28",
+      "target": "v41",
+      "weight": 0.10571683019166318
+    },
+    {
+      "source": "v29",
+      "target": "v50",
+      "weight": 0.05180623553396295
+    },
+    {
+      "source": "v29",
+      "target": "v56",
+      "weight": 0.06420182338643302
+    },
+    {
+      "source": "v29",
+      "target": "v60",
+      "weight": 0.09543770530309924
+    },
+    {
+      "source": "v31",
+      "target": "v36",
+      "weight": 0.11804879997517269
+    },
+    {
+      "source": "v31",
+      "target": "v42",
+      "weight": 0.13152679914374918
+    },
+    {
+      "source": "v32",
+      "target": "v40",
+      "weight": 0.081785276445975
+    },
+    {
+      "source": "v33",
+      "target": "v38",
+      "weight": 0.15160571952776233
+    },
+    {
+      "source": "v33",
+      "target": "v47",
+      "weight": 0.10399988717385425
+    },
+    {
+      "source": "v33",
+      "target": "v51",
+      "weight": 0.15033215470607603
+    },
+    {
+      "source": "v34",
+      "target": "v36",
+      "weight": 0.12673664080102023
+    },
+    {
+      "source": "v34",
+      "target": "v43",
+      "weight": 0.053501916097028666
+    },
+    {
+      "source": "v34",
+      "target": "v57",
+      "weight": 0.04969286114967253
+    },
+    {
+      "source": "v35",
+      "target": "v48",
+      "weight": 0.1573959517765959
+    },
+    {
+      "source": "v35",
+      "target": "v53",
+      "weight": 0.1496396172914238
+    },
+    {
+      "source": "v36",
+      "target": "v42",
+      "weight": 0.11621891031439578
+    },
+    {
+      "source": "v36",
+      "target": "v43",
+      "weight": 0.09487753188207106
+    },
+    {
+      "source": "v36",
+      "target": "v63",
+      "weight": 0.14425013191558064
+    },
+    {
+      "source": "v38",
+      "target": "v47",
+      "weight": 0.05653003527929319
+    },
+    {
+      "source": "v38",
+      "target": "v51",
+      "weight": 0.019819443213376215
+    },
+    {
+      "source": "v39",
+      "target": "v44",
+      "weight": 0.03855254152852339
+    },
+    {
+      "source": "v39",
+      "target": "v46",
+      "weight": 0.06666504488219077
+    },
+    {
+      "source": "v39",
+      "target": "v52",
+      "weight": 0.08488887893361528
+    },
+    {
+      "source": "v39",
+      "target": "v59",
+      "weight": 0.11238529619750068
+    },
+    {
+      "source": "v40",
+      "target": "v57",
+      "weight": 0.1565398713111648
+    },
+    {
+      "source": "v42",
+      "target": "v47",
+      "weight": 0.15733871856013365
+    },
+    {
+      "source": "v42",
+      "target": "v51",
+      "weight": 0.15328224431073298
+    },
+    {
+      "source": "v42",
+      "target": "v63",
+      "weight": 0.040237063098954765
+    },
+    {
+      "source": "v43",
+      "target": "v57",
+      "weight": 0.08719252360428273
+    },
+    {
+      "source": "v44",
+      "target": "v46",
+      "weight": 0.09778559840219377
+    },
+    {
+      "source": "v44",
+      "target": "v52",
+      "weight": 0.05704500125860144
+    },
+    {
+      "source": "v44",
+      "target": "v59",
+      "weight": 0.09174487988160834
+    },
+    {
+      "source": "v45",
+      "target": "v55",
+      "weight": 0.014337294371213134
+    },
+    {
+      "source": "v45",
+      "target": "v57",
+      "weight": 0.15546741953825438
+    },
+    {
+      "source": "v45",
+      "target": "v61",
+      "weight": 0.13606017525100758
+    },
+    {
+      "source": "v46",
+      "target": "v52",
+      "weight": 0.15083632954496953
+    },
+    {
+      "source": "v46",
+      "target": "v59",
+      "weight": 0.12668727736069513
+    },
+    {
+      "source": "v47",
+      "target": "v51",
+      "weight": 0.04841023788042083
+    },
+    {
+      "source": "v47",
+      "target": "v63",
+      "weight": 0.15960090359475687
+    },
+    {
+      "source": "v48",
+      "target": "v53",
+      "weight": 0.06100819322815493
+    },
+    {
+      "source": "v49",
+      "target": "v52",
+      "weight": 0.14462296200882907
+    },
+    {
+      "source": "v50",
+      "target": "v56",
+      "weight": 0.05824333993796944
+    },
+    {
+      "source": "v50",
+      "target": "v60",
+      "weight": 0.10555346424087289
+    },
+    {
+      "source": "v52",
+      "target": "v59",
+      "weight": 0.13193617985755168
+    },
+    {
+      "source": "v55",
+      "target": "v57",
+      "weight": 0.15291674003305664
+    },
+    {
+      "source": "v55",
+      "target": "v61",
+      "weight": 0.12406048074254196
+    },
+    {
+      "source": "v56",
+      "target": "v60",
+      "weight": 0.048177796540295324
+    }
+  ]
+}

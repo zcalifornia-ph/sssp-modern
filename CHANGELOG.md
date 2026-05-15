@@ -1,6 +1,21 @@
 # Changelog
 
-Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation now provides a top-level public driver; reusable benchmark timing support is available; benchmark datasets, CSV/chart output, and report/deck content pending.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation now provides a top-level public driver; reusable benchmark timing and dataset catalog support are available; benchmark execution, CSV/chart output, and report/deck content pending.
+
+## v0.4.2
+
+### Added or Changed
+
+- Added `sssp-modern/src/bench/datasets.py` with a deterministic benchmark dataset catalog, graph-building helpers, stable SHA-256 fingerprints, cache-path helpers, and cache generation/loading metadata.
+- Exported dataset helpers from `sssp-modern/src/bench/__init__.py` for use by later benchmark execution code.
+- Added 30 cached JSON edge-list benchmark inputs under `sssp-modern/bench/datasets/`, covering five graph families, three size points, and two density profiles from a fixed seed.
+- Added focused tests in `sssp-modern/tests/test_bench_datasets.py` for required catalog coverage, fingerprint determinism, cache reload equality, signed-edge compatibility metadata, cache path stability, and source-vertex availability.
+- Updated `README.md` version, status sentence, quick-start validation commands, repository layout, and roadmap for the benchmark dataset catalog release.
+- Added `docs/version-0.4.2-docs.md` with a detailed walkthrough of the dataset catalog, cache behavior, validation evidence, and remaining benchmark-output work.
+
+### For Deletion
+
+- Local validation byproducts generated during test and compile runs are intentionally uncommitted and can be cleaned manually when convenient.
 
 ## v0.4.1
 

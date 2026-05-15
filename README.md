@@ -22,9 +22,9 @@
   <p align="center">
     <strong>A study of single-source shortest-path algorithms from Dijkstra's 1959 baseline to the 2025 result that broke its sorting barrier on sparse directed graphs, with reference implementations and comparative complexity analysis.</strong>
     <br />
-    Version: v0.4.1
+    Version: v0.4.2
     <br />
-    Status: Dijkstra, Bellman-Ford, A*, Thorup, and the modern directed-sparse SSSP driver are in place; reusable benchmark timing support is now available
+    Status: Dijkstra, Bellman-Ford, A*, Thorup, and the modern directed-sparse SSSP driver are in place; reusable benchmark timing and dataset catalog support are now available
     <br />
     <a href="https://github.com/zcalifornia-ph/sssp-modern"><strong>Explore the docs »</strong></a>
     <br />
@@ -92,7 +92,7 @@ Implemented and planned reference implementations and comparative notes include:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Status: Dijkstra, Bellman-Ford, A*, Thorup, and the modern directed-sparse SSSP driver are implemented (`v0.4.1`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, a binary-heap Dijkstra baseline, a Bellman-Ford implementation with negative-cycle reporting, an A* implementation with reusable heuristics, a Thorup-style hierarchical bucket reference for undirected integer-weight graphs, the top-level driver for the modern directed-sparse SSSP implementation, and a reusable benchmark timing harness for the upcoming empirical comparison work.
+Status: Dijkstra, Bellman-Ford, A*, Thorup, and the modern directed-sparse SSSP driver are implemented (`v0.4.2`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, a binary-heap Dijkstra baseline, a Bellman-Ford implementation with negative-cycle reporting, an A* implementation with reusable heuristics, a Thorup-style hierarchical bucket reference for undirected integer-weight graphs, the top-level driver for the modern directed-sparse SSSP implementation, a reusable benchmark timing harness, and a deterministic benchmark dataset catalog with cached JSON graph inputs for upcoming empirical comparison work.
 
 ### Prerequisites
 
@@ -187,8 +187,14 @@ Status: Dijkstra, Bellman-Ford, A*, Thorup, and the modern directed-sparse SSSP 
     python -m pytest tests/test_bench_runner.py
     ```
 
-12. Review `CHANGELOG.md` for the latest notable changes.
-13. Check `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` before opening issues or pull requests.
+12. Validate the benchmark dataset catalog and cache helpers when needed.
+
+    ```powershell
+    python -m pytest tests/test_bench_datasets.py
+    ```
+
+13. Review `CHANGELOG.md` for the latest notable changes.
+14. Check `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` before opening issues or pull requests.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -203,11 +209,12 @@ The repository keeps governance, supporting assets, and study material in clearl
 - `sssp-modern/src/sssp/`: pure-stdlib Python graph, weight, IO, generator, Dijkstra, Bellman-Ford, A*, Thorup, and modern directed-sparse SSSP support modules.
 - `sssp-modern/src/sssp/dmmsy/`: the 2025 directed-sparse SSSP implementation, including the constant-degree graph transformation, block-list frontier partitioning data structure, bounded pivot-selection helper, recursive bounded multi-source shortest-path routine, and the top-level public driver `dmmsy_sssp(graph, source)` with paper-faithful parameter wiring.
 - `sssp-modern/src/bench/`: reusable benchmark timing harness that records warmup-excluded runtime samples, medians, and interquartile ranges for later CSV and chart generation.
+- `sssp-modern/bench/datasets/`: cached JSON edge-list benchmark inputs generated from five graph families across three size points and two density profiles.
 - `sssp-modern/tests/`: pytest coverage, shared fixtures, golden test inputs, oracle comparisons, and dependency-boundary checks for the current Python implementation.
 - `sssp-modern/examples/graphs/`: small JSON graph fixtures for manual inspection and IO round-trip tests.
 - `sssp-modern/examples/dijkstra/`: sample Dijkstra source-distance output for the tiny directed graph.
 - `sssp-modern/examples/astar/`: small grid fixture for A* and Manhattan-heuristic inspection.
-- Benchmark datasets, CSV/chart output, and report/deck content will expand from this foundation in later versions.
+- Benchmark execution, CSV/chart output, and report/deck content will expand from this foundation in later versions.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -231,7 +238,8 @@ The repository keeps governance, supporting assets, and study material in clearl
 - [x] v0.3.6 - Recursive bounded multi-source shortest-path support following the 2025 sub-`O(m + n log n)` directed-sparse SSSP result.
 - [x] v0.4.0 - Top-level directed-sparse SSSP driver following the 2025 sub-`O(m + n log n)` directed-sparse SSSP result.
 - [x] v0.4.1 - Reusable benchmark timing harness with warmup exclusion, setup-outside-timing behavior, median/IQR summaries, and deterministic harness tests.
-- [ ] v0.5.0 - Benchmark dataset suite, result CSV, chart generation, and comparative complexity analysis artifact tying baseline, intermediate, and modern results together.
+- [x] v0.4.2 - Deterministic benchmark dataset catalog, cache helpers, JSON graph inputs, and fingerprint validation.
+- [ ] v0.5.0 - Benchmark execution, result CSV, chart generation, and comparative complexity analysis artifact tying baseline, intermediate, and modern results together.
 - [ ] v0.6.0 - Report and presentation completion with reproducible submission packaging.
 
 See the [open issues](https://github.com/zcalifornia-ph/sssp-modern/issues) for proposed features and known gaps.
