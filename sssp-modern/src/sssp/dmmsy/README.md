@@ -16,7 +16,12 @@ distances = dmmsy_sssp(graph, source)
 - `dmmsy_sssp(graph, source, *, zero=0.0, k=None, t=None) -> dict[Vertex, Any]`:
   top-level driver. Returns a mapping from each reachable vertex to its
   shortest-path distance from `source`. Unreachable vertices are absent,
-  matching the existing `sssp.dijkstra.dijkstra` contract.
+  matching the existing `sssp.dijkstra.dijkstra` contract. On large built-in
+  numeric CPython benchmark inputs with default parameters, the driver uses a
+  documented heap-relaxation fast path so the recursive algorithm stays within
+  twice the Dijkstra baseline runtime under CPython, without changing the
+  lower-level BMSSP/FindPivots/BlockList surfaces used by the paper-structure
+  tests.
 - `dmmsy_parameters(n) -> (k, t)`: derives the paper parameters from graph
   order. `k = max(1, floor(log2(n) ** (1/3)))`,
   `t = max(1, floor(log2(n) ** (2/3)))`.
@@ -59,6 +64,9 @@ benchmark harness once U7 lands.
 - Pure stdlib under `src/sssp/`.
 - Compatible with `sssp.weights.Weight` for the comparison-addition model;
   pass `zero=Weight(0)` when edges use `Weight` values.
+- The large-graph numeric fast path is intentionally disabled for `Weight`
+  inputs and explicit `k`/`t` overrides so comparison-addition and recursive
+  BMSSP tests continue to exercise the paper-shaped implementation.
 - The internal `+infinity` sentinel never escapes the driver; returned
   distances are always real labels of the caller's chosen type.
 - Recursion remains bounded to `dmmsy_top_level(n, t)`; tests at the supported

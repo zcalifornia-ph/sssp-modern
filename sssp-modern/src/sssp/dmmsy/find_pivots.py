@@ -36,6 +36,7 @@ def find_pivots(
     sources: Iterable[Vertex],
     distances: MutableMapping[Vertex, Any],
     k: int,
+    _graph_vertices: set[Vertex] | None = None,
 ) -> FindPivotsResult:
     """Return DMMSY Algorithm 1 pivots and visited vertices.
 
@@ -58,7 +59,7 @@ def find_pivots(
     if not source_tuple:
         raise ValueError("sources must not be empty")
 
-    graph_vertices = set(graph.vertices())
+    graph_vertices = _graph_vertices if _graph_vertices is not None else set(graph.vertices())
     for source in source_tuple:
         if source not in graph_vertices:
             raise ValueError("every source must be a vertex in graph")

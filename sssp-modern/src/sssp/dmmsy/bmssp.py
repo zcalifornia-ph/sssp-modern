@@ -36,6 +36,7 @@ def base_case(
     sources: Iterable[Vertex],
     distances: MutableMapping[Vertex, Any],
     k: int,
+    _graph_vertices: set[Vertex] | None = None,
 ) -> BMSSPResult:
     """Return DMMSY Algorithm 2 for singleton bounded source set `S`.
 
@@ -51,7 +52,8 @@ def base_case(
         raise ValueError("base_case requires exactly one source")
 
     source = source_tuple[0]
-    _validate_sources(graph, source_tuple, distances)
+    graph_vertices = _graph_vertices if _graph_vertices is not None else set(graph.vertices())
+    _validate_sources(graph_vertices, source_tuple, distances)
 
     completed: set[Vertex] = {source}
     completed_order: list[Vertex] = [source]
@@ -107,6 +109,7 @@ def bmssp(
     distances: MutableMapping[Vertex, Any],
     k: int,
     t: int,
+    _graph_vertices: set[Vertex] | None = None,
 ) -> BMSSPResult:
     """Return DMMSY Algorithm 3 bounded multi-source shortest paths."""
 
@@ -120,12 +123,20 @@ def bmssp(
     source_tuple = _ordered_unique(sources)
     if not source_tuple:
         raise ValueError("sources must not be empty")
-    _validate_sources(graph, source_tuple, distances)
+    graph_vertices = _graph_vertices if _graph_vertices is not None else set(graph.vertices())
+    _validate_sources(graph_vertices, source_tuple, distances)
 
     if level == 0:
-        return base_case(graph, bound, source_tuple, distances, k)
+        return base_case(graph, bound, source_tuple, distances, k, graph_vertices)
 
-    pivot_result = find_pivots(graph, bound, source_tuple, distances, k)
+    pivot_result = find_pivots(
+        graph,
+        bound,
+        source_tuple,
+        distances,
+        k,
+        _graph_vertices=graph_vertices,
+    )
     pivots = pivot_result.pivots
     block_size = 2 ** ((level - 1) * t)
     workload_limit = k * (2 ** (level * t))
@@ -154,6 +165,7 @@ def bmssp(
             distances,
             k,
             t,
+            graph_vertices,
         )
         boundary_prime = child.bound
         for vertex in child.vertices:
@@ -238,11 +250,10 @@ def _ordered_unique(vertices: Iterable[Vertex]) -> tuple[Vertex, ...]:
 
 
 def _validate_sources(
-    graph: Graph,
+    graph_vertices: set[Vertex],
     sources: tuple[Vertex, ...],
     distances: MutableMapping[Vertex, Any],
 ) -> None:
-    graph_vertices = set(graph.vertices())
     for source in sources:
         if source not in graph_vertices:
             raise ValueError("every source must be a vertex in graph")

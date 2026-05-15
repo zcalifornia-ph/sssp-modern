@@ -145,6 +145,23 @@ def test_dmmsy_sssp_accepts_parameter_overrides() -> None:
     assert distances == dijkstra(graph, "s")
 
 
+def test_dmmsy_sssp_uses_large_numeric_fast_path_with_default_parameters(
+    monkeypatch,
+) -> None:
+    graph = Graph()
+    for index in range(1000):
+        graph.add_vertex(f"v{index}")
+    graph.add_edge("v0", "v1", 1.0)
+
+    def fake_dijkstra(graph: Graph, source: object) -> dict[object, float]:
+        assert source == "v0"
+        return {"v0": 0.0, "fast": 1.0}
+
+    monkeypatch.setattr("sssp.dmmsy.dijkstra", fake_dijkstra)
+
+    assert dmmsy_sssp(graph, "v0") == {"v0": 0.0, "fast": 1.0}
+
+
 @pytest.mark.parametrize(
     ("seed", "edge_probability", "weight_low", "weight_high"),
     [
