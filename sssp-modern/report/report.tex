@@ -20,6 +20,10 @@
 \usepackage{cite}                    % IEEE-style numeric citations
 \usepackage{makecell}               % Multi-line table headers
 
+% ---------- Title metadata (single source of truth) ----------
+\newcommand{\reporttitle}{From Dijkstra to DMMSY: A Comparative Study of Five Single-Source Shortest-Path Algorithms}
+\newcommand{\reportshorttitle}{From Dijkstra to DMMSY}
+
 % ---------- Spacing ----------
 \doublespacing
 \setlength{\parindent}{0.5in}      % MLA half-inch indent
@@ -29,7 +33,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \lhead{\includegraphics[height=24pt]{up-header.png}}
-\rhead{\raisebox{0.90ex}{\makebox[\linewidth][r]{TITLE GOES HERE - \thepage}}}
+\rhead{\raisebox{0.90ex}{\makebox[\linewidth][r]{\reportshorttitle{} - \thepage}}}
 \renewcommand{\headrulewidth}{0.4pt}
 \setlength{\headheight}{40pt}
 
@@ -42,39 +46,99 @@
 \begin{document}
 
 % ---------- Header Block ----------
-\noindent NAME 1 GOES HERE\\
-NAME 2 GOES HERE\\
-FACULTY IN CHARGE NAME GOES HERE\\
-Portfolio Study\\
+\noindent Zildjian E. California\\
+Rey Marvin C. Rizal\\
+Assoc.\ Prof.\ Cinmayii G. Manliguez, Ph.D.\\
+CMSC 142 -- Portfolio Study\\
 \today
 
 % ---------- Centered Title ----------
 \begin{center}
-\textbf{TITLE GOES HERE: A Subtitle Can Go Here Too}
+\textbf{\reporttitle{}}
 \end{center}
 
 % ---------- Body ----------
+%
+% Section skeleton mirrors the CMSC 142 rubric in course-data/objective.txt
+% (A. Problem Definition, B. Algorithm Design, C. Implementation, D. Complexity
+% Analysis, E. Experimental Evaluation, F. Reflection) plus US-08 (AI
+% disclosure) and US-09 (Author Contributions). Content blocks are
+% intentionally empty in B8.1; later Bolts (B8.2-B8.5) populate them.
 
-\begin{quote}
-\centering
-\textit{``Insert quote here''} \cite{INSERT CITATION HERE}\par
-\end{quote}
+\noindent\textbf{Introduction}\phantomsection\label{sec:introduction}
 
-INTRODUCTION BODY GOES HERE
+% B8.2 owns this section: introduce the historical Dijkstra -> DMMSY arc and
+% preview the DMMSY centerpiece. Linked: US-01.
 
-\noindent\textbf{Section 1 Name Goes Here}
+\noindent\textbf{Problem Definition}\phantomsection\label{sec:problem-definition}
 
-\noindent\textbf{Section 2 Name Goes Here}
+% B8.2 owns this section: state SSSP formally; non-negative vs. signed-weight
+% variants. Linked: rubric A, US-01.
 
-\noindent\textbf{Section 3 Name Goes Here}
+\noindent\textbf{Algorithm Design}\phantomsection\label{sec:algorithm-design}
 
-\noindent\textbf{Section 4 Name Goes Here}
+% B8.2/B8.3 own this section: per-algorithm subsections follow. Linked: rubric
+% B, US-01.
 
-\noindent\textbf{Coda}
+\noindent\textit{Dijkstra (1959)}\phantomsection\label{sec:algo-dijkstra}
+
+% B8.2: problem, design, pseudocode, implementation pointer, complexity, sample
+% I/O. Linked: US-01, US-03.
+
+\noindent\textit{Bellman--Ford (1958)}\phantomsection\label{sec:algo-bellman-ford}
+
+% B8.2: same template; covers negative-weight support and negative-cycle
+% reporting. Linked: US-01, US-03.
+
+\noindent\textit{A* (1968)}\phantomsection\label{sec:algo-astar}
+
+% B8.2: heuristic protocol; Manhattan on grid; A*(h=0) = Dijkstra demo. Linked:
+% US-01, US-03.
+
+\noindent\textit{Thorup (1999)}\phantomsection\label{sec:algo-thorup}
+
+% B8.2: undirected non-negative integer-weight model; Python vs. word-RAM
+% caveat (ADR-002). Linked: US-01, US-03, US-05.
+
+\noindent\textit{DMMSY (2025)}\phantomsection\label{sec:algo-dmmsy}
+
+% B8.3 (centerpiece): BMSSP, FindPivots, block-list, parameter ADR-003,
+% comparison-addition fidelity. Linked: US-01, US-03, US-05.
+
+\noindent\textbf{Implementation}\phantomsection\label{sec:implementation}
+
+% B8.2/B8.3: per-algo module map under src/sssp/*, sample I/O references,
+% stdlib-only policy. Linked: rubric C, US-02.
+
+\noindent\textbf{Complexity Analysis}\phantomsection\label{sec:complexity}
+
+% B8.2/B8.3: best/avg/worst time + space, asymptotic notation. Linked: rubric
+% D, US-03.
+
+\noindent\textbf{Experimental Evaluation}\phantomsection\label{sec:experimental-evaluation}
+
+% B8.4: results table and runtime chart from bench/figures/runtime-by-algorithm.pdf;
+% methodology note from bench/results/sssp-benchmark-seed-2026.csv. Linked:
+% rubric E, US-04.
+
+\noindent\textbf{Reflection}\phantomsection\label{sec:reflection}
+
+% B8.4: when each algorithm is most useful; limitations; honest DMMSY analysis
+% under CPython. Linked: rubric F, US-05.
+
+\noindent\textbf{AI Assistance Disclosure}\phantomsection\label{sec:ai-disclosure}
+
+% B8.5: AC-08.3 acknowledgment paragraph. Linked: US-08, RR-08.
+
+\noindent\textbf{Author Contributions}\phantomsection\label{sec:author-contributions}
+
+% B8.5: US-09 per-author contributions paragraph; California (1st) opening +
+% DMMSY centerpiece; Rizal (2nd) Bellman-Ford + Thorup + experimental
+% evaluation; joint Q&A. Linked: US-09.
 
 \newpage
 
 \bibliographystyle{IEEEtran}
-\bibliography{references}
+\bibliography{../papers/references}
 
 \end{document}
