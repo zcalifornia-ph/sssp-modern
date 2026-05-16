@@ -22,9 +22,9 @@
   <p align="center">
     <strong>A study of single-source shortest-path algorithms from Dijkstra's 1959 baseline to the 2025 result that broke its sorting barrier on sparse directed graphs, with reference implementations and comparative complexity analysis.</strong>
     <br />
-    Version: v0.4.3
+    Version: v0.5.0
     <br />
-    Status: Dijkstra, Bellman-Ford, A*, Thorup, and the modern directed-sparse SSSP driver are in place; benchmark timing, dataset catalog, result CSV writing, and runtime chart rendering are now available alongside DMMSY internal speed work
+    Status: Dijkstra, Bellman-Ford, A*, Thorup, and the modern directed-sparse SSSP driver are in place; benchmark timing, dataset catalog, result CSV writing, and runtime chart rendering are available alongside DMMSY internal speed work; the written report manuscript is now complete with experimental evaluation, reflection, AI assistance disclosure, author contributions, and a deduplicated bibliography
     <br />
     <a href="https://github.com/zcalifornia-ph/sssp-modern"><strong>Explore the docs »</strong></a>
     <br />
@@ -92,13 +92,14 @@ Implemented and planned reference implementations and comparative notes include:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Status: Dijkstra, Bellman-Ford, A*, Thorup, and the modern directed-sparse SSSP driver are implemented (`v0.4.3`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, a binary-heap Dijkstra baseline, a Bellman-Ford implementation with negative-cycle reporting, an A* implementation with reusable heuristics, a Thorup-style hierarchical bucket reference for undirected integer-weight graphs, the top-level driver for the modern directed-sparse SSSP implementation, a reusable benchmark timing harness, a deterministic benchmark dataset catalog with cached JSON graph inputs, and a benchmark result CSV writer plus pure-stdlib PNG/PDF runtime chart renderer with a DMMSY-vs-Dijkstra runtime sanity check.
+Status: Dijkstra, Bellman-Ford, A*, Thorup, and the modern directed-sparse SSSP driver are implemented (`v0.5.0`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, a binary-heap Dijkstra baseline, a Bellman-Ford implementation with negative-cycle reporting, an A* implementation with reusable heuristics, a Thorup-style hierarchical bucket reference for undirected integer-weight graphs, the top-level driver for the modern directed-sparse SSSP implementation, a reusable benchmark timing harness, a deterministic benchmark dataset catalog with cached JSON graph inputs, a benchmark result CSV writer plus pure-stdlib PNG/PDF runtime chart renderer with a DMMSY-vs-Dijkstra runtime sanity check, and a complete written report manuscript whose experimental evaluation and reflection sections cite the committed CSV and runtime chart directly.
 
 ### Prerequisites
 
 - Git for cloning the repository.
 - CPython 3.11 or later.
 - `pytest` for the current test suite.
+- A working TeX distribution that provides `latexmk` (e.g. MiKTeX or TeX Live) for rebuilding the report PDF.
 - Optional: `networkx` for oracle comparisons in tests.
 - Optional: `coverage` for line-coverage measurement.
 
@@ -207,8 +208,17 @@ Status: Dijkstra, Bellman-Ford, A*, Thorup, and the modern directed-sparse SSSP 
 
     The CLI writes `bench/results/sssp-benchmark-seed-2026.csv` and `bench/figures/runtime-by-algorithm.{png,pdf}` and reports the maximum observed DMMSY-vs-Dijkstra runtime ratio for graphs of at least one thousand vertices.
 
-15. Review `CHANGELOG.md` for the latest notable changes.
-16. Check `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` before opening issues or pull requests.
+15. Rebuild the written report PDF when needed.
+
+    ```powershell
+    cd report
+    latexmk -pdf -interaction=nonstopmode -f report.tex
+    ```
+
+    The build produces `report/report.pdf` (currently 22 pages) and reads the bibliography from `papers/references.bib` plus the runtime chart from `bench/figures/runtime-by-algorithm.pdf`.
+
+16. Review `CHANGELOG.md` for the latest notable changes.
+17. Check `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` before opening issues or pull requests.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -230,7 +240,10 @@ The repository keeps governance, supporting assets, and study material in clearl
 - `sssp-modern/examples/graphs/`: small JSON graph fixtures for manual inspection and IO round-trip tests.
 - `sssp-modern/examples/dijkstra/`: sample Dijkstra source-distance output for the tiny directed graph.
 - `sssp-modern/examples/astar/`: small grid fixture for A* and Manhattan-heuristic inspection.
-- Benchmark execution, CSV/chart output, and report/deck content will expand from this foundation in later versions.
+- `sssp-modern/papers/`: shared bibliography source (`references.bib`) for the report and presentation, plus the source PDFs of the cited foundational and modern shortest-path papers.
+- `sssp-modern/report/`: written report manuscript, including the LaTeX source (`report.tex`), the compiled PDF (`report.pdf`), and the header image asset; the manuscript cites `sssp-modern/papers/references.bib` and embeds the committed runtime chart from `sssp-modern/bench/figures/`.
+- `sssp-modern/presentation/`: presentation deck assets that will fill out in a later release.
+- Presentation deck content and reproducible submission packaging will expand from this foundation in later versions.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -256,8 +269,8 @@ The repository keeps governance, supporting assets, and study material in clearl
 - [x] v0.4.1 - Reusable benchmark timing harness with warmup exclusion, setup-outside-timing behavior, median/IQR summaries, and deterministic harness tests.
 - [x] v0.4.2 - Deterministic benchmark dataset catalog, cache helpers, JSON graph inputs, and fingerprint validation.
 - [x] v0.4.3 - Benchmark result CSV writer, pure-stdlib PNG/PDF runtime chart renderer, DMMSY-vs-Dijkstra runtime sanity check, and DMMSY internal speed work (heap-backed block list, threaded graph-vertex cache, and a documented large-numeric CPython fast path for default-parameter runs).
-- [ ] v0.5.0 - Comparative complexity analysis artifact tying baseline, intermediate, and modern results together with the committed benchmark CSV and chart evidence.
-- [ ] v0.6.0 - Report and presentation completion with reproducible submission packaging.
+- [x] v0.5.0 - Written report manuscript completed: experimental evaluation tied to the committed benchmark CSV and runtime chart, honest reflection on the modern algorithm under CPython, AI assistance disclosure, author contributions, and a deduplicated bibliography producing a clean `latexmk` build.
+- [ ] v0.6.0 - Presentation deck completion and reproducible submission packaging.
 
 See the [open issues](https://github.com/zcalifornia-ph/sssp-modern/issues) for proposed features and known gaps.
 
