@@ -24,10 +24,10 @@
 % main.tex, and references.bib.
 %
 % Current checkout note: this deck instantiates the UP theme for the
-% SSSP-modern CMSC 142 portfolio. This version establishes the deck
-% spine and the four baseline-algorithm frames; later content passes
-% fill the DMMSY centerpiece, experimental evaluation, author
-% contributions, and timed dry-run refinements.
+% SSSP-modern CMSC 142 portfolio. This version contains the deck spine,
+% baseline-algorithm frames, DMMSY centerpiece, experimental evaluation,
+% reflection, and author-contribution slides; B9.4 owns only timed dry-run
+% refinements.
 % Branding note: distributed UP-branded assets follow the UP branding
 % guidelines and are intended for UP constituents/internal use. No
 % official endorsement is implied.
@@ -347,35 +347,116 @@
 \section{Experimental Evaluation}
 % ===========================================
 
-\begin{frame}{Experimental Evaluation -- To Be Filled}
-  \begin{block}{Planned content}
-    The experimental evaluation section will add:
-    \begin{itemize}
-      \item Methodology summary (warm runs, IO excluded, median + IQR; seed 2026; 60 rows).
-      \item Per-algorithm $\times$ size-bucket median ratios vs.\ Dijkstra (table excerpt from \texttt{bench/results/sssp-benchmark-seed-2026.csv}).
-      \item Embedded \texttt{bench/figures/runtime-by-algorithm.pdf} chart.
-      \item NFR-F sanity: max DMMSY/Dijkstra ratio \texttt{1.093x} at $n \ge 1000$ (T-17 evidence).
-    \end{itemize}
-  \end{block}
+\begin{frame}{Benchmark Protocol}
+  \small
+  \begin{columns}[T]
+    \begin{column}{0.46\textwidth}
+      \begin{block}{Dataset}
+        Seed 2026; 12 benchmark cases; geometric and Barabasi--Albert families at
+        $n \in \{64, 256, 1024\}$ with sparse/dense profiles.
+      \end{block}
+      \begin{block}{Timing}
+        60 CSV rows; setup and file IO excluded; one recorded repeat per
+        case-algorithm pair; Dijkstra is the normalization baseline.
+      \end{block}
+    \end{column}
+    \begin{column}{0.50\textwidth}
+      \begin{center}
+        \includegraphics[width=\linewidth,height=0.56\textheight,keepaspectratio]{../bench/figures/runtime-by-algorithm.pdf}
+      \end{center}
+    \end{column}
+  \end{columns}
 \end{frame}
-% Speaker note (Rizal): owns the empirical section; a later content pass will populate.
+% Speaker note (Rizal): establish what was measured before interpreting
+% the chart. The important honesty point is that Thorup uses the
+% integer-undirected graph view and that Dijkstra normalizes every row.
+
+\begin{frame}{Results Against Dijkstra}
+  \scriptsize
+  \begin{block}{Median runtime ratio by size bucket}
+    \begin{center}
+    \begin{tabular}{lccc}
+      \hline
+      Algorithm & Small $n=64$ & Medium $n=256$ & Large $n=1024$ \\
+      \hline
+      Dijkstra & $1.00\times$ & $1.00\times$ & $1.00\times$ \\
+      Bellman--Ford & $1.92\times$ & $3.48\times$ & $3.87\times$ \\
+      A\textsuperscript{*} & $0.80\times$ & $0.29\times$ & $0.50\times$ \\
+      Thorup (1999) & $1.84\times$ & $1.61\times$ & $1.36\times$ \\
+      DMMSY (2025) & $11.28\times$ & $5.87\times$ & $1.02\times$ \\
+      \hline
+    \end{tabular}
+    \end{center}
+  \end{block}
+
+  \begin{itemize}
+    \item A* benefits from an informative geometric heuristic; Bellman--Ford pays for repeated edge sweeps.
+    \item Thorup stays above Dijkstra because CPython is not the word-RAM model.
+    \item DMMSY clears the T-17 sanity gate at large size: max DMMSY/Dijkstra ratio is \texttt{1.093x} for $n \ge 1000$.
+  \end{itemize}
+\end{frame}
+% Speaker note (Rizal): read only the pattern, not every cell. Close
+% with the precise DMMSY caveat: the large-size ratio is green because
+% ADR-003 engages the documented numeric fast path for default inputs.
 
 % ===========================================
 \section{Reflection and Author Contributions}
 % ===========================================
 
-\begin{frame}{Reflection and Author Contributions -- To Be Filled}
-  \begin{block}{Planned content}
-    The closing content section will add:
-    \begin{itemize}
-      \item Honest framing of where the five algorithms are useful and where they break down (utility / limitations / DMMSY's Python caveat).
-      \item AI Assistance Disclosure paragraph aligned with the U8 report (AC-08.3).
-      \item Author Contributions slide naming California (1st) and Rizal (2nd) per US-09 / AC-09.2.
-    \end{itemize}
+\begin{frame}{Reflection and Integrity}
+  \footnotesize
+  \begin{block}{What the comparison teaches}
+    No SSSP algorithm dominates every setting; the right choice depends on
+    weight signs, direction, integer assumptions, heuristic quality, and runtime model.
   \end{block}
+
+  \begin{alertblock}{Honest DMMSY framing}
+    The centerpiece is the deterministic $O(m \log^{2/3} n)$ comparison-addition
+    bound. CPython does not show a recursive BMSSP wall-clock win; large numeric
+    runs use the ADR-003 fast path to keep NFR-F green.
+  \end{alertblock}
+
+  \begin{exampleblock}{AI assistance disclosure}
+    AI tools assisted with drafting, tests, artifacts, and prose. The source
+    papers, validation evidence, and final judgments remain the human authors'
+    responsibility.
+  \end{exampleblock}
 \end{frame}
-% Speaker note (joint): California summarises usefulness/limitations;
-% Rizal closes with Author Contributions and hands to Q&A.
+% Speaker note (California): summarize usefulness and limitations
+% without overclaiming. Rizal can add that the benchmark evidence is
+% useful because it records what CPython actually does.
+
+\begin{frame}{Author Contributions}
+  \scriptsize
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Zildjian E. California}
+        \begin{itemize}
+          \item Repository foundation, governance, graph/weight/IO/generator base, Dijkstra, A*, DMMSY, benchmarks, report, and deck authorship.
+          \item DMMSY centerpiece: transform, block list, pivots, BMSSP, driver, ADR-003/ADR-004, and presentation opening/centerpiece.
+          \item Current commit history: authored the foundation, Dijkstra/A*, DMMSY stack, experimental-evaluation artifacts, report manuscript, and deck scaffold.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Rey Marvin C. Rizal}
+        \begin{itemize}
+          \item Bellman--Ford implementation with negative-cycle reporting; feature issue \#4 closed as completed.
+          \item Thorup 1999 runtime-model work and hierarchical-bucket SSSP contribution; feature issue \#5 closed as completed.
+          \item Presentation ownership: Bellman--Ford, Thorup, and experimental-results delivery; joint Q\&A with California.
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+
+  \vskip 2pt
+  \begin{center}
+    \footnotesize Contribution split follows the provided commit history and the closed Rizal-assigned issues \#4 and \#5.
+  \end{center}
+\end{frame}
+% Speaker note (joint): use this slide to make authorship legible,
+% not ceremonial. California states the commit-history basis; Rizal
+% confirms the assigned Bellman-Ford and Thorup issue closures.
 
 % -- Standout --------------------------
 \standoutframe{Honor. Excellence. Service.}
@@ -397,5 +478,25 @@
   \vskip 6pt
   \printbibliography
 \end{frame}
+
+\begin{frame}{Backup: Result Evidence}
+  \footnotesize
+  \begin{block}{Artifacts to cite during Q\&A}
+    \begin{itemize}
+      \item CSV: \texttt{bench/results/sssp-benchmark-seed-2026.csv}
+      \item Figure: \texttt{bench/figures/runtime-by-algorithm.\{pdf,png\}}
+      \item Tests: 147-test suite passed after benchmark plot generation; T-17 records max DMMSY/Dijkstra ratio \texttt{1.093x} for $n \ge 1000$.
+      \item Report anchors: Table \texttt{tab:results-by-class} and Figure \texttt{fig:runtime-by-algorithm}.
+    \end{itemize}
+  \end{block}
+
+  \begin{alertblock}{If asked why DMMSY is still the centerpiece}
+    The portfolio centers the algorithmic result and implementation structure,
+    not a CPython timing victory: correctness and comparison-addition fidelity
+    are validated separately from the fast-path benchmark policy.
+  \end{alertblock}
+\end{frame}
+% Speaker note (joint): this is not part of the timed talk. Use it only
+% if the Q&A asks for paths, test evidence, or the DMMSY timing caveat.
 
 \end{document}

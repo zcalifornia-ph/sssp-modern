@@ -1,6 +1,22 @@
 # Changelog
 
-Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with experimental evaluation, reflection, AI assistance disclosure, and author contributions sections plus a deduplicated bibliography; the presentation deck now has a clean-compiling title/outline spine, baseline-algorithm slide scaffold, and modern-algorithm centerpiece, with results/contributions, dry-run pacing, and reproducible submission packaging still pending.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with experimental evaluation, reflection, AI assistance disclosure, and author contributions sections plus a deduplicated bibliography; the presentation deck now has a clean-compiling title/outline spine, baseline-algorithm slides, modern-algorithm centerpiece, benchmark-results slides, reflection/integrity framing, author contributions, and Q&A evidence backup, with dry-run pacing and reproducible submission packaging still pending.
+
+## v0.5.3
+
+### Added or Changed
+
+- Replaced the remaining presentation placeholders in `sssp-modern/presentation/main.tex` with authored benchmark-results and closing content: a benchmark-protocol slide, an embedded runtime chart, a Dijkstra-normalized result-ratio table, a reflection/integrity slide, an Author Contributions slide, and a Q&A backup evidence slide.
+- Added result interpretation that preserves the documented CPython caveats for Thorup and the modern directed-sparse implementation while still reporting the committed benchmark sanity result.
+- Added an Author Contributions slide that attributes California's repository, baseline, modern-algorithm, benchmark, report, and deck work alongside Rizal's Bellman-Ford and Thorup contributions and the presentation handoff.
+- Rebuilt `sssp-modern/presentation/main.pdf` (26 pages, 1252512 bytes) from the updated Beamer source.
+- Verified the presentation build with `latexmk -pdf -interaction=nonstopmode main.tex`: exit code 0, zero LaTeX errors, zero undefined citations, zero undefined references, zero overfull hboxes/vboxes, zero LaTeX warnings, zero hyperref/pdfTeX warnings, the runtime chart rendered from the committed benchmark figure, and an idempotent rerun reporting all targets up to date.
+- Updated `README.md` version, status sentence, quick-start presentation build note, repository layout, and roadmap for this release.
+- Added `docs/version-0.5.3-docs.md` with a detailed walkthrough of the presentation results/contributions pass, validation evidence, and remaining dry-run/submission work.
+
+### For Deletion
+
+- None from this task context.
 
 ## v0.5.2
 
