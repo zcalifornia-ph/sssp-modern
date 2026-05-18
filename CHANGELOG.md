@@ -1,6 +1,22 @@
 # Changelog
 
-Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with experimental evaluation, reflection, role-specific AI assistance disclosure, author contributions, public-facing terminology cleanup, and a rebuilt PDF; the presentation deck now has a clean-compiling title/outline spine, baseline-algorithm slides, modern-algorithm centerpiece, benchmark-results slides, reflection/integrity framing, author contributions, Q&A evidence backup, final copy-fit/layout polish, and public-facing terminology cleanup, with dry-run pacing and reproducible submission packaging still pending.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with experimental evaluation, reflection, role-specific AI assistance disclosure, author contributions, public-facing terminology cleanup, and a rebuilt PDF; the presentation deck now has a clean-compiling title/outline spine, baseline-algorithm slides, modern-algorithm centerpiece, benchmark-results slides, a result-evidence slide in the main talk flow with a repository citation, reflection/integrity framing, author contributions, final copy-fit/layout polish, and public-facing terminology cleanup, with dry-run pacing and reproducible submission packaging still pending.
+
+## v0.5.8
+
+### Added or Changed
+
+- Promoted the result-evidence material in `sssp-modern/presentation/main.tex` from a backup-only Q&A frame into the main presentation flow before the reflection and author-contribution slides.
+- Added the public GitHub repository URL to the evidence slide so the deck names the project source alongside the benchmark CSV, runtime figure, test-suite result, and report anchors.
+- Simplified the closing sequence by removing the standalone "Honor. Excellence. Service." standout slide and the older backup evidence frame, leaving the deck focused on evidence, reflection, contributions, references, and questions.
+- Updated `sssp-modern/presentation/main.pdf` (25 pages, 1250772 bytes) from the revised Beamer source.
+- Verified the presentation build with `latexmk -pdf -interaction=nonstopmode main.tex`: exit code 0, with `main.pdf` reported up to date.
+- Updated `README.md` version, status sentence, quick-start presentation build note, repository layout, and roadmap for this release.
+- Added `docs/version-0.5.8-docs.md` with a detailed walkthrough of the presentation evidence-flow polish and validation evidence.
+
+### For Deletion
+
+- None from this task context.
 
 ## v0.5.7
 
