@@ -26,8 +26,8 @@
 % Current checkout note: this deck instantiates the UP theme for the
 % SSSP-modern CMSC 142 portfolio. This version contains the deck spine,
 % baseline-algorithm frames, DMMSY centerpiece, experimental evaluation,
-% reflection, and author-contribution slides; B9.4 owns only timed dry-run
-% refinements.
+% reflection, and author-contribution slides; remaining work is limited to
+% timed dry-run refinements.
 % Branding note: distributed UP-branded assets follow the UP branding
 % guidelines and are intended for UP constituents/internal use. No
 % official endorsement is implied.
@@ -202,7 +202,7 @@
         Time $O(n + m)$ in the word-RAM model.
       \end{exampleblock}
       \begin{alertblock}{Implementation}
-        \texttt{src/sssp/thorup99.py};\\11 tests, 99\% line coverage.\\\emph{Python $\ne$ word-RAM:} documented in ADR-002.\\Source paper: \cite{thorup1999linear}.
+        \texttt{src/sssp/thorup99.py};\\11 tests, 99\% line coverage.\\\emph{Python $\ne$ word-RAM:} caveat documented in the project notes.\\Source paper: \cite{thorup1999linear}.
       \end{alertblock}
     \end{column}
   \end{columns}
@@ -336,7 +336,7 @@
         \\Space stays $O(n+m)$.
       \end{block}
       \begin{alertblock}{Python Implementation Boundary}
-        CPython recursion overhead is real. Default large numeric benchmark runs use the documented fast path; \texttt{Weight} inputs and explicit parameters exercise recursive BMSSP.
+        CPython recursion overhead is real. Default large numeric benchmark runs use the documented shortcut; \texttt{Weight} inputs and explicit parameters exercise recursive BMSSP.
       \end{alertblock}
     \end{column}
   \end{columns}
@@ -394,12 +394,12 @@
   \begin{itemize}
     \item A* benefits from an informative geometric heuristic; Bellman--Ford pays for repeated edge sweeps.
     \item Thorup stays above Dijkstra because CPython is not the word-RAM model.
-    \item DMMSY clears the T-17 sanity gate at large size: max DMMSY/Dijkstra ratio is \texttt{1.093x} for $n \ge 1000$.
+    \item DMMSY passes the large-size runtime sanity check: max DMMSY/Dijkstra ratio is \texttt{1.093x} for $n \ge 1000$.
   \end{itemize}
 \end{frame}
 % Speaker note (Rizal): read only the pattern, not every cell. Close
-% with the precise DMMSY caveat: the large-size ratio is green because
-% ADR-003 engages the documented numeric fast path for default inputs.
+% with the precise DMMSY caveat: the large-size ratio passes because
+% default numeric inputs use the documented shortcut.
 
 % ===========================================
 \section{Reflection and Author Contributions}
@@ -415,11 +415,11 @@
   \begin{alertblock}{Honest DMMSY Framing}
     The centerpiece is the deterministic $O(m \log^{2/3} n)$ comparison-addition
     bound. CPython does not show a recursive BMSSP wall-clock win; large numeric
-    runs use the ADR-003 fast path to keep NFR-F green.
+    runs use the documented shortcut to keep the runtime check passing.
   \end{alertblock}
 
   \begin{exampleblock}{AI Assistance Disclosure}
-    AI tools assisted with drafting, tests, artifacts, and prose. The source
+    AI tools assisted with drafting, tests, supporting files, and prose. The source
     papers, validation evidence, and final judgments remain the human authors'
     responsibility.
   \end{exampleblock}
@@ -434,17 +434,17 @@
     \begin{column}{0.48\textwidth}
       \begin{block}{Zildjian E. California}
         \begin{itemize}
-          \item Repository foundation, governance, graph/weight/IO/generator base, Dijkstra, A*, DMMSY, benchmarks, report, and deck authorship.
-          \item DMMSY centerpiece: transform, block list, pivots, BMSSP, driver, ADR-003/ADR-004, and presentation opening/centerpiece.
-          \item Current commit history: authored the foundation, Dijkstra/A*, DMMSY stack, experimental-evaluation artifacts, report manuscript, and deck scaffold.
+          \item Repository foundation, root documentation, graph/weight/IO/generator base, Dijkstra, A*, DMMSY, benchmarks, report, and deck authorship.
+          \item DMMSY centerpiece: transform, block list, pivots, BMSSP, driver, written rationale, and presentation opening/centerpiece.
+          \item Current commit history: authored the foundation, Dijkstra/A*, DMMSY stack, benchmark files, report manuscript, and deck scaffold.
         \end{itemize}
       \end{block}
     \end{column}
     \begin{column}{0.48\textwidth}
       \begin{block}{Rey Marvin C. Rizal}
         \begin{itemize}
-          \item Bellman--Ford implementation with negative-cycle reporting; feature issue \#4 closed as completed.
-          \item Thorup 1999 runtime-model work and hierarchical-bucket SSSP contribution; feature issue \#5 closed as completed.
+          \item Bellman--Ford implementation with negative-cycle reporting; assigned contribution completed.
+          \item Thorup 1999 runtime-model work and hierarchical-bucket SSSP contribution; assigned contribution completed.
           \item Presentation ownership: Bellman--Ford, Thorup, and experimental-results delivery; joint Q\&A with California.
         \end{itemize}
       \end{block}
@@ -453,12 +453,12 @@
 
   \vskip 2pt
   \begin{center}
-    \footnotesize Contribution split follows the provided commit history\\and the closed Rizal-assigned issues \#4 and \#5.
+    \footnotesize Contribution split follows the provided commit history\\and the completed Rizal-assigned contributions.
   \end{center}
 \end{frame}
 % Speaker note (joint): use this slide to make authorship legible,
 % not ceremonial. California states the commit-history basis; Rizal
-% confirms the assigned Bellman-Ford and Thorup issue closures.
+% confirms the assigned Bellman-Ford and Thorup contributions.
 
 % -- Standout --------------------------
 \standoutframe{Honor. Excellence. Service.}
@@ -483,11 +483,11 @@
 
 \begin{frame}{Backup: Result Evidence}
   \footnotesize
-  \begin{block}{Artifacts to cite during Q\&A}
+  \begin{block}{Files to cite during Q\&A}
     \begin{itemize}
       \item CSV: \texttt{bench/results/sssp-benchmark-seed-2026.csv}
       \item Figure: \texttt{bench/figures/runtime-by-algorithm.\{pdf,png\}}
-      \item Tests: 147-test suite passed after benchmark plot generation; T-17 records max DMMSY/Dijkstra ratio \texttt{1.093x} for $n \ge 1000$.
+      \item Tests: 147-test suite passed after benchmark plot generation; the runtime check records max DMMSY/Dijkstra ratio \texttt{1.093x} for $n \ge 1000$.
       \item Report anchors: Table \texttt{tab:results-by-class} and Figure \texttt{fig:runtime-by-algorithm}.
     \end{itemize}
   \end{block}

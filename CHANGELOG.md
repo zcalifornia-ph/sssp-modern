@@ -1,6 +1,22 @@
 # Changelog
 
-Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with experimental evaluation, reflection, AI assistance disclosure, and author contributions sections plus a deduplicated bibliography; the presentation deck now has a clean-compiling title/outline spine, baseline-algorithm slides, modern-algorithm centerpiece, benchmark-results slides, reflection/integrity framing, author contributions, Q&A evidence backup, and final copy-fit/layout polish, with dry-run pacing and reproducible submission packaging still pending.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with experimental evaluation, reflection, AI assistance disclosure, and author contributions sections plus a deduplicated bibliography; the presentation deck now has a clean-compiling title/outline spine, baseline-algorithm slides, modern-algorithm centerpiece, benchmark-results slides, reflection/integrity framing, author contributions, Q&A evidence backup, final copy-fit/layout polish, and public-facing terminology cleanup, with dry-run pacing and reproducible submission packaging still pending.
+
+## v0.5.5
+
+### Added or Changed
+
+- Cleaned `sssp-modern/presentation/main.tex` so speaker notes, slide caveats, contribution wording, and Q&A evidence labels use plain public-facing presentation language instead of private planning shorthand or internal review labels.
+- Replaced design references, coded validation labels, and numbered contribution wording with audience-readable descriptions such as project notes, runtime sanity check, written rationale, completed contributions, and files to cite during Q&A.
+- Rebuilt `sssp-modern/presentation/main.pdf` (26 pages, 1252006 bytes) from the cleaned Beamer source.
+- Verified the presentation source with a targeted terminology scan for the removed private shorthand and internal labels; no matches remained in `sssp-modern/presentation/main.tex`.
+- Verified the presentation build with `latexmk -pdf -interaction=nonstopmode main.tex`: exit code 0, no LaTeX errors, no undefined citations, no undefined references, no overfull hboxes/vboxes, no LaTeX warnings, and no hyperref/pdfTeX warnings.
+- Updated `README.md` version, status sentence, quick-start presentation build note, repository layout, and roadmap for this release.
+- Added `docs/version-0.5.5-docs.md` with a detailed walkthrough of the presentation terminology cleanup, validation evidence, and remaining dry-run/submission work.
+
+### For Deletion
+
+- None from this task context.
 
 ## v0.5.4
 
