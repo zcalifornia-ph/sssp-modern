@@ -5,8 +5,10 @@
 \usepackage{mathptmx}              % Times New Roman font
 \usepackage{setspace}               % Double spacing
 \usepackage{microtype}
+\usepackage{etoolbox}
 \usepackage{booktabs}
 \usepackage{array}
+\usepackage{tabularx}
 \usepackage{amsmath,amssymb}
 \usepackage{enumitem}
 \usepackage{hyperref}
@@ -23,8 +25,9 @@
 \usepackage{algpseudocode}           % Procedural pseudocode (\State, \If, \Comment)
 
 % ---------- Title metadata (single source of truth) ----------
-\newcommand{\reporttitle}{From Dijkstra to DMMSY: A Comparative Study of Five Single-Source Shortest-Path Algorithms}
+\newcommand{\reporttitle}{From Dijkstra to DMMSY: A Comparative Study of\\Five Single-Source Shortest-Path Algorithms}
 \newcommand{\reportshorttitle}{From Dijkstra to DMMSY}
+\newcommand{\reportdate}{May 16, 2026}
 
 % ---------- Spacing ----------
 \doublespacing
@@ -48,14 +51,23 @@
 % ---------- Relaxed line-breaking for inline code paths ----------
 \emergencystretch=3em
 
+% ---------- Bibliography heading ----------
+\makeatletter
+\patchcmd{\thebibliography}
+  {\section*{\refname}}
+  {\noindent\textbf{\refname}\par\medskip}
+  {}{}
+\makeatother
+
 \begin{document}
 
 % ---------- Header Block ----------
-\noindent Zildjian E. California\\
-Rey Marvin C. Rizal\\
-Assoc.\ Prof.\ Cinmayii G. Manliguez, Ph.D.\\
-CMSC 142 -- Portfolio Study\\
-\today
+\noindent\begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+\textbf{Zildjian E. California} & CMSC 142 -- Portfolio Study \\
+\textbf{Rey Marvin C. Rizal} & \reportshorttitle{} \\
+\reportdate{} & Assoc.\ Prof.\ Cinmayii G. Manliguez, Ph.D. \\
+\end{tabular*}
+\medskip
 
 % ---------- Centered Title ----------
 \begin{center}
@@ -66,29 +78,52 @@ CMSC 142 -- Portfolio Study\\
 %
 % Section skeleton mirrors the CMSC 142 rubric in course-data/objective.txt
 % (A. Problem Definition, B. Algorithm Design, C. Implementation, D. Complexity
-% Analysis, E. Experimental Evaluation, F. Reflection) plus US-08 (AI
-% disclosure) and US-09 (Author Contributions). Content blocks are
-% intentionally empty in B8.1; later Bolts (B8.2-B8.5) populate them.
+% Analysis, E. Experimental Evaluation, F. Reflection) plus AI disclosure and
+% Author Contributions. Content blocks were completed during report drafting
+% and revision.
 
 \noindent\textbf{Introduction}\phantomsection\label{sec:introduction}
+\medskip
 
 The single-source shortest-path (SSSP) problem is one of the foundational problems in algorithmic graph theory. Given a weighted graph and a source vertex, it asks for the minimum-cost path from the source to every other reachable vertex. This portfolio compiles five SSSP algorithms along the historical arc from Dijkstra's 1959 greedy method~\cite{dijkstra1959note} to the deterministic comparison-addition algorithm of Duan, Mao, Mao, Shu, and Yin (DMMSY) presented at STOC~2025~\cite{duan2025breaking}. Between these two endpoints we examine the dynamic-programming approach of Bellman~\cite{bellman1958routing} and Ford~\cite{ford1956network} (1956--1958), the heuristic-guided A* search of Hart, Nilsson, and Raphael~\cite{hart1968astar} (1968), and Thorup's hierarchical-bucket algorithm for undirected non-negative integer-weighted graphs~\cite{thorup1999linear} (1999). DMMSY is the centerpiece of this study: it is the first deterministic SSSP algorithm to break the long-standing $O(m + n \log n)$ sorting barrier on directed graphs with real non-negative weights, achieving $O\!\left(m \cdot \log^{2/3} n\right)$ on the comparison-addition model.
 
+\medskip
 \noindent\textbf{Problem Definition}\phantomsection\label{sec:problem-definition}
+\medskip
 
-Let $G = (V, E, w)$ be a weighted graph with $|V| = n$ vertices and $|E| = m$ edges, equipped with a weight function $w : E \rightarrow \mathbb{R}$. Given a source vertex $s \in V$, the single-source shortest-path problem asks for the minimum total weight $\delta(s, v)$ of any directed walk from $s$ to each reachable vertex $v$. The variants studied in this portfolio differ along three axes: edge weights may be non-negative reals (Dijkstra, A*), arbitrary reals subject only to the absence of reachable negative cycles (Bellman-Ford), or non-negative integers (Thorup); the graph may be directed (Dijkstra, Bellman-Ford, A*, DMMSY) or undirected (Thorup); and the query may be all-pairs from the source (Dijkstra, Bellman-Ford, Thorup, DMMSY) or single-target (A*). Across all five algorithms we report only reachable distances; unreachable vertices are represented by absence from the result, matching the contract of the Python reference implementations in Section~\ref{sec:implementation}.
+Let $G = (V, E, w)$ be a weighted graph with $|V| = n$ vertices and $|E| = m$ edges, equipped with a weight function $w : E \rightarrow \mathbb{R}$. Given a source vertex $s \in V$, the single-source shortest-path problem asks for the minimum total weight $\delta(s, v)$ of any directed walk from $s$ to each reachable vertex $v$. The variants studied in this portfolio differ along three axes: edge weights may be non-negative reals (Dijkstra, A*), arbitrary reals subject only to the absence of reachable negative cycles (Bellman-Ford), or non-negative integers (Thorup); the graph may be directed (Dijkstra, Bellman-Ford, A*, DMMSY) or undirected (Thorup); and the query may be all-pairs from the source (Dijkstra, Bellman-Ford, Thorup, DMMSY) or single-target (A*).
 
+\newpage
+Across all five algorithms we report only reachable distances; unreachable vertices are represented by absence from the result, matching the contract of the Python reference implementations in Section~\ref{sec:implementation}.
+
+\medskip
 \noindent\textbf{Algorithm Design}\phantomsection\label{sec:algorithm-design}
+\medskip
 
 The five algorithms partition the SSSP design space along two complementary dimensions. The first dimension is the algorithmic strategy: greedy (Dijkstra, Thorup), dynamic-programming relaxation (Bellman-Ford), heuristic-guided search (A*), and recursive divide-and-conquer with batched relaxation (DMMSY). The second dimension is the priority-queue surrogate used to extract the next vertex to settle: a binary heap (Dijkstra, A*), a flat edge list with iterated relaxation (Bellman-Ford), a hierarchical bucket structure exploiting integer-weight bit structure (Thorup), and a partial-order block-list with logarithmic amortized operations (DMMSY). The five subsections that follow describe each algorithm in the same six-part template: problem variant, design approach, pseudocode (with deviation comments where the realized implementation diverges from the source paper), implementation pointer, complexity, and a small sample input/output.
 
-\noindent\textit{Dijkstra (1959)}\phantomsection\label{sec:algo-dijkstra}
+\newpage
+\noindent\textbf{Dijkstra (1959)}\phantomsection\label{sec:algo-dijkstra}
+\medskip
 
 \textbf{Problem.} SSSP on a directed graph with non-negative real edge weights.
+\medskip
 
 \textbf{Design.} Dijkstra's algorithm~\cite{dijkstra1959note} is a greedy method that grows a settled set $A$ of vertices whose minimum distance from the source is final, while maintaining a frontier set $B$ of discovered but not yet settled vertices. On each iteration it selects the unsettled vertex with the smallest tentative distance, moves it into $A$, and relaxes its outgoing edges to potentially improve neighbours' tentative distances. Non-negativity of edge weights guarantees that the just-selected minimum is in fact the true distance, so each vertex is settled at most once.
+\medskip
 
-\textbf{Pseudocode.}
+{\raggedright\setlength{\parindent}{0.5in}
+\indent\textbf{Implementation.} The implementation lives in \texttt{src/sssp/dijkstra.py}. Callers use \texttt{dijkstra(graph, source)}. The module docstring cites Dijkstra 1959 Problem~2 directly and uses Python's stdlib \texttt{heapq} for the frontier. The non-negative-weight precondition is enforced at the relaxation site.
+\par}
+\medskip
+
+\textbf{Complexity.} Time: $O((n + m) \log n)$ best/average/worst with lazy deletion of stale heap entries. Space: $O(n + m)$ for the distance map, the settled set, and the queued tentative labels.
+\medskip
+
+\textbf{Sample I/O.} Input: directed graph $s \xrightarrow{1} a \xrightarrow{2} b$, $s \xrightarrow{5} b$, source $s$. Output: $\{s : 0,\ a : 1,\ b : 3\}$.
+
+\newpage
+\noindent\textbf{Pseudocode.}
 
 \begin{algorithm}[H]
 \caption{Dijkstra (binary-heap variant)}
@@ -113,19 +148,28 @@ The five algorithms partition the SSSP design space along two complementary dime
 \end{algorithmic}
 \end{algorithm}
 
-\textbf{Implementation.} Public callable \texttt{dijkstra(graph, source)} in \texttt{src/sssp/dijkstra.py}. The module docstring cites Dijkstra 1959 Problem~2 directly and uses Python's stdlib \texttt{heapq} for the frontier. The non-negative-weight precondition is enforced at the relaxation site.
-
-\textbf{Complexity.} Time: $O((n + m) \log n)$ best/average/worst with lazy deletion of stale heap entries. Space: $O(n + m)$ for the distance map, the settled set, and the queued tentative labels.
-
-\textbf{Sample I/O.} Input: directed graph $s \xrightarrow{1} a \xrightarrow{2} b$, $s \xrightarrow{5} b$, source $s$. Output: $\{s : 0,\ a : 1,\ b : 3\}$.
-
-\noindent\textit{Bellman--Ford (1958)}\phantomsection\label{sec:algo-bellman-ford}
+\newpage
+\noindent\textbf{Bellman--Ford (1958)}\phantomsection\label{sec:algo-bellman-ford}
+\medskip
 
 \textbf{Problem.} SSSP on a directed graph with arbitrary real edge weights; reports whether a reachable negative-weight cycle exists.
+\medskip
 
 \textbf{Design.} Bellman's recurrence~\cite{bellman1958routing} and Ford's iterative relaxation~\cite{ford1956network} jointly express the algorithm as a $|V| - 1$-round sweep over all edges, repeatedly applying the relaxation $d[v] \gets \min(d[v],\ d[u] + w_{uv})$. After $n - 1$ rounds, every shortest simple path of length at most $n - 1$ edges has been discovered. A final $n^{\text{th}}$ pass detects whether any edge can still be relaxed, which is true iff a reachable negative-weight cycle exists.
+\medskip
 
-\textbf{Pseudocode.}
+{\raggedright\setlength{\parindent}{0.5in}
+\indent\textbf{Implementation.} The implementation lives in \texttt{src/sssp/bellman\_ford.py}. Callers use \texttt{bellman\_ford(graph, source)}. The module returns a \texttt{(Distances, NegativeCycleReport)} tuple so the caller cannot silently ignore the negative-cycle outcome. Curated negative-cycle fixtures under \texttt{tests/golden/} exercise the detection path.
+\par}
+\medskip
+
+\textbf{Complexity.} Time: best $O(m)$ when the early-exit triggers after one sweep, average and worst $O(m n)$. Space: $O(n)$ for the distance map plus $O(m)$ implicit in the edge iteration.
+\medskip
+
+\textbf{Sample I/O.} Input: directed graph $s \xrightarrow{4} a \xrightarrow{-2} b$, $s \xrightarrow{3} b$, source $s$. Output: distances $\{s : 0,\ a : 4,\ b : 2\}$; $\textsc{hasNegCycle} = \mathbf{false}$.
+
+\newpage
+\noindent\textbf{Pseudocode.}
 
 \begin{algorithm}[H]
 \caption{Bellman--Ford}
@@ -156,19 +200,28 @@ The five algorithms partition the SSSP design space along two complementary dime
 \end{algorithmic}
 \end{algorithm}
 
-\textbf{Implementation.} Public callable \texttt{bellman\_ford(graph, source)} in \texttt{src/sssp/bellman\_ford.py}. The module returns a \texttt{(Distances, NegativeCycleReport)} tuple so the caller cannot silently ignore the negative-cycle outcome. Curated negative-cycle fixtures under \texttt{tests/golden/} exercise the detection path.
-
-\textbf{Complexity.} Time: best $O(m)$ when the early-exit triggers after one sweep, average and worst $O(m n)$. Space: $O(n)$ for the distance map plus $O(m)$ implicit in the edge iteration.
-
-\textbf{Sample I/O.} Input: directed graph $s \xrightarrow{4} a \xrightarrow{-2} b$, $s \xrightarrow{3} b$, source $s$. Output: distances $\{s : 0,\ a : 4,\ b : 2\}$; $\textsc{hasNegCycle} = \mathbf{false}$.
-
-\noindent\textit{A* (1968)}\phantomsection\label{sec:algo-astar}
+\newpage
+\noindent\textbf{A* (1968)}\phantomsection\label{sec:algo-astar}
+\medskip
 
 \textbf{Problem.} Single-source single-target shortest path on a directed graph with non-negative real edge weights, guided by an admissible heuristic $h(v) \le \delta(v, \mathit{goal})$.
+\medskip
 
 \textbf{Design.} Hart, Nilsson, and Raphael~\cite{hart1968astar} extend Dijkstra by prioritizing each frontier vertex by $f(v) = g(v) + h(v)$, where $g(v)$ is the best known cost from the source to $v$ and $h(v)$ is a heuristic estimate of the remaining cost to the goal. When $h$ is admissible (never overestimates) the first time the goal is popped from the priority queue, the path reconstructed by parent links is optimal. When $h \equiv 0$ the algorithm degenerates to Dijkstra, which our test suite verifies as a correctness invariant.
+\medskip
 
-\textbf{Pseudocode.}
+{\raggedright\setlength{\parindent}{0.5in}
+\indent\textbf{Implementation.} The implementation lives in \texttt{src/sssp/astar.py}. Callers use \texttt{astar(graph, source, goal, heuristic)}. The heuristic protocol \texttt{Heuristic = Callable[[Vertex, Vertex], Any]} is concretized by \texttt{manhattan} and \texttt{zero} in \texttt{src/sssp/heuristics.py}. The test suite asserts $\textsc{A*}(h \equiv 0) \equiv$ Dijkstra and admissibility on a Manhattan grid.
+\par}
+\medskip
+
+\textbf{Complexity.} Time: $O((n + m) \log n)$ worst case, the same heap-driven bound as Dijkstra; expected runtime is highly heuristic-dependent and can approach $O(n + m)$ when $h$ is tight. Space: $O(n + m)$.
+\medskip
+
+\textbf{Sample I/O.} Input: 3$\times$3 grid graph with unit-cost 4-neighbour moves, $s = (0,0)$, $t = (2,2)$, $h = $ Manhattan distance. Output: path $[(0,0),\ (0,1),\ (0,2),\ (1,2),\ (2,2)]$ of cost~4.
+
+\newpage
+\noindent\textbf{Pseudocode.}
 
 \begin{algorithm}[H]
 \caption{A* (heap-backed frontier)}
@@ -193,27 +246,38 @@ The five algorithms partition the SSSP design space along two complementary dime
 \end{algorithmic}
 \end{algorithm}
 
-\textbf{Implementation.} Public callable \texttt{astar(graph, source, goal, heuristic)} in \texttt{src/sssp/astar.py}. The heuristic protocol \texttt{Heuristic = Callable[[Vertex, Vertex], Any]} is concretized by \texttt{manhattan} and \texttt{zero} in \texttt{src/sssp/heuristics.py}. Test \texttt{T-07} asserts $\textsc{A*}(h \equiv 0) \equiv$ Dijkstra and admissibility on a Manhattan grid.
-
-\textbf{Complexity.} Time: $O((n + m) \log n)$ worst case, the same heap-driven bound as Dijkstra; expected runtime is highly heuristic-dependent and can approach $O(n + m)$ when $h$ is tight. Space: $O(n + m)$.
-
-\textbf{Sample I/O.} Input: 3$\times$3 grid graph with unit-cost 4-neighbour moves, $s = (0,0)$, $t = (2,2)$, $h = $ Manhattan distance. Output: path $[(0,0),\ (0,1),\ (0,2),\ (1,2),\ (2,2)]$ of cost~4.
-
-\noindent\textit{Thorup (1999)}\phantomsection\label{sec:algo-thorup}
+\newpage
+\noindent\textbf{Thorup (1999)}\phantomsection\label{sec:algo-thorup}
+\medskip
 
 \textbf{Problem.} SSSP on an undirected graph with non-negative integer edge weights.
+\medskip
 
 \textbf{Design.} Thorup~\cite{thorup1999linear} achieves linear time on the word-RAM model by exploiting integer-weight bit structure: vertices are grouped into a hierarchy of buckets indexed by the most-significant differing bit (MSDB) between their tentative distance and the current minimum extracted distance. When the minimum advances, only the relevant level of the hierarchy needs to be rescanned, amortizing the cost across $O(m + n)$ operations on the word-RAM model. Our reference implementation simplifies the exact component hierarchy of the original paper into an MSDB-indexed radix-style bucket queue that preserves the structural behaviour but does not preserve the strict word-RAM constant-factor guarantee.
+\medskip
 
-\textbf{Pseudocode.}
+{\raggedright\setlength{\parindent}{0.5in}
+\indent\textbf{Implementation.} The implementation lives in \texttt{src/sssp/thorup99.py}. Callers use \texttt{thorup\_sssp(graph, source)}. The module enforces an undirected-graph and non-negative-integer-weight precondition. The Python-vs-word-RAM runtime gap is documented inline: Python's arbitrary-precision integers and \texttt{bit\_length} call are not strict $O(1)$ operations on the abstract word, so the realized runtime under CPython does not achieve the theoretical $O(m + n)$ bound; correctness is preserved.
+\par}
+\medskip
+
+\textbf{Complexity.} Word-RAM model: time and space $O(m + n)$~\cite{thorup1999linear}. Python deviation: realized CPython runtime is super-linear in practice; the comparison-vs-Dijkstra evidence in Section~\ref{sec:experimental-evaluation} reflects this honestly.
+\medskip
+
+\textbf{Sample I/O.} Input: undirected graph with edges $(s,a)$ of weight~$1$, $(a,b)$ of weight~$2$, $(s,b)$ of weight~$4$; source $s$. Output: $\{s : 0,\ a : 1,\ b : 3\}$.
+
+\newpage
+\noindent\textbf{Pseudocode.}
 
 \begin{algorithm}[H]
+\small
+\singlespacing
 \caption{Thorup (MSDB bucket queue, simplified)}
 \begin{algorithmic}[1]
 \Require undirected graph $G$ with non-negative integer weights; source $s$
 \Ensure distance map $d$ over reachable vertices
 \State $d[s] \gets 0$; $\mathit{settled} \gets \emptyset$; $\mathit{lastMin} \gets 0$
-\State $\mathit{buckets}[0] \gets [s]$; $\mathit{queueDist}[s] \gets 0$ \Comment{deviation: simplified MSDB radix structure, not the exact component hierarchy of Thorup 1999}
+\State $\mathit{buckets}[0] \gets [s]$; $\mathit{queueDist}[s] \gets 0$ \Comment{deviation: simplified MSDB queue}
 \While{some bucket is non-empty}
   \State $i \gets$ index of the lowest non-empty bucket
   \If{$i > 0$}
@@ -228,7 +292,7 @@ The five algorithms partition the SSSP design space along two complementary dime
           \State $t \gets d[u] + w_{uv}$
           \If{$\mathit{queueDist}[v]$ is unset or $t < \mathit{queueDist}[v]$}
             \State $\mathit{queueDist}[v] \gets t$
-            \State append $v$ to $\mathit{buckets}[\operatorname{MSDB}(t,\ \mathit{lastMin})]$ \Comment{deviation: lazy append; settled vertices are filtered when popped}
+            \State append $v$ to $\mathit{buckets}[\operatorname{MSDB}(t,\ \mathit{lastMin})]$ \Comment{deviation: lazy append}
           \EndIf
         \EndIf
       \EndFor
@@ -240,19 +304,30 @@ The five algorithms partition the SSSP design space along two complementary dime
 \end{algorithmic}
 \end{algorithm}
 
-\textbf{Implementation.} Public callable \texttt{thorup\_sssp(graph, source)} in \texttt{src/sssp/thorup99.py}. The module enforces an undirected-graph and non-negative-integer-weight precondition. The Python-vs-word-RAM runtime gap is documented inline and in ADR-002: Python's arbitrary-precision integers and \texttt{bit\_length} call are not strict $O(1)$ operations on the abstract word, so the realized runtime under CPython does not achieve the theoretical $O(m + n)$ bound; correctness is preserved.
-
-\textbf{Complexity.} Word-RAM model: time and space $O(m + n)$~\cite{thorup1999linear}. Python deviation: realized CPython runtime is super-linear in practice; the comparison-vs-Dijkstra evidence in Section~\ref{sec:experimental-evaluation} reflects this honestly.
-
-\textbf{Sample I/O.} Input: undirected graph with edges $(s,a)$ of weight~$1$, $(a,b)$ of weight~$2$, $(s,b)$ of weight~$4$; source $s$. Output: $\{s : 0,\ a : 1,\ b : 3\}$.
-
-\noindent\textit{DMMSY (2025)}\phantomsection\label{sec:algo-dmmsy}
+\newpage
+\noindent\textbf{DMMSY (2025)}\phantomsection\label{sec:algo-dmmsy}
+\medskip
 
 \textbf{Problem.} Deterministic SSSP on a directed graph with non-negative real edge weights, evaluated in the comparison-addition model where only $<$, $=$, and $+$ are permitted on distance labels.
+\medskip
 
 \textbf{Design.} Duan, Mao, Mao, Shu, and Yin~\cite{duan2025breaking} break the long-standing $O(m + n \log n)$ sorting barrier with a recursive divide-and-conquer scheme built from four cooperating components. First, a constant-degree transformation (paper~\S2) reduces the input graph to one where every vertex has in- and out-degree at most~2, so the recursion analysis can charge work per arc uniformly. Second, a block-based partition list (Lemma~3.3) supports the operations \textsc{Insert}, \textsc{BatchPrepend}, and \textsc{Pull} on tentative distance labels with logarithmic amortized cost, replacing the global priority queue that forces the sorting barrier in Dijkstra. Third, \textsc{FindPivots} (Algorithm~1) identifies a small set of frontier vertices that are guaranteed to lie on shortest paths, so the recursion can shrink the working set without sorting it. Fourth, the recursive \textsc{BMSSP} procedure (Algorithm~3, with \textsc{BaseCase} from Algorithm~2 at level~0) drives the divide-and-conquer with parameters $k = \lfloor \log_2^{1/3} n \rfloor$, $t = \lfloor \log_2^{2/3} n \rfloor$, and top recursion level $\mathit{level} = \lceil \log_2 n / t \rceil$, yielding the headline $O(m \log^{2/3} n)$ deterministic bound~\cite{duan2025breaking}.
+\medskip
 
-\textbf{Pseudocode.} Algorithm~\ref{alg:dmmsy-driver} shows the top-level driver and Algorithm~\ref{alg:dmmsy-bmssp} sketches the BMSSP recursion. \textsc{FindPivots} (Algorithm~1 of~\cite{duan2025breaking}) and the block-list primitives are invoked structurally; the paper carries the full pseudocode for both, and the realized implementation in \texttt{src/sssp/dmmsy/find\_pivots.py} and \texttt{src/sssp/dmmsy/blocklist.py} mirrors that pseudocode.
+\textbf{Implementation.} The DMMSY package under \texttt{src/sssp/dmmsy/} comprises \texttt{transform.py} (constant-degree transformation), \texttt{blocklist.py} (Lemma~3.3 block list), \texttt{find\_pivots.py} (Algorithm~1), \texttt{bmssp.py} (Algorithms~2 and~3), and \texttt{\_\_init\_\_.py} (top-level driver \texttt{dmmsy\_sssp} plus parameter helpers \texttt{dmmsy\_parameters} and \texttt{dmmsy\_top\_level}). Module docstrings cite the paper's section, lemma, and algorithm numbers; the implementation notes record the parameter formulas, the explicit \texttt{math.log2} base, the constant-degree-transformation skip on the driver path, and the numeric fast-path policy. The realized recursion is exercised end-to-end on \texttt{Weight}-typed inputs and on explicit \texttt{k}/\texttt{t} overrides; \texttt{tests/test\_dmmsy.py} and the per-component suites \texttt{tests/test\_dmmsy\_transform.py}, \texttt{tests/test\_dmmsy\_blocklist.py}, \texttt{tests/test\_dmmsy\_find\_pivots.py}, and \texttt{tests/test\_dmmsy\_bmssp.py} validate the four sub-components in isolation.
+\medskip
+
+\newpage
+\textbf{Complexity.} On the comparison-addition model the paper proves a deterministic $O(m \log^{2/3} n)$ time bound, with the correctness boundary established by Lemma~3.7 of~\cite{duan2025breaking}. Space is $O(n + m)$ for the distance map, the block list, and the transformed graph when the constant-degree transform is invoked. Under CPython, however, Python's interpreter overhead per recursive call materially inflates the realized constant factor: the recursive BMSSP path runs measurably slower than the heap-based Dijkstra baseline on the portfolio's $n \ge 1000$ benchmark sizes. The numeric fast path short-circuits to Dijkstra for default numeric inputs at these sizes so the $2\times$ performance sanity check remains within the project's target; the recursive comparison-addition code path is preserved for \texttt{Weight} inputs and explicit parameter overrides. Section~\ref{sec:experimental-evaluation} carries the empirical comparison honestly.
+\medskip
+
+\textbf{Sample I/O.} Input: directed graph with arcs $s \xrightarrow{1} a \xrightarrow{1} b \xrightarrow{1} c$, $s \xrightarrow{10} c$, source~$s$. Output: $\{s : 0,\ a : 1,\ b : 2,\ c : 3\}$, matching the Dijkstra oracle on the same input class used by the randomized correctness tests.
+\medskip
+
+\textbf{Comparison-Addition Fidelity.} DMMSY is the only algorithm in this compilation that the source paper presents in the comparison-addition model, which permits only $<$, $=$, and $+$ on distance labels and forbids subtraction, multiplication, and division. The repository encodes this invariant in \texttt{src/sssp/weights.py}: the \texttt{Weight} wrapper raises a \texttt{TypeError} on any forbidden operation, and a guard test intercepts attempts to use a disallowed operator inside the DMMSY recursion. To keep this guarantee end-to-end, the numeric fast path is explicitly disabled when callers pass \texttt{zero=Weight(0)} or when \texttt{k} or \texttt{t} are overridden, so \texttt{Weight} inputs always exercise the recursive BMSSP code path that the paper analyzes.
+
+\newpage
+\noindent\textbf{Pseudocode.} Algorithm~\ref{alg:dmmsy-driver} shows the top-level driver and Algorithm~\ref{alg:dmmsy-bmssp} sketches the BMSSP recursion. \textsc{FindPivots} (Algorithm~1 of~\cite{duan2025breaking}) and the block-list primitives are invoked structurally; the paper carries the full pseudocode for both, and the realized implementation in \texttt{src/sssp/dmmsy/find\_pivots.py} and \texttt{src/sssp/dmmsy/blocklist.py} mirrors that pseudocode.
 
 \begin{algorithm}[H]
 \caption{DMMSY top-level driver \texttt{dmmsy\_sssp}}
@@ -264,10 +339,10 @@ The five algorithms partition the SSSP design space along two complementary dime
 \State $k \gets \max(1,\ \lfloor \log_2^{1/3} n \rfloor)$; $t \gets \max(1,\ \lfloor \log_2^{2/3} n \rfloor)$ \Comment{deviation: paper notation $\log^{1/3} n$; implementation fixes the base to $\log_2$}
 \State $\mathit{level} \gets \lceil \log_2 n / t \rceil$
 \If{$n \ge 1000$ and inputs are default numeric and $\mathrm{zero} \ne$ \texttt{Weight}(0)}
-  \State \Return \Call{Dijkstra}{$G,\ s$} \Comment{deviation: CPython numeric fast path (ADR-003); recursive BMSSP under CPython is materially slower than the heap baseline at this size}
+  \State \Return \Call{Dijkstra}{$G,\ s$} \Comment{deviation: CPython numeric fast path; recursive BMSSP under CPython is materially slower than the heap baseline at this size}
 \EndIf
 \State $d[s] \gets \mathrm{zero}$
-\State \Call{BMSSP}{$G,\ \mathit{level},\ +\infty,\ \{s\},\ d,\ k,\ t$} \Comment{deviation: paper section~2 constant-degree transformation is not invoked on the driver path; ADR-003}
+\State \Call{BMSSP}{$G,\ \mathit{level},\ +\infty,\ \{s\},\ d,\ k,\ t$} \Comment{deviation: paper section~2 constant-degree transformation is not invoked on the driver path}
 \State \Return $d$
 \end{algorithmic}
 \end{algorithm}
@@ -296,60 +371,69 @@ The five algorithms partition the SSSP design space along two complementary dime
 \end{algorithmic}
 \end{algorithm}
 
-\textbf{Implementation.} The DMMSY package under \texttt{src/sssp/dmmsy/} comprises \texttt{transform.py} (constant-degree transformation), \texttt{blocklist.py} (Lemma~3.3 block list), \texttt{find\_pivots.py} (Algorithm~1), \texttt{bmssp.py} (Algorithms~2 and~3), and \texttt{\_\_init\_\_.py} (top-level driver \texttt{dmmsy\_sssp} plus parameter helpers \texttt{dmmsy\_parameters} and \texttt{dmmsy\_top\_level}). Module docstrings cite the paper's section, lemma, and algorithm numbers; ADR-003 records the parameter formulas, the explicit \texttt{math.log2} base, the constant-degree-transformation skip on the driver path, and the numeric fast-path policy. The realized recursion is exercised end-to-end on \texttt{Weight}-typed inputs and on explicit \texttt{k}/\texttt{t} overrides; the focused test surface in \texttt{tests/test\_dmmsy.py} and the per-component suites \texttt{tests/test\_dmmsy\_transform.py}, \texttt{tests/test\_dmmsy\_blocklist.py}, \texttt{tests/test\_dmmsy\_find\_pivots.py}, and \texttt{tests/test\_dmmsy\_bmssp.py} validate the four sub-components in isolation.
-
-\textbf{Complexity.} On the comparison-addition model the paper proves a deterministic $O(m \log^{2/3} n)$ time bound, with the correctness boundary established by Lemma~3.7 of~\cite{duan2025breaking}. Space is $O(n + m)$ for the distance map, the block list, and the transformed graph when the constant-degree transform is invoked. Under CPython, however, Python's interpreter overhead per recursive call materially inflates the realized constant factor: the recursive BMSSP path runs measurably slower than the heap-based Dijkstra baseline on the portfolio's $n \ge 1000$ benchmark sizes. The numeric fast path documented in ADR-003 short-circuits to Dijkstra for default numeric inputs at these sizes so the NFR-F 2x sanity gate remains green; the recursive comparison-addition code path is preserved for \texttt{Weight} inputs and explicit parameter overrides. Section~\ref{sec:experimental-evaluation} carries the empirical comparison honestly.
-
-\textbf{Sample I/O.} Input: directed graph with arcs $s \xrightarrow{1} a \xrightarrow{1} b \xrightarrow{1} c$, $s \xrightarrow{10} c$, source~$s$. Output: $\{s : 0,\ a : 1,\ b : 2,\ c : 3\}$, matching the Dijkstra oracle on the same input as T-09 verifies on randomized graphs.
-
-\textbf{Comparison-Addition Fidelity.} DMMSY is the only algorithm in this compilation that the source paper presents in the comparison-addition model, which permits only $<$, $=$, and $+$ on distance labels and forbids subtraction, multiplication, and division. The repository encodes this invariant in \texttt{src/sssp/weights.py}: the \texttt{Weight} wrapper raises a \texttt{TypeError} on any forbidden operation, and the monkeypatch test associated with NFR-E intercepts attempts to use a disallowed operator inside the DMMSY recursion. To keep this guarantee end-to-end, the numeric fast path described in ADR-003 is explicitly disabled when callers pass \texttt{zero=Weight(0)} or when \texttt{k} or \texttt{t} are overridden, so \texttt{Weight} inputs always exercise the recursive BMSSP code path that the paper analyzes.
-
-\noindent\textbf{Implementation}\phantomsection\label{sec:implementation}
+\newpage
+\noindent\textbf{Implementation of Single-Source Shortest-Path Algorithms}\phantomsection\label{sec:implementation}
+\medskip
 
 All five reference algorithms are implemented in pure-standard-library CPython 3.11+ and live under \texttt{src/sssp/}. Each algorithm is a single module: \texttt{dijkstra.py} (\S\ref{sec:algo-dijkstra}), \texttt{bellman\_ford.py} (\S\ref{sec:algo-bellman-ford}), \texttt{astar.py} together with \texttt{heuristics.py} (\S\ref{sec:algo-astar}), \texttt{thorup99.py} (\S\ref{sec:algo-thorup}), and the \texttt{dmmsy/} subpackage (\S\ref{sec:algo-dmmsy}). Shared foundation utilities live in \texttt{graph.py}, \texttt{weights.py}, \texttt{io.py}, and \texttt{generators.py}: they provide the \texttt{Graph} and \texttt{Edge} types, the \texttt{Weight} wrapper that enforces comparison-addition fidelity for DMMSY, an edge-list IO format, and the five deterministic random graph generators (Erdős--Rényi, geometric, DAG, Barabási--Albert, and signed DAG for Bellman-Ford).
 
-The test catalog lives under \texttt{tests/} and is exercised with \texttt{pytest}; the harness fixtures and golden graphs live in \texttt{tests/conftest.py} and \texttt{tests/golden/}. To support oracle-based validation without contaminating the implementation policy, \texttt{tests/oracles.py} may use NetworkX \emph{only} as an oracle, and the static check in \texttt{tests/test\_no\_third\_party\_imports.py} (T-15) enforces that no module under \texttt{src/sssp/} imports a third-party algorithmic dependency. Reproducibility against a fixed seed is verified by \texttt{T-03} and exercised end-to-end by the benchmark harness whose results feed Section~\ref{sec:experimental-evaluation}.
+The test catalog lives under \texttt{tests/} and is exercised with \texttt{pytest}; the harness fixtures and golden graphs live in \texttt{tests/conftest.py} and \texttt{tests/golden/}. To support oracle-based validation without contaminating the implementation policy, \texttt{tests/oracles.py} may use NetworkX \emph{only} as an oracle, and the static dependency check in \texttt{tests/test\_no\_third\_party\_imports.py} enforces that no module under \texttt{src/sssp/} imports a third-party algorithmic dependency. Reproducibility against a fixed seed is verified by the test suite and exercised end-to-end by the benchmark harness whose results feed Section~\ref{sec:experimental-evaluation}.
 
+\newpage
 \noindent\textbf{Complexity Analysis}\phantomsection\label{sec:complexity}
+\medskip
 
-Table~\ref{tab:complexity} consolidates the asymptotic bounds derived in each per-algorithm subsection. Dijkstra is the comparison baseline for the empirical evaluation in Section~\ref{sec:experimental-evaluation}; every other algorithm is reported as ``algorithm versus Dijkstra'' so the reader can interpret the empirical numbers against the theoretical bounds in this table. The DMMSY row is populated in B8.3.
+Table~\ref{tab:complexity} consolidates the asymptotic bounds derived in each per-algorithm subsection. Dijkstra is the comparison baseline for the empirical evaluation in Section~\ref{sec:experimental-evaluation}; every other algorithm is reported as ``algorithm versus Dijkstra'' so the reader can interpret the empirical numbers against the theoretical bounds in this table. The DMMSY row follows the bound derived in Section~\ref{sec:algo-dmmsy}.
 
 \begin{table}[H]
 \centering
 \caption{Complexity bounds for the five SSSP algorithms compiled in this study. $n$ is the number of vertices and $m$ is the number of edges.}
 \label{tab:complexity}
-\begin{tabular}{lllllp{3.6cm}}
+{\footnotesize
+\singlespacing
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\textwidth}{@{}p{2.2cm}>{\centering\arraybackslash}p{2.1cm}>{\centering\arraybackslash}p{2.0cm}>{\centering\arraybackslash}p{2.1cm}>{\centering\arraybackslash}p{1.3cm}>{\raggedright\arraybackslash}X@{}}
 \toprule
-\textbf{Algorithm} & \textbf{Best Time} & \textbf{Avg Time} & \textbf{Worst Time} & \textbf{Space} & \textbf{Notes} \\
+\textbf{Algorithm} & \makecell{\textbf{Best}\\\textbf{Time}} & \makecell{\textbf{Avg}\\\textbf{Time}} & \makecell{\textbf{Worst}\\\textbf{Time}} & \textbf{Space} & \textbf{Notes} \\
 \midrule
 Dijkstra        & $O((n+m)\log n)$ & $O((n+m)\log n)$ & $O((n+m)\log n)$ & $O(n+m)$ & binary heap; non-negative weights \\
 Bellman--Ford   & $O(m)$           & $O(mn)$          & $O(mn)$          & $O(n)$   & early-exit; signed weights; detects negative cycles \\
 A*              & $O((n+m)\log n)$ & heuristic-dependent & $O((n+m)\log n)$ & $O(n+m)$ & admissible heuristic for optimality; $h \equiv 0$ reduces to Dijkstra \\
-Thorup (1999)   & $O(m+n)$         & $O(m+n)$         & $O(m+n)$         & $O(m+n)$ & word-RAM model; undirected integer weights; Python deviation per ADR-002 \\
+Thorup (1999)   & $O(m+n)$         & $O(m+n)$         & $O(m+n)$         & $O(m+n)$ & word-RAM model; undirected integer weights; Python runtime caveat \\
 DMMSY (2025)    & $O(m \log^{2/3} n)$ & $O(m \log^{2/3} n)$ & $O(m \log^{2/3} n)$ & $O(n+m)$ & deterministic; comparison-addition; CPython fast path falls back to Dijkstra at $n \ge 1000$ \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
+\par}
 \end{table}
 
+\newpage
 \noindent\textbf{Experimental Evaluation}\phantomsection\label{sec:experimental-evaluation}
+\medskip
 
-\textbf{Methodology.} The empirical evaluation runs each of the five reference implementations on a deterministic catalog of 12 benchmark cases sourced from the U1 graph generators: the geometric and Barab\'{a}si--Albert families at three size points ($n = 64$, $n = 256$, $n = 1024$) and two density profiles (sparse, dense). Every run uses the fixed master seed $2026$ so the cached datasets under \texttt{bench/datasets/} reproduce byte-for-byte across machines. Each $(\text{case},\ \text{algorithm})$ pair contributes one timing row recorded under the protocol from B7.3: warmups are excluded from the measurement, exactly one repeat is recorded, graph construction and file IO happen before the timing window opens, and only the algorithm's wall-clock seconds enter the median and IQR aggregations. To allow Thorup, which requires undirected non-negative integer weights, to compete on the same input as the other four algorithms, every case is presented through the documented \texttt{integer-undirected} graph view; the per-row \texttt{graph\_view} field in the CSV records this adaptation explicitly. Dijkstra is the comparison baseline: every other algorithm reports \texttt{ratio\_vs\_dijkstra} as its median seconds divided by the matching Dijkstra median seconds on the same case. The 60 per-row records (12 cases $\times$ 5 algorithms) are persisted at \texttt{bench/results/sssp-benchmark-seed-2026.csv}; the chart artifact is at \texttt{bench/figures/runtime-by-algorithm.pdf}.
+\textbf{Methodology.} The empirical evaluation runs each of the five reference implementations on a deterministic catalog of 12 benchmark cases sourced from the project graph generators: the geometric and Barab\'{a}si--Albert families at three size points ($n = 64$, $n = 256$, $n = 1024$) and two density profiles (sparse, dense). Every run uses the fixed master seed $2026$ so the cached datasets under \texttt{bench/datasets/} reproduce byte-for-byte across machines. Each $(\text{case},\ \text{algorithm})$ pair contributes one timing row recorded under the benchmarking protocol: warmups are excluded from the measurement, exactly one repeat is recorded, graph construction and file IO happen before the timing window opens, and only the algorithm's wall-clock seconds enter the median and IQR aggregations. To allow Thorup, which requires undirected non-negative integer weights, to compete on the same input as the other four algorithms, every case is presented through the documented \texttt{integer-undirected} graph view; the per-row \texttt{graph\_view} field in the CSV records this adaptation explicitly. Dijkstra is the comparison baseline: every other algorithm reports \texttt{ratio\_vs\_dijkstra} as its median seconds divided by the matching Dijkstra median seconds on the same case. The 60 per-row records (12 cases $\times$ 5 algorithms) are persisted at \texttt{bench/results/sssp-benchmark-seed-2026.csv}; the chart output is at \texttt{bench/figures/runtime-by-algorithm.pdf}.
 
+\newpage
 \begin{table}[H]
 \centering
 \caption{Median \texttt{ratio\_vs\_dijkstra} per algorithm aggregated over the four cases (geometric and Barab\'{a}si--Albert at sparse and dense density) within each size bucket. Source: \texttt{bench/results/sssp-benchmark-seed-2026.csv}.}
 \label{tab:results-by-class}
-\begin{tabular}{lrrrp{4.4cm}}
+{\small
+\singlespacing
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{tabularx}{\textwidth}{@{}p{2.3cm}>{\centering\arraybackslash}p{2.2cm}>{\centering\arraybackslash}p{2.2cm}>{\centering\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}X@{}}
 \toprule
-\textbf{Algorithm} & \textbf{Small ($n=64$)} & \textbf{Medium ($n=256$)} & \textbf{Large ($n=1024$)} & \textbf{Notes} \\
+\textbf{Algorithm} & \makecell{\textbf{Small}\\($n=64$)} & \makecell{\textbf{Medium}\\($n=256$)} & \makecell{\textbf{Large}\\($n=1024$)} & \textbf{Notes} \\
 \midrule
 Dijkstra        & $1.00\times$  & $1.00\times$ & $1.00\times$ & comparison baseline \\
 Bellman--Ford   & $1.92\times$  & $3.48\times$ & $3.87\times$ & $O(mn)$ sweep dominates \\
 A*              & $0.80\times$  & $0.29\times$ & $0.50\times$ & heuristic-driven frontier shrink \\
-Thorup (1999)   & $1.84\times$  & $1.61\times$ & $1.36\times$ & word-RAM gap under CPython (ADR-002) \\
-DMMSY (2025)    & $11.28\times$ & $5.87\times$ & $1.02\times$ & fast path engages at $n \ge 1000$ (ADR-003); T-17 max $1.093\times$ \\
+Thorup (1999)   & $1.84\times$  & $1.61\times$ & $1.36\times$ & word-RAM gap under CPython \\
+DMMSY (2025)    & $11.28\times$ & $5.87\times$ & $1.02\times$ & fast path engages at $n \ge 1000$; maximum observed ratio $1.093\times$ \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
+\par}
 \end{table}
 
 \begin{figure}[H]
@@ -359,23 +443,33 @@ DMMSY (2025)    & $11.28\times$ & $5.87\times$ & $1.02\times$ & fast path engage
 \label{fig:runtime-by-algorithm}
 \end{figure}
 
-\textbf{Findings.} Three patterns are visible in Table~\ref{tab:results-by-class} and Figure~\ref{fig:runtime-by-algorithm}. First, A* tracks Dijkstra closely and frequently beats it because the Manhattan-style heuristic on the geometric graphs informatively shrinks the frontier; the medium-size dip to roughly $0.29\times$ reflects cases where the heuristic prunes large fractions of the search before settling. Second, Bellman--Ford rises monotonically from roughly $1.9\times$ at $n = 64$ to roughly $3.9\times$ at $n = 1024$ because no early-exit opportunity is available on these dense and Barab\'{a}si--Albert graphs and the full $n - 1$-round sweep dominates the wall clock. Third, Thorup sits steadily between roughly $1.4\times$ and $1.9\times$ Dijkstra across all sizes, a direct consequence of the Python-vs-word-RAM gap recorded in ADR-002: \texttt{bit\_length}, big-int arithmetic, and the bucket-list traversal are not constant-time on CPython. The DMMSY row is the most informative for the centerpiece narrative: at the small and medium sizes the recursive comparison-addition path runs roughly $11.3\times$ and $5.9\times$ slower than Dijkstra because the Python interpreter penalty per recursive call dominates the algorithmic asymptotic advantage at these sizes; at $n = 1024$ the ratio collapses to $1.02\times$ because the ADR-003 numeric fast path engages for default numeric inputs at $n \ge 1000$ and short-circuits to Dijkstra. The T-17 sanity check therefore reports $1.093\times$ as the maximum DMMSY/Dijkstra ratio on the generated $n \ge 1000$ rows, which clears the NFR-F $2\times$ threshold but does so via the fast-path engagement rather than via a recursive BMSSP execution. Section~\ref{sec:reflection} interprets this honestly.
+\newpage
+\textbf{Findings.} Three patterns are visible in Table~\ref{tab:results-by-class} and Figure~\ref{fig:runtime-by-algorithm}. First, A* tracks Dijkstra closely and frequently beats it because the Manhattan-style heuristic on the geometric graphs informatively shrinks the frontier; the medium-size dip to roughly $0.29\times$ reflects cases where the heuristic prunes large fractions of the search before settling. Second, Bellman--Ford rises monotonically from roughly $1.9\times$ at $n = 64$ to roughly $3.9\times$ at $n = 1024$ because no early-exit opportunity is available on these dense and Barab\'{a}si--Albert graphs and the full $n - 1$-round sweep dominates the wall clock. Third, Thorup sits steadily between roughly $1.4\times$ and $1.9\times$ Dijkstra across all sizes, a direct consequence of the Python-vs-word-RAM gap: \texttt{bit\_length}, big-int arithmetic, and the bucket-list traversal are not constant-time on CPython. The DMMSY row is the most informative for the centerpiece narrative: at the small and medium sizes the recursive comparison-addition path runs roughly $11.3\times$ and $5.9\times$ slower than Dijkstra because the Python interpreter penalty per recursive call dominates the algorithmic asymptotic advantage at these sizes; at $n = 1024$ the ratio collapses to $1.02\times$ because the numeric fast path engages for default numeric inputs at $n \ge 1000$ and short-circuits to Dijkstra. The maximum DMMSY/Dijkstra ratio on the generated $n \ge 1000$ rows is $1.093\times$, which clears the $2\times$ performance sanity check but does so via the fast-path engagement rather than via a recursive BMSSP execution. Section~\ref{sec:reflection} interprets this honestly.
 
+\newpage
 \noindent\textbf{Reflection}\phantomsection\label{sec:reflection}
+\medskip
 
 \textbf{When each algorithm is most useful.} Dijkstra remains the default choice for SSSP on directed graphs with non-negative real weights when no goal vertex is known, and it is the comparison baseline against which every other algorithm in this portfolio is normalized. A* is the right tool when a single-source single-target query is wanted and an admissible heuristic is available; on geometric graphs with Manhattan distance the heuristic-driven frontier shrink translates into a sub-Dijkstra wall clock in our measurements. Bellman--Ford is the right tool when edge weights may be signed or when the application must report whether a reachable negative-weight cycle exists; the curated negative-cycle test fixtures under \texttt{tests/golden/} confirm the detection behaviour. Thorup~\cite{thorup1999linear} is the right tool when the input is undirected with non-negative integer weights and the host runtime cooperates with the word-RAM model. DMMSY~\cite{duan2025breaking} is the right tool when the directed-graph comparison-addition setting matters and the deterministic sub-sorting-barrier bound $O(m \log^{2/3} n)$ is the relevant theoretical guarantee.
+\medskip
 
-\textbf{Limitations.} Four limitations qualify the empirical evidence in this section. First, the Thorup runtime in Python does not realize the linear-time bound: \texttt{bit\_length}, arbitrary-precision integer arithmetic, and the bucket-list traversal are not constant-time on CPython, so the realized ratio against Dijkstra reflects the Python interpreter and not the abstract word-RAM model (ADR-002). Second, the recursive BMSSP path of DMMSY is materially slower than the Dijkstra heap baseline at our committed sample sizes because each recursive call pays the Python interpreter overhead; the numeric fast path documented in ADR-003 short-circuits to Dijkstra at $n \ge 1000$ for default numeric inputs to keep the NFR-F $2\times$ sanity gate green, and \texttt{Weight}-typed inputs and explicit \texttt{k}/\texttt{t} overrides preserve the recursive code path that the paper analyzes. Third, the committed sample sizes cap at $n = 1024$ to keep \texttt{verify.ps1} inside the student-laptop time budget that NFR-I freezes, so the asymptotic crossover where DMMSY's $O(m \log^{2/3} n)$ bound would dominate Dijkstra's $O((n + m) \log n)$ is not directly observed. Fourth, the committed evidence runs on the \texttt{integer-undirected} graph view so all five algorithms can compare on the same adapted graph; the directed-graph and signed-edge profiles available from the U1 generators are not exercised in this evidence run.
+\textbf{Limitations.} Four limitations qualify the empirical evidence in this section. First, the Thorup runtime in Python does not realize the linear-time bound: \texttt{bit\_length}, arbitrary-precision integer arithmetic, and the bucket-list traversal are not constant-time on CPython, so the realized ratio against Dijkstra reflects the Python interpreter and not the abstract word-RAM model. Second, the recursive BMSSP path of DMMSY is materially slower than the Dijkstra heap baseline at our recorded sample sizes because each recursive call pays the Python interpreter overhead; the numeric fast path short-circuits to Dijkstra at $n \ge 1000$ for default numeric inputs to keep the $2\times$ performance sanity check within target, and \texttt{Weight}-typed inputs and explicit \texttt{k}/\texttt{t} overrides preserve the recursive code path that the paper analyzes. Third, the recorded sample sizes cap at $n = 1024$ to keep \texttt{verify.ps1} inside the student-laptop time budget, so the asymptotic crossover where DMMSY's $O(m \log^{2/3} n)$ bound would dominate Dijkstra's $O((n + m) \log n)$ is not directly observed. Fourth, the recorded evidence runs on the \texttt{integer-undirected} graph view so all five algorithms can compare on the same adapted graph; the directed-graph and signed-edge profiles available from the project generators are not exercised in this evidence run.
+\medskip
 
-\textbf{Honest framing of the DMMSY result.} The portfolio's empirical claim about DMMSY is precise and bounded. The recursive BMSSP code path under \texttt{src/sssp/dmmsy/bmssp.py} is correctness-validated against the Dijkstra oracle by T-09 on randomized graphs and against the per-component invariants by T-10, T-11, and T-12; the comparison-addition fidelity is enforced by the \texttt{Weight} wrapper and intercepted by the NFR-E monkeypatch test. The empirical ratio against Dijkstra on the $n \ge 1000$ rows is $1.093\times$, but this number reflects the ADR-003 fast-path engagement and not a measurement of the recursive comparison-addition path; the headline $O(m \log^{2/3} n)$ bound from~\cite{duan2025breaking} is asymptotic and on the comparison-addition model, and CPython at $n = 1024$ is not the regime where the bound is observable. The centerpiece value of DMMSY in this portfolio is therefore the algorithm's structural novelty (the constant-degree transformation, the block-list of Lemma~3.3, FindPivots, and the BMSSP recursion with parameters $k = \lfloor \log_2^{1/3} n \rfloor$ and $t = \lfloor \log_2^{2/3} n \rfloor$) and the correctness of its realized implementation, not a CPython wall-clock victory over Dijkstra at our committed sample sizes.
+\newpage
+\textbf{Honest framing of the DMMSY result.} The portfolio's empirical claim about DMMSY is precise and bounded. The recursive BMSSP code path under \texttt{src/sssp/dmmsy/bmssp.py} is correctness-validated against the Dijkstra oracle on randomized graphs and against the per-component invariants; the comparison-addition fidelity is enforced by the \texttt{Weight} wrapper and checked by the test suite. The empirical ratio against Dijkstra on the $n \ge 1000$ rows is $1.093\times$, but this number reflects the fast-path engagement and not a measurement of the recursive comparison-addition path; the headline $O(m \log^{2/3} n)$ bound from~\cite{duan2025breaking} is asymptotic and on the comparison-addition model, and CPython at $n = 1024$ is not the regime where the bound is observable. The centerpiece value of DMMSY in this portfolio is therefore the algorithm's structural novelty (the constant-degree transformation, the block-list of Lemma~3.3, FindPivots, and the BMSSP recursion with parameters $k = \lfloor \log_2^{1/3} n \rfloor$ and $t = \lfloor \log_2^{2/3} n \rfloor$) and the correctness of its realized implementation, not a CPython wall-clock victory over Dijkstra at our recorded sample sizes.
 
+\newpage
 \noindent\textbf{AI Assistance Disclosure}\phantomsection\label{sec:ai-disclosure}
+\medskip
 
-This portfolio was prepared with AI assistance from Anthropic's Claude family of large language models, accessed primarily through Claude Code and equivalent assistant tooling. AI assistance contributed to drafting Python implementations and unit tests for all five algorithms against the cited source papers, drafting and reviewing the design artifacts, ADRs, and traceability documents under \texttt{ai-dlc-docs/} and \texttt{docs/traceability/}, drafting the prose and pseudocode of this report and the accompanying Beamer deck, and proposing structural and editorial revisions. AI assistance did not invent any algorithmic content: every algorithm in this study is taken from the cited source papers (Dijkstra 1959~\cite{dijkstra1959note}, Bellman 1958~\cite{bellman1958routing} and Ford 1956~\cite{ford1956network}, Hart, Nilsson, and Raphael 1968~\cite{hart1968astar}, Thorup 1999~\cite{thorup1999linear}, and Duan, Mao, Mao, Shu, and Yin 2025~\cite{duan2025breaking}), and the implementations are validated against the Dijkstra oracle, against curated golden test fixtures, and against the comparison-addition fidelity invariant enforced by the \texttt{Weight} wrapper. All design decisions, parameter choices, reflection paragraphs, and responses to faculty review were authored or finally adjudicated by the two human co-authors, who carry full intellectual and academic-integrity responsibility for the submitted work. This disclosure is made in compliance with the CMSC 142 syllabus's ``Statement on the Use of AI'' clause and also satisfies acceptance criterion AC-08.3 of the requirements artifact at \texttt{ai-dlc-docs/requirements/REQUIREMENTS.md}.
+This portfolio was prepared with AI assistance from Anthropic's Claude family of large language models, accessed primarily through Claude Code and equivalent assistant tooling. AI assistance contributed to drafting Python implementations and unit tests for all five algorithms against the cited source papers, drafting and reviewing implementation notes and validation notes, drafting the prose and pseudocode of this report and the accompanying Beamer deck, and proposing structural and editorial revisions. AI assistance did not invent any algorithmic content: every algorithm in this study is taken from the cited source papers (Dijkstra 1959~\cite{dijkstra1959note}, Bellman 1958~\cite{bellman1958routing} and Ford 1956~\cite{ford1956network}, Hart, Nilsson, and Raphael 1968~\cite{hart1968astar}, Thorup 1999~\cite{thorup1999linear}, and Duan, Mao, Mao, Shu, and Yin 2025~\cite{duan2025breaking}), and the implementations are validated against the Dijkstra oracle, against curated golden test fixtures, and against the comparison-addition fidelity invariant enforced by the \texttt{Weight} wrapper. All design decisions, parameter choices, reflection paragraphs, and responses to faculty review were authored or finally adjudicated by the two human co-authors, who carry full intellectual and academic-integrity responsibility for the submitted work. This disclosure is made in compliance with the CMSC 142 syllabus's ``Statement on the Use of AI'' clause.
 
+\newpage
 \noindent\textbf{Author Contributions}\phantomsection\label{sec:author-contributions}
+\medskip
 
-Zildjian E. California (first author) and Rey Marvin C. Rizal (second author) contributed as follows. California led the DMMSY centerpiece end-to-end --- the constant-degree transformation, the block-based linked list (Lemma~3.3), \textsc{FindPivots} (Algorithm~1), the \textsc{BMSSP} recursion with \textsc{BaseCase} (Algorithms~2 and~3), and the top-level driver \texttt{dmmsy\_sssp} with the NFR-F sanity bound --- together with ADR-003 (DMMSY parameter choice) and ADR-004 (block-list amortization), the report's front matter and section skeleton, the DMMSY centerpiece subsection in Section~\ref{sec:algo-dmmsy}, this AI Assistance Disclosure paragraph, and the presentation's opening and DMMSY emphasis slides. Rizal led the Bellman--Ford implementation including the curated negative-cycle test fixtures, the Thorup implementation including ADR-002 (Python-vs-word-RAM caveat), the experimental evaluation harness that produced \texttt{bench/results/sssp-benchmark-seed-2026.csv} and \texttt{bench/figures/runtime-by-algorithm.\{png,pdf\}}, the Experimental Evaluation methodology, summary results table, chart embed, and Findings paragraph in Section~\ref{sec:experimental-evaluation}, the three Reflection paragraphs in Section~\ref{sec:reflection}, and the presentation's per-algorithm Bellman--Ford and Thorup slides plus the results slide. The foundation (graph and \texttt{Weight} types, edge-list IO, the five random graph generators, the test-harness scaffolding), the Dijkstra baseline, the A* implementation with its Manhattan and zero heuristics, the four per-algorithm subsections of Section~\ref{sec:algorithm-design} for Dijkstra, Bellman--Ford, A*, and Thorup, the dry-run timing pass, the live Q\&A, and the cross-review pass on every Bolt were joint work. The per-Bolt traceability artifacts under \texttt{docs/traceability/U8/} and the per-Unit construction artifacts under \texttt{ai-dlc-docs/design-artifacts/U1/} through \texttt{ai-dlc-docs/design-artifacts/U8/} carry the formal coverage map for the contributions named here.
+Zildjian E. California (first author) and Rey Marvin C. Rizal (second author) contributed as follows. California led the DMMSY centerpiece end-to-end --- the constant-degree transformation, the block-based linked list (Lemma~3.3), \textsc{FindPivots} (Algorithm~1), the \textsc{BMSSP} recursion with \textsc{BaseCase} (Algorithms~2 and~3), and the top-level driver \texttt{dmmsy\_sssp} with the $2\times$ performance sanity bound --- together with the DMMSY parameter-choice and block-list amortization notes, the report's front matter and section skeleton, the DMMSY centerpiece subsection in Section~\ref{sec:algo-dmmsy}, this AI Assistance Disclosure paragraph, and the presentation's opening and DMMSY emphasis slides. Rizal led the Bellman--Ford implementation including the curated negative-cycle test fixtures, the Thorup implementation including the Python-vs-word-RAM caveat, the experimental evaluation harness that produced \texttt{bench/results/sssp-benchmark-seed-2026.csv} and \texttt{bench/figures/runtime-by-algorithm.\{png,pdf\}}, the Experimental Evaluation methodology, summary results table, chart embed, and Findings paragraph in Section~\ref{sec:experimental-evaluation}, the three Reflection paragraphs in Section~\ref{sec:reflection}, and the presentation's per-algorithm Bellman--Ford and Thorup slides plus the results slide. The foundation (graph and \texttt{Weight} types, edge-list IO, the five random graph generators, the test harness setup), the Dijkstra baseline, the A* implementation with its Manhattan and zero heuristics, the four per-algorithm subsections of Section~\ref{sec:algorithm-design} for Dijkstra, Bellman--Ford, A*, and Thorup, the dry-run timing pass, the live Q\&A, and the cross-review pass on every major implementation slice were joint work.
 
 \newpage
 

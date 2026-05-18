@@ -1,6 +1,23 @@
 # Changelog
 
-Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with experimental evaluation, reflection, AI assistance disclosure, and author contributions sections plus a deduplicated bibliography; the presentation deck now has a clean-compiling title/outline spine, baseline-algorithm slides, modern-algorithm centerpiece, benchmark-results slides, reflection/integrity framing, author contributions, Q&A evidence backup, final copy-fit/layout polish, and public-facing terminology cleanup, with dry-run pacing and reproducible submission packaging still pending.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with experimental evaluation, reflection, AI assistance disclosure, author contributions, public-facing terminology cleanup, and a rebuilt PDF; the presentation deck now has a clean-compiling title/outline spine, baseline-algorithm slides, modern-algorithm centerpiece, benchmark-results slides, reflection/integrity framing, author contributions, Q&A evidence backup, final copy-fit/layout polish, and public-facing terminology cleanup, with dry-run pacing and reproducible submission packaging still pending.
+
+## v0.5.6
+
+### Added or Changed
+
+- Cleaned `sssp-modern/report/report.tex` so report comments, implementation notes, runtime caveats, test references, AI-use disclosure, author contributions, and result-table notes use plain public-facing wording instead of private planning shorthand or coded validation labels.
+- Replaced internal note references with reader-facing descriptions such as implementation notes, guard tests, benchmarking protocol, runtime caveat, performance sanity check, and maximum observed ratio.
+- Improved the report's LaTeX layout by adding wrapped title metadata, section page breaks, tighter table sizing, and a bibliography-heading patch that keeps the PDF structure consistent with the manuscript style.
+- Rebuilt `sssp-modern/report/report.pdf` (24 pages, 403036 bytes) from the cleaned LaTeX source.
+- Verified the report source with targeted terminology and coded-label scans; no matches remained in `sssp-modern/report/report.tex`.
+- Verified the report build with `pdflatex -interaction=nonstopmode -halt-on-error report.tex`: exit code 0, with no LaTeX errors. Remaining diagnostics are limited to underfull boxes, empty-link warnings from existing section anchors, and one font-substitution warning in a code-heavy contribution paragraph.
+- Updated `README.md` version, status sentence, report build note, repository layout, and roadmap for this release.
+- Added `docs/version-0.5.6-docs.md` with a detailed walkthrough of the report cleanup, validation evidence, and remaining dry-run/submission work.
+
+### For Deletion
+
+- None from this task context.
 
 ## v0.5.5
 
