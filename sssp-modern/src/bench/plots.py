@@ -739,7 +739,7 @@ def _write_png(path: Path, width: int, height: int, pixels: bytearray) -> None:
 
 
 def _pdf_text(x: float, y: float, text: str, *, size: int) -> str:
-    return f"BT /F1 {size} Tf {x:.2f} {y:.2f} Td ({_pdf_escape(text)}) Tj ET"
+    return f"0 0 0 rg BT /F1 {size} Tf {x:.2f} {y:.2f} Td ({_pdf_escape(text)}) Tj ET"
 
 
 def _pdf_escape(text: str) -> str:

@@ -23,448 +23,482 @@
 % beamerinnerthemeUP.sty, beamerouterthemeUP.sty, beamerthemeUP.sty,
 % main.tex, and references.bib.
 %
-% Current checkout note: this deck exercises the supported
-% \usetheme{UP} interface.
-% Older decks that still mention \usetheme{UU} should be updated to
-% \usetheme{UP}.
-% Branding note: distributed UP-branded assets should follow the UP
-% branding guidelines and are intended for UP constituents/internal
-% use. No official endorsement is implied.
-% This file now serves both as a compile-validation surface and as a
-% starter template for common UP academic use cases.
+% Current checkout note: this deck instantiates the UP theme for the
+% SSSP-modern CMSC 142 portfolio. This version contains the deck spine,
+% baseline-algorithm frames, DMMSY centerpiece, experimental evaluation,
+% reflection, and author-contribution slides; remaining work is limited to
+% timed dry-run refinements.
+% Branding note: distributed UP-branded assets follow the UP branding
+% guidelines and are intended for UP constituents/internal use. No
+% official endorsement is implied.
+
 \documentclass[aspectratio=169]{beamer}
 \usetheme[showlogo,english]{UP}
 
-% -- Metadata -----------------------------------
-\title[Beamer Theme for UP]{Beamer Theme for UP {\footnotesize \quad \textcolor{UPForestGreen}{v1.0.0}}}
-\subtitle{\textbf{A \LaTeX\ slide template for the University of the Philippines System\\for thesis defenses, class reports, and research talks.}}
-\author[J. C. M. Ibarra]{Juan Crisóstomo M. Ibarra}
+% ===========================================
+%  METADATA
+% ===========================================
+\title[SSSP: From Dijkstra to DMMSY]{Single-Source Shortest Paths:\\From Dijkstra to DMMSY}
+\subtitle{\textbf{A CMSC 142 portfolio study comparing five SSSP algorithms in pure-Python stdlib, with DMMSY (2025) as the centerpiece.}}
+\author[California \& Rizal]{%
+  Zildjian E. California\inst{1} \and
+  Rey Marvin C. Rizal\inst{1}%
+}
 \institute{Department of Mathematics, Physics, and Computer Science\\College of Science and Mathematics\\University of the Philippines - Mindanao}
-\venue{UP System Research Colloquium 2026}
+\addinstitute{1}{Department of Mathematics, Physics, and Computer Science,\\College of Science and Mathematics, University of the Philippines - Mindanao}
+\venue{CMSC 142 -- Design and Analysis of Algorithms}
 \date{\today}
+\multiauthor
 
 
 \begin{document}
 % ===========================================
-%  TITLE SLIDES  (single-author, then multi-author)
+%  TITLE SLIDE
 % ===========================================
-
-% -- Single-author title --
 \begin{frame}[plain]
   \titlepage
 \end{frame}
-
-% -- Multi-author / conference title --
-\author[Gómez et al.]{%
-  Mariano C. Gómez\inst{1} \and
-  José A. Burgos\inst{1} \and
-  Jacinto D. Zamora\inst{2}%
-}
-\addinstitute{1}{Department of Computer Science, College of Engineering,\\University of the Philippines - Diliman}
-\addinstitute{2}{Department of Mathematics, Physics, and Computer Science,\\College of Science and Mathematics, University of the Philippines - Mindanao}
-\multiauthor
-\venue{UP System Research Colloquium 2026}
-\begin{frame}[plain]
-  \titlepage
-\end{frame}
-
-% -- Reset to single-author for the rest of the demo --
-\author[J. C. M. Ibarra]{Juan Crisóstomo M. Ibarra}
-\institute{Department of Mathematics, Physics, and Computer Science,\\College of Science and Mathematics, University of the Philippines Mindanao}
-\clearinstitutes
-\singleauthor
+% Speaker note (California): name the paper centerpiece (DMMSY 2025) and
+% the historical arc from Dijkstra 1959. Acknowledge Asc. Prof. Manliguez.
+% Hand off to Rizal at "Five algorithms".
 
 % ===========================================
-%  TABLE OF CONTENTS
+%  OUTLINE
 % ===========================================
 \begin{frame}{Outline}
   \tableofcontents
 \end{frame}
+% Speaker note (California): point at the five sections; flag DMMSY as
+% the centerpiece; flag Experimental Evaluation as the empirical claim.
 
 % ===========================================
-\section{Getting Started}
+\section{Problem and Motivation}
 % ===========================================
 
-\begin{frame}{Using the Theme}
-  Load the theme in your preamble, set your metadata, and compile from the checked-in
-  \texttt{beamer-up/} directory:
+\begin{frame}{Single-Source Shortest Paths}
+  \begin{block}{Problem}
+    Given a weighted graph $G = (V, E)$ with edge weights $w \colon E \to \mathbb{R}$
+    and a source vertex $s \in V$, compute:
+    $$d(v) = \min_{\pi : s \to v} \sum_{e \in \pi} w(e) \qquad \text{for every } v \in V.$$
+  \end{block}
 
   \begin{itemize}
-    \item \texttt{\textbackslash usetheme\{UP\}} --- basic usage
-    \item \texttt{\textbackslash usetheme[showlogo]\{UP\}} --- logo on every slide
-    \item \texttt{\textbackslash usetheme[showlogo,english]\{UP\}} --- English UP logotype
-    \item \texttt{\textbackslash usetheme[showlogo,filipino]\{UP\}} --- Filipino UP logotype
+    \item Edge orientation: directed for Dijkstra, Bellman--Ford, A*, DMMSY; undirected for Thorup.
+    \item Weight class: non-negative reals for Dijkstra / A* / DMMSY; signed reals for Bellman--Ford; non-negative integers for Thorup.
+    \item Output: a distance map $d \colon V \to \mathbb{R}$ (and, optionally, a predecessor map for path reconstruction).
+  \end{itemize}
+\end{frame}
+% Speaker note (California): one-sentence framing, then read the bullet
+% list as the "ground rules" for the comparison. Do not derive the
+% algorithm here -- that is the next section.
+
+\begin{frame}{Five Algorithms Across the Historical Arc}
+  \begin{itemize}
+    \item \textbf{Dijkstra (1959)}~\cite{dijkstra1959note} -- the foundational non-negative-weight algorithm; binary-heap relaxation.
+    \item \textbf{Bellman--Ford (1958)}~\cite{bellman1958routing}, drawing on Ford (1956)~\cite{ford1956network} -- handles negative weights; detects negative cycles.
+    \item \textbf{A\textsuperscript{*} (1968)}~\cite{hart1968astar} -- heuristic-guided search; degenerates to Dijkstra at $h \equiv 0$.
+    \item \textbf{Thorup (1999)}~\cite{thorup1999linear} -- linear-time undirected SSSP for non-negative integer weights in the word-RAM model.
+    \item \textbf{DMMSY (2025)}~\cite{duan2025breaking} -- deterministic $O(m \log^{2/3} n)$ directed SSSP; \alert{the centerpiece of this study}.
   \end{itemize}
 
   \vskip 6pt
-  Recommended compile path: \texttt{latexmk -pdf main.tex}.\\
-  Fallback path: \texttt{pdflatex}, \texttt{biber}, \texttt{pdflatex}, \texttt{pdflatex}.
-
-  \vskip 6pt
-  For a fuller walkthrough, see the repository usage guide at
-  \texttt{docs/usage-guide.md}.
+  We re-implement all five in pure-stdlib CPython 3.11+ and benchmark each against Dijkstra on a documented suite.
 \end{frame}
-
-\begin{frame}{Theme Options at a Glance}
-  \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      \begin{block}{Flags} \footnotesize
-        Pass as options to \texttt{\textbackslash usetheme[...]}\texttt{\{UP\}}:
-        \texttt{showlogo}, \texttt{english}, \texttt{filipino}, \texttt{nl}, \texttt{nosectionpage}.
-      \end{block}
-      \vskip 6pt
-      \begin{block}{Special Frames} \footnotesize
-        \texttt{\textbackslash standoutframe\{...\}} for emphasis.\\
-        \texttt{\textbackslash thankframe\{...\}\{...\}} to close.\\
-        \texttt{\textbackslash sectionframe\{...\}} for a manual divider.
-      \end{block}
-    \end{column}
-    \begin{column}{0.48\textwidth} \footnotesize
-      \begin{block}{Conference Title Support}
-        \texttt{\textbackslash multiauthor} activates the multi-author layout.
-        Use \texttt{\textbackslash addinstitute\{n\}\{Name\}} to list affiliations
-        and \texttt{\textbackslash venue\{...\}} for the event label.
-      \end{block}
-      \vskip 6pt
-      \begin{exampleblock}{Public Contract}
-        The supported public loader is \texttt{UP}.
-      \end{exampleblock}
-    \end{column}
-  \end{columns}
-
-  \vskip 10pt
-  The \texttt{showlogo} flag is active in this demo, so the top-right identity mark
-  remains visible on normal content slides.
-\end{frame}
-
-\begin{frame}{Common Academic Starting Points}
-  \begin{columns}[T]
-    \begin{column}{0.31\textwidth}
-      \begin{exampleblock}{Thesis Defense}
-        Start with the single-author title path, then use section dividers to separate
-        problem, method, results, and contribution.
-      \end{exampleblock}
-    \end{column}
-    \begin{column}{0.31\textwidth}
-      \begin{alertblock}{Class Report}
-        Use concise bullets, tables, and diagrams. The content surfaces are designed to
-        stay readable while keeping the UP visual direction.
-      \end{alertblock}
-    \end{column}
-    \begin{column}{0.31\textwidth}
-      \begin{block}{Research Talk}
-        Use the multi-author title page, optional venue, numbered figures, citations,
-        and bibliography frame for colloquia or conference presentations.
-      \end{block}
-    \end{column}
-  \end{columns}
-
-  \vskip 8pt
-  This checked-in deck now tries to demonstrate all three paths in one reusable source.
-\end{frame}
-
-% Manual section divider demo (same style as automatic \AtBeginSection pages)
-\sectionframe{Manual \textbackslash sectionframe for proposal milestones}
+% Speaker note (California): stress the arc and the centerpiece; flag
+% that DMMSY is what breaks the sorting barrier. Hand off to Rizal.
 
 % ===========================================
-\section{Defense and Class Report Patterns}
+\section{Baseline Algorithms}
 % ===========================================
 
-\begin{frame}{Thesis Defense Narrative}
-  A common defense structure can fit the template without custom macros:
-
-  \begin{enumerate}
-    \item Problem statement and scope
-    \item Related work or institutional context
-    \item Method or system design
-    \item Results, limitations, and next steps
-    \item Contribution summary and committee discussion prompts
-  \end{enumerate}
-
-  \vskip 8pt
-  Use automatic section pages for the major milestones and a manual
-  \texttt{\textbackslash sectionframe\{...\}} when you need an explicit pivot slide.
-\end{frame}
-
-\begin{frame}{Class Report Slide Pattern}
+\begin{frame}{Dijkstra (1959) -- Heap Relaxation}
   \begin{columns}[T]
-    \begin{column}{0.50\textwidth}
-      \begin{block}{Recommended rhythm}
-        \begin{itemize}
-          \item one headline claim per slide
-          \item short bullets instead of paragraph walls
-          \item figures or tables when comparison matters
-          \item one takeaway at the bottom when the result is easy to miss
-        \end{itemize}
+    \begin{column}{0.52\textwidth}
+      \begin{block}{Problem Class}
+        Non-negative weighted directed (or undirected) graphs; single source $s$.
+      \end{block}
+      \begin{block}{Design Idea}
+        Maintain a frontier set $B$ in a min-heap keyed by tentative distance; repeatedly extract the closest unsettled vertex, settle it, and relax its outgoing edges.
       \end{block}
     \end{column}
     \begin{column}{0.44\textwidth}
-      \begin{exampleblock}{Example takeaway}
-        For weekly reports or laboratory updates, a simple title, three bullets, and one
-        chart is often stronger than a dense text slide.
+      \begin{exampleblock}{Complexity}
+        Time $O((n+m) \log n)$; space $O(n)$.
       \end{exampleblock}
-      \vskip 6pt
-      \begin{alertblock}{Migration reminder}
-        If your older deck still uses other themes, consider migrating them to
-        \texttt{\textbackslash usetheme\{UP\}} before reusing this template.
+      \begin{alertblock}{Implementation}
+        \texttt{src/sssp/dijkstra.py}; \texttt{heapq}-backed;\\7 tests, 100\% line coverage.
+        \\Source paper: \cite{dijkstra1959note}.
       \end{alertblock}
     \end{column}
   \end{columns}
 \end{frame}
+% Speaker note (California): "non-negative weights only" is the load-
+% bearing assumption; this is why Bellman-Ford follows. Mention that
+% Dijkstra is the BaseCase oracle for both DMMSY and the benchmark
+% normalization.
 
-% ===========================================
-\section{Colour Palette and Typography}
-% ===========================================
-
-\begin{frame}{UP Institutional Colours}
+\begin{frame}{Bellman--Ford (1958, Ford 1956) -- Edge Relaxation}
   \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      \begin{alertblock}{Core Palette}
-        \textcolor{UPMaroon}{\rule{1em}{1em}}~Maroon \texttt{\#8E1537}\\[3pt]
-        \textcolor{UPForestGreen}{\rule{1em}{1em}}~Forest green \texttt{\#005740}\\[3pt]
-        \textcolor{UPYellow}{\rule{1em}{1em}}~Yellow \texttt{\#FFB81D}\\[3pt]
-        \textcolor{UPBlack}{\rule{1em}{1em}}~Spot black \texttt{\#231F20}\\[3pt]
-        \textcolor{white}{\rule{1em}{1em}}~White \texttt{\#FFFFFF}
+    \begin{column}{0.52\textwidth}
+      \begin{block}{Problem Class}
+        Directed graphs with possibly negative edge weights; detect negative-weight cycles reachable from $s$.
+      \end{block}
+      \begin{block}{Design Idea}
+        Repeat full-graph edge relaxation $n-1$ times; one extra pass diagnoses any reachable negative cycle.
+      \end{block}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{exampleblock}{Complexity}
+        Time $O(n m)$; space $O(n)$.
+      \end{exampleblock}
+      \begin{alertblock}{Implementation}
+        \texttt{src/sssp/bellman\_ford.py}; reports \texttt{NegativeCycleReport};\\100\% line coverage.
+        \\Source papers: \cite{bellman1958routing}, \cite{ford1956network}.
       \end{alertblock}
     \end{column}
-    \begin{column}{0.48\textwidth}
-    \begin{exampleblock}{Usage Rules}
-        \begin{itemize}
-          \item Maroon carries hero surfaces and alerts.
-          \item Forest green supports section structure and examples.
-          \item Yellow stays an accent for rules, bullets, and emphasis.
-          \item Spot black anchors body text and labels on yellow.
-        \end{itemize}
-    \end{exampleblock}
+  \end{columns}
+\end{frame}
+% Speaker note (Rizal): emphasize that BF is the "negative weights"
+% baseline and is reused conceptually inside DMMSY's FindPivots. Note
+% that the curated negative-cycle fixtures verify the detection branch.
+
+\begin{frame}{A\textsuperscript{*} (1968) -- Heuristic Guidance}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \begin{block}{Problem Class}
+        Goal-directed shortest path with a domain-specific heuristic $h(v)$ lower-bounding $d(v, \mathrm{goal})$.
+      \end{block}
+      \begin{block}{Design Idea}
+        Order the frontier by $f(v) = g(v) + h(v)$ instead of $g(v)$ alone; admissible $h$ preserves optimality.
+      \end{block}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{exampleblock}{Complexity}
+        Time $O((n+m) \log n)$ worst case; expands fewer nodes than Dijkstra when $h$ is informative.
+      \end{exampleblock}
+      \begin{alertblock}{Implementation}
+        \texttt{src/sssp/astar.py}, \texttt{src/sssp/heuristics.py}; ships \texttt{manhattan}, \texttt{zero}; \alert{$A^*(h\equiv 0) \equiv$ Dijkstra} tested.
+        Source paper: \cite{hart1968astar}.
+      \end{alertblock}
     \end{column}
   \end{columns}
-
-  \vskip 8pt
-  The public theme stays inside the UP four-colour system as defined by the UP Visual Identity Guidebook~\cite{upvig2017}.
 \end{frame}
+% Speaker note (California): the punchline is that A* generalizes
+% Dijkstra; the zero-heuristic test makes that explicit. Mention the
+% Manhattan grid demo as evidence of admissibility.
 
-\begin{frame}{Typography and Body Copy}
-  \begin{enumerate}
-    \item \textbf{Optima} for titles and headings when locally available
-    \item \textbf{Palatino} for body text on the validated baseline
-    \item \textbf{Avenir/Helvetica} as documented heading fallbacks
-  \end{enumerate}
+\begin{frame}{Thorup (1999) -- Linear-Time Undirected SSSP}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \begin{block}{Problem Class}
+        Undirected graphs with non-negative integer edge weights; word-RAM model.
+      \end{block}
+      \begin{block}{Design Idea}
+        Hierarchical bucket structure exploiting integer weight bits and constant-time word operations to avoid the sorting bottleneck of comparison-based SSSP.
+      \end{block}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{exampleblock}{Complexity}
+        Time $O(n + m)$ in the word-RAM model.
+      \end{exampleblock}
+      \begin{alertblock}{Implementation}
+        \texttt{src/sssp/thorup99.py};\\11 tests, 99\% line coverage.\\\emph{Python $\ne$ word-RAM:} caveat documented in the project notes.\\Source paper: \cite{thorup1999linear}.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+% Speaker note (Rizal): be explicit about the model gap -- Python's
+% Big-Integer arithmetic does not preserve Thorup's linear-time
+% guarantee. The implementation is faithful to the paper, not the
+% asymptotic. This matters for the Experimental Evaluation discussion.
 
-  \vskip 10pt
-  \begin{exampleblock}{Tiered Font Fallback}
-    The theme selects a practical fallback chain rather than assuming every system has
-    the same commercial fonts installed:
-    \begin{itemize}
-      \item \textbf{XeLaTeX/LuaLaTeX:} Optima -> Avenir -> Helvetica
-      \item \textbf{pdfLaTeX:} Helvetica-style sans fallback with Palatino body text
-    \end{itemize}
-  \end{exampleblock}
+% ===========================================
+\section{DMMSY (Centerpiece)}
+% ===========================================
 
-  \vskip 6pt
+\begin{frame}{DMMSY (2025) -- Why It Matters}
+  \small
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \begin{block}{Setting}
+        Directed SSSP with non-negative real weights; labels use only comparison and addition.
+      \end{block}
+      \begin{block}{Barrier}
+        Dijkstra-style methods still pay for global priority ordering, giving the sparse-graph comparison baseline $O(m + n \log n)$.
+      \end{block}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{exampleblock}{DMMSY Claim}
+        Duan--Mao--Mao--Shu--Yin break the barrier deterministically:
+        $$O\!\left(m \log^{2/3} n\right).$$
+      \end{exampleblock}
+      \begin{alertblock}{Portfolio Role}
+        Centerpiece algorithm.\\Source paper: \cite{duan2025breaking}. \medskip \\Implementation: \texttt{src/sssp/dmmsy/}.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+% Speaker note (California): make the model concrete: directed graph,
+% non-negative real weights, only comparisons and additions. The reason
+% this matters is that the paper breaks the sorting-style bottleneck
+% that makes Dijkstra the historical baseline.
+
+\begin{frame}{DMMSY Architecture}
   \footnotesize
-  \textcolor{UPBlack80}{Compile with \texttt{xelatex} or \texttt{lualatex} for Optima when it exists on your system.}
-\end{frame}
+  \begin{center}
+  \resizebox{0.96\textwidth}{!}{%
+  \begin{tikzpicture}[
+    node distance=0.45cm and 0.45cm,
+    box/.style={
+      rectangle, rounded corners=2pt, minimum height=1.0cm,
+      text width=2.8cm, align=center,
+      font=\scriptsize\sffamily, draw=none
+    },
+    arr/.style={->, >=stealth, semithick, UPBlack80}
+  ]
+    \node[box, fill=UPMaroon, text=white] (transform) {Constant-degree\\transform\\{\tiny paper \S2}};
+    \node[box, fill=UPForestGreen, text=white, right=of transform] (pivots) {FindPivots\\{\tiny Algorithm 1}};
+    \node[box, fill=UPYellow, text=UPBlack, right=of pivots] (bmssp) {BMSSP\\recursion\\{\tiny Algorithms 2--3}};
+    \node[box, fill=UPBlack, text=white, right=of bmssp] (blocklist) {BlockList\\frontier\\{\tiny Lemma 3.3}};
 
-\begin{frame}{Lists and Blocks for Class Reports}
-  Itemize now uses a single yellow marker family across levels:
+    \draw[arr] (transform) -- (pivots);
+    \draw[arr] (pivots) -- (bmssp);
+    \draw[arr] (bmssp) -- (blocklist);
+    \draw[arr, dashed, UPForestGreen, shorten <=1pt, shorten >=1pt]
+      (blocklist.north) to[out=135, in=45, looseness=1.25]
+      node[midway, above=1pt, font=\tiny\sffamily, text=UPBlack, fill=white, inner sep=1pt] {bounded pulls}
+      (bmssp.north);
+  \end{tikzpicture}
+  }
+  \end{center}
 
   \begin{itemize}
-    \item First-level items use \textcolor{UPYellow}{yellow} squares
-    \begin{itemize}
-      \item Second-level items stay yellow and shrink with depth
-      \begin{itemize}
-        \item Third-level items keep the same accent hue for consistency
-      \end{itemize}
-    \end{itemize}
-    \item Items can contain \textbf{bold}, \emph{italic}, or \alert{alerted} text
-    \item Keep bullets concise and let spacing carry hierarchy
+    \item \textbf{Transform:} reduce high-degree vertices so work charges uniformly per arc.
+    \item \textbf{FindPivots:} shrink the frontier to useful recursion roots.
+    \item \textbf{BMSSP + BlockList:} solve bounded subproblems without globally sorting every label.
   \end{itemize}
-
-  \vskip 8pt
-  Enumerate uses dark labels on yellow chips:
-  \begin{enumerate}
-    \item Background or objective
-    \item Method or implementation note
-    \item Result or recommendation
-  \end{enumerate}
 \end{frame}
+% Speaker note (California): walk left to right. The key message is not
+% that one component is magic; the speedup comes from making frontier
+% work local and bounded instead of globally sorted.
 
-\begin{frame}{Method Snapshot}
-  The theme supports mathematical typesetting for technical defenses and research talks
-  \cite{tai1994mathematical}:
+\begin{frame}{BMSSP Recursion}
+  \scriptsize
+  \begin{block}{Contract}
+    \textsc{BMSSP}$(G,\ell,B,S,d,k,t)$ solves labels below boundary $B$ from source set $S$, then returns a smaller boundary $B'$ and settled set $U$.
+  \end{block}
 
-$$
-\int_{a}^{b} f(x)\,dx \approx
-\frac{h}{2}\left[f(x_0) + 2\sum_{i=1}^{n-1} f(x_i) + f(x_n)\right]
-$$
-
-  \begin{alertblock}{Note}
-    This is an alert block, suitable for assumptions, constraints, or a result that the
-    audience should not miss during a defense or report.
-  \end{alertblock}
-\end{frame}
-
-% ===========================================
-\section{Research Talk Content}
-% ===========================================
-
-\begin{frame}{Research Workflow Diagram}
-  \begin{figure}
-  \centering
-  \begin{tikzpicture}[
-    node distance=0.6cm and 1.0cm,
-    box/.style={
-      rectangle, rounded corners=3pt,
-      minimum height=2em, minimum width=4.5em,
-      text centered, font=\sffamily\footnotesize,
-      draw=none
-    },
-    arr/.style={->, >=stealth, semithick, UPBlack80},
-    scale=0.95, transform shape
-  ]
-    \node[box, fill=UPYellow, text=UPBlack] (data) {Dataset};
-    \node[box, fill=UPForestGreen, text=white, right=of data] (preprocess) {Pre-process};
-    \node[box, fill=UPMaroon, text=white, right=of preprocess] (model) {Model};
-    \node[box, fill=UPForestGreen!85!UPBlack, text=white, right=of model] (evaluate) {Validate};
-    \node[box, fill=UPMaroon!85!UPBlack, text=white, right=of evaluate] (deploy) {Report};
-
-    \draw[arr] (data) -- (preprocess);
-    \draw[arr] (preprocess) -- (model);
-    \draw[arr] (model) -- (evaluate);
-    \draw[arr] (evaluate) -- (deploy);
-
-    \draw[arr, UPYellow!85!UPBlack, dashed]
-      (evaluate.south) -- ++(0,-0.7) -| node[below, pos=0.25, font=\tiny\sffamily, UPMaroon] {iterate} (model.south);
-  \end{tikzpicture}
-  \caption{Example research pipeline with a numbered figure caption.}
-  \end{figure}
-
-  \vskip 6pt
-  TikZ diagrams stay inside the mapped UP token set.
-  Use \texttt{UPYellow}, \texttt{UPForestGreen}, \texttt{UPMaroon}, and \texttt{UPBlack} directly.
-\end{frame}
-
-\begin{frame}[fragile]{Analysis Script Snippet}
-The \texttt{listings} package is pre-configured with UP colours.
-  Specify the language and write code verbatim:
-
-  \begin{lstlisting}[language=Python]
-def fibonacci(n):
-    """Return the n-th Fibonacci number."""
-    if n <= 1:
-        return n
-    a, b = 0, 1
-    for _ in range(2, n + 1):
-        a, b = b, a + b  # shift window
-    return b
-
-print(fibonacci(10))  # 55
-  \end{lstlisting}
-\end{frame}
-
-% ===========================================
-\section{Tables and Figures}
-% ===========================================
-
-\begin{frame}{Theme Files and Reuse Surface}
-  \begin{table}
-    \centering
-    \caption{Theme files overview}
-    \begin{tabular}{ll}
-      \hline
-      \textbf{File} & \textbf{Purpose} \\
-      \hline
-      \texttt{beamerthemeUP.sty}       & Canonical public theme entry \\
-      \texttt{beamercolorthemeUP.sty}  & Current UP-directed colour theme \\
-      \texttt{beamerinnerthemeUP.sty}  & Title page, blocks, special frames \\
-      \texttt{beamerouterthemeUP.sty}  & Frame title, footline, logo \\
-      \hline
-    \end{tabular}
-  \end{table}
-\end{frame}
-
-\begin{frame}{Results Figure in a Column Layout}
   \begin{columns}[T]
-    \begin{column}{0.46\textwidth}
-      Pair figures with text using \texttt{columns}:
-      \begin{itemize}
-        \item left column carries the narrative
-        \item right column holds the figure
-        \item caption numbering stays automatic
-      \end{itemize}
-
-      \vskip 8pt
-      This pattern works well for class reports, proposal updates, and research results
-      where one compact figure has to sit beside the argument.
+    \begin{column}{0.47\textwidth}
+      \begin{exampleblock}{Level 0}
+        \textsc{BaseCase}: bounded Dijkstra from one source, stopping after $k+1$ discoveries or boundary exhaustion.
+      \end{exampleblock}
     \end{column}
-    \begin{column}{0.50\textwidth}
-      \begin{figure}
-        \centering
-        \begin{tikzpicture}[scale=0.82]
-          \foreach \x/\h/\col in {
-            0.4/1.2/UPMaroon,
-            1.1/2.4/UPMaroon,
-            1.8/1.8/UPMaroon,
-            2.5/2.9/UPForestGreen,
-            3.2/2.1/UPForestGreen,
-            3.9/3.0/UPForestGreen}{
-            \fill[\col!80] (\x,0) rectangle (\x+0.55,\h);
-          }
-          \draw[UPBlack80, thin] (0,0) -- (4.5,0) node[right,font=\tiny\sffamily]{$x$};
-          \draw[UPBlack80, thin] (0,0) -- (0,3.2) node[above,font=\tiny\sffamily]{$y$};
-          \fill[UPMaroon!80]  (0.3,3.05) rectangle (0.65,3.25);
-          \node[right,font=\tiny\sffamily] at (0.7,3.15) {Group A};
-          \fill[UPForestGreen!80] (2.0,3.05) rectangle (2.35,3.25);
-          \node[right,font=\tiny\sffamily] at (2.4,3.15) {Group B};
-        \end{tikzpicture}
-        \caption{Sample bar chart with UP colours.}
-      \end{figure}
+    \begin{column}{0.49\textwidth}
+      \begin{alertblock}{Level > 0}
+        \begin{enumerate}
+          \item \textsc{FindPivots} shrinks $S$ to pivots $P$.
+          \item BlockList pulls bounded batches below $B$.
+          \item Recursive calls settle batches and relax outgoing edges.
+        \end{enumerate}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+
+  \vskip 4pt
+  \textbf{Key idea:} local bounded batches replace one global sorted frontier.
+\end{frame}
+% Speaker note (California): do not read this as code. Explain the
+% recursion contract: each call solves only what is below a boundary,
+% returns a separator, and lets the next call continue from there.
+
+\begin{frame}{Parameters, Bound, and Implementation Caveat}
+  \footnotesize
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Paper Parameterization}
+        \[
+          k = \left\lfloor (\log_2 n)^{1/3} \right\rfloor
+        \]
+        \[
+          t = \left\lfloor (\log_2 n)^{2/3} \right\rfloor,\qquad
+          \ell_{\max} = \left\lceil \frac{\log_2 n}{t} \right\rceil
+        \]
+        Balances pivot work, recursion depth, and block-list operations.
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Asymptotic Result}
+        Deterministic directed SSSP:\medskip
+        \[
+          O\!\left(m \log^{2/3} n\right)\ \text{time}
+        \]
+        \\Space stays $O(n+m)$.
+      \end{block}
+      \begin{alertblock}{Python Implementation Boundary}
+        CPython recursion overhead is real. Default large numeric benchmark runs use the documented shortcut; \texttt{Weight} inputs and explicit parameters exercise recursive BMSSP.
+      \end{alertblock}
     \end{column}
   \end{columns}
 \end{frame}
+% Speaker note (California): separate theory from implementation
+% honestly. The paper result is the centerpiece; the portfolio proves a
+% faithful implementation surface while acknowledging CPython overhead.
+
+% ===========================================
+\section{Experimental Evaluation}
+% ===========================================
+
+\begin{frame}{Benchmark Protocol}
+  \small
+  \begin{columns}[T]
+    \begin{column}{0.46\textwidth}
+      \begin{block}{Dataset}
+        Seed 2026; 12 benchmark cases; geometric and Barabasi--Albert families at
+        $n \in \{64, 256, 1024\}$ with sparse/dense profiles.
+      \end{block}
+      \begin{block}{Timing}
+        60 CSV rows; setup and file IO excluded; one recorded repeat per
+        case-algorithm pair; Dijkstra is the normalization baseline.
+      \end{block}
+    \end{column}
+    \begin{column}{0.50\textwidth}
+      \begin{center}
+        \includegraphics[width=\linewidth,height=0.56\textheight,keepaspectratio]{../bench/figures/runtime-by-algorithm.pdf}
+      \end{center}
+    \end{column}
+  \end{columns}
+\end{frame}
+% Speaker note (Rizal): establish what was measured before interpreting
+% the chart. The important honesty point is that Thorup uses the
+% integer-undirected graph view and that Dijkstra normalizes every row.
+
+\begin{frame}{Results Against Dijkstra}
+  \scriptsize
+  \begin{block}{Median runtime ratio by size bucket}
+    \begin{center}
+    \begin{tabular}{lccc}
+      \hline
+      Algorithm & Small $n=64$ & Medium $n=256$ & Large $n=1024$ \\
+      \hline
+      Dijkstra & $1.00\times$ & $1.00\times$ & $1.00\times$ \\
+      Bellman--Ford & $1.92\times$ & $3.48\times$ & $3.87\times$ \\
+      A\textsuperscript{*} & $0.80\times$ & $0.29\times$ & $0.50\times$ \\
+      Thorup (1999) & $1.84\times$ & $1.61\times$ & $1.36\times$ \\
+      DMMSY (2025) & $11.28\times$ & $5.87\times$ & $1.02\times$ \\
+      \hline
+    \end{tabular}
+    \end{center}
+  \end{block}
+
+  \begin{itemize}
+    \item A* benefits from an informative geometric heuristic; Bellman--Ford pays for repeated edge sweeps.
+    \item Thorup stays above Dijkstra because CPython is not the word-RAM model.
+    \item DMMSY passes the large-size runtime sanity check: max DMMSY/Dijkstra ratio is \texttt{1.093x} for $n \ge 1000$.
+  \end{itemize}
+\end{frame}
+% Speaker note (Rizal): read only the pattern, not every cell. Close
+% with the precise DMMSY caveat: the large-size ratio passes because
+% default numeric inputs use the documented shortcut.
+
+% ===========================================
+\section{Reflection and Author Contributions}
+% ===========================================
+
+\begin{frame}{Reflection and Integrity}
+  \footnotesize
+  \begin{block}{What The Comparison Teaches}
+    No SSSP algorithm dominates every setting; the right choice depends on
+    weight signs, direction, integer assumptions, heuristic quality, and runtime model.
+  \end{block}
+
+  \begin{alertblock}{Honest DMMSY Framing}
+    The centerpiece is the deterministic $O(m \log^{2/3} n)$ comparison-addition
+    bound. CPython does not show a recursive BMSSP wall-clock win; large numeric
+    runs use the documented shortcut to keep the runtime check passing.
+  \end{alertblock}
+
+  \begin{exampleblock}{AI Assistance Disclosure}
+    AI tools assisted with drafting, tests, supporting files, and prose. The source
+    papers, validation evidence, and final judgments remain the human authors'
+    responsibility.
+  \end{exampleblock}
+\end{frame}
+% Speaker note (California): summarize usefulness and limitations
+% without overclaiming. Rizal can add that the benchmark evidence is
+% useful because it records what CPython actually does.
+
+\begin{frame}{Author Contributions}
+  \scriptsize
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Zildjian E. California}
+        \begin{itemize}
+          \item Repository foundation, root documentation, graph/weight/IO/generator base, Dijkstra, A*, DMMSY, benchmarks, report, and deck authorship.
+          \item DMMSY centerpiece: transform, block list, pivots, BMSSP, driver, written rationale, and presentation opening/centerpiece.
+          \item Current commit history: authored the foundation, Dijkstra/A*, DMMSY stack, benchmark files, report manuscript, and deck scaffold.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Rey Marvin C. Rizal}
+        \begin{itemize}
+          \item Bellman--Ford implementation with negative-cycle reporting; assigned contribution completed.
+          \item Thorup 1999 runtime-model work and hierarchical-bucket SSSP contribution; assigned contribution completed.
+          \item Presentation ownership: Bellman--Ford, Thorup, and experimental-results delivery; joint Q\&A with California.
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+
+  \vskip 2pt
+  \begin{center}
+    \footnotesize Contribution split follows the provided commit history\\and the completed Rizal-assigned contributions.
+  \end{center}
+\end{frame}
+% Speaker note (joint): use this slide to make authorship legible,
+% not ceremonial. California states the commit-history basis; Rizal
+% confirms the assigned Bellman-Ford and Thorup contributions.
 
 % -- Standout --------------------------
 \standoutframe{Honor. Excellence. Service.}
 
-% ===========================================
-\section{Closing}
-% ===========================================
-
-\begin{frame}{Compile and Distribution Notes}
-  \begin{itemize}
-    \item Preferred command from \texttt{beamer-up/}: \texttt{latexmk -pdf main.tex}
-    \item Fallback command chain: \texttt{pdflatex}, \texttt{biber}, \texttt{pdflatex}, \texttt{pdflatex}
-    \item Public quick-start and migration notes live in \texttt{README.md} and \texttt{docs/usage-guide.md}
-    \item UP-branded assets remain subject to branding guidance beyond the software license
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Summary}
-  \begin{enumerate}
-    \item Supported public loader: \texttt{\textbackslash usetheme\{UP\}}
-    \item Starter patterns now cover thesis defenses, class reports, and research talks
-    \item Special frames: \texttt{\textbackslash standoutframe}, \texttt{\textbackslash thankframe}, \texttt{\textbackslash sectionframe}
-    \item Options: \texttt{showlogo}, \texttt{english}, \texttt{filipino}, \texttt{nl}, \texttt{nosectionpage}
-    \item Multi-author slides: \texttt{\textbackslash addinstitute\{n\}\{Name\}} + \texttt{\textbackslash multiauthor}
-    \item Public usage and migration guidance now live alongside the checked-in showcase source
-  \end{enumerate}
-
-  \vskip 12pt
-  {\small Source and documentation: \url{https://github.com/zcalifornia-ph/beamer-up}}
-\end{frame}
-
 % -- Closing -----------------------------------
-\thankframe{Feedback?}{Please contribute \\ \url{https://github.com/zcalifornia-ph/beamer-up}}
+\thankframe{Questions?}{%
+  Zildjian E. California \quad github.com/zcalifornia-ph\\
+  Rey Marvin C. Rizal \quad github.com/marverickdev\\
+  \url{https://github.com/zcalifornia-ph/sssp-modern}%
+}
+% Speaker note (joint): leave the thankframe up during Q&A; both
+% authors field questions; California fields DMMSY questions, Rizal
+% fields experimental-evaluation questions.
 
 % -- references -----------------------------
 \begin{frame}[allowframebreaks]{References}
-  The Beamer class~\cite{tantau2004} provides the foundation.
-  The UP Visual Identity Guidebook~\cite{upvig2017} defines the colour palette,
-  typography, and logo usage rules.
+  The five source papers cited above are listed below; the Beamer class~\cite{tantau2004} and the UP Visual Identity Guidebook~\cite{upvig2017} are credited for the deck infrastructure.
 
   \vskip 6pt
   \printbibliography
 \end{frame}
 
-\end{document}
+\begin{frame}{Backup: Result Evidence}
+  \footnotesize
+  \begin{block}{Files to cite during Q\&A}
+    \begin{itemize}
+      \item CSV: \texttt{bench/results/sssp-benchmark-seed-2026.csv}
+      \item Figure: \texttt{bench/figures/runtime-by-algorithm.\{pdf,png\}}
+      \item Tests: 147-test suite passed after benchmark plot generation; the runtime check records max DMMSY/Dijkstra ratio \texttt{1.093x} for $n \ge 1000$.
+      \item Report anchors: Table \texttt{tab:results-by-class} and Figure \texttt{fig:runtime-by-algorithm}.
+    \end{itemize}
+  \end{block}
 
+  \begin{alertblock}{If asked why DMMSY is still the centerpiece}
+    The portfolio centers the algorithmic result and implementation structure,
+    not a CPython timing victory: correctness and comparison-addition fidelity
+    are validated separately from the fast-path benchmark policy.
+  \end{alertblock}
+\end{frame}
+% Speaker note (joint): this is not part of the timed talk. Use it only
+% if the Q&A asks for paths, test evidence, or the DMMSY timing caveat.
+
+\end{document}
