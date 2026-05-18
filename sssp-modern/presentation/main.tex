@@ -38,15 +38,15 @@
 % ===========================================
 %  METADATA
 % ===========================================
-\title[SSSP: Dijkstra $\to$ DMMSY]{Single-Source Shortest Paths: From Dijkstra to DMMSY}
-\subtitle{\textbf{A CMSC 142 portfolio study comparing five SSSP algorithms in pure-Python stdlib,\\with DMMSY (2025) as the centerpiece.}}
+\title[SSSP: From Dijkstra to DMMSY]{Single-Source Shortest Paths:\\From Dijkstra to DMMSY}
+\subtitle{\textbf{A CMSC 142 portfolio study comparing five SSSP algorithms in pure-Python stdlib, with DMMSY (2025) as the centerpiece.}}
 \author[California \& Rizal]{%
   Zildjian E. California\inst{1} \and
   Rey Marvin C. Rizal\inst{1}%
 }
 \institute{Department of Mathematics, Physics, and Computer Science\\College of Science and Mathematics\\University of the Philippines - Mindanao}
 \addinstitute{1}{Department of Mathematics, Physics, and Computer Science,\\College of Science and Mathematics, University of the Philippines - Mindanao}
-\venue{CMSC 142 Portfolio Presentation -- Assoc.\ Prof.\ Cinmayii G. Manliguez, Ph.D.}
+\venue{CMSC 142 -- Design and Analysis of Algorithms}
 \date{\today}
 \multiauthor
 
@@ -78,7 +78,7 @@
 \begin{frame}{Single-Source Shortest Paths}
   \begin{block}{Problem}
     Given a weighted graph $G = (V, E)$ with edge weights $w \colon E \to \mathbb{R}$
-    and a source vertex $s \in V$, compute
+    and a source vertex $s \in V$, compute:
     $$d(v) = \min_{\pi : s \to v} \sum_{e \in \pi} w(e) \qquad \text{for every } v \in V.$$
   \end{block}
 
@@ -114,10 +114,10 @@
 \begin{frame}{Dijkstra (1959) -- Heap Relaxation}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
-      \begin{block}{Problem class}
+      \begin{block}{Problem Class}
         Non-negative weighted directed (or undirected) graphs; single source $s$.
       \end{block}
-      \begin{block}{Design idea}
+      \begin{block}{Design Idea}
         Maintain a frontier set $B$ in a min-heap keyed by tentative distance; repeatedly extract the closest unsettled vertex, settle it, and relax its outgoing edges.
       \end{block}
     \end{column}
@@ -126,8 +126,8 @@
         Time $O((n+m) \log n)$; space $O(n)$.
       \end{exampleblock}
       \begin{alertblock}{Implementation}
-        \texttt{src/sssp/dijkstra.py}; \texttt{heapq}-backed; 7 tests, 100\% line coverage.
-        Source paper: \cite{dijkstra1959note}.
+        \texttt{src/sssp/dijkstra.py}; \texttt{heapq}-backed;\\7 tests, 100\% line coverage.
+        \\Source paper: \cite{dijkstra1959note}.
       \end{alertblock}
     \end{column}
   \end{columns}
@@ -140,10 +140,10 @@
 \begin{frame}{Bellman--Ford (1958, Ford 1956) -- Edge Relaxation}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
-      \begin{block}{Problem class}
+      \begin{block}{Problem Class}
         Directed graphs with possibly negative edge weights; detect negative-weight cycles reachable from $s$.
       \end{block}
-      \begin{block}{Design idea}
+      \begin{block}{Design Idea}
         Repeat full-graph edge relaxation $n-1$ times; one extra pass diagnoses any reachable negative cycle.
       \end{block}
     \end{column}
@@ -152,8 +152,8 @@
         Time $O(n m)$; space $O(n)$.
       \end{exampleblock}
       \begin{alertblock}{Implementation}
-        \texttt{src/sssp/bellman\_ford.py}; reports \texttt{NegativeCycleReport}; 100\% line coverage.
-        Source papers: \cite{bellman1958routing}, \cite{ford1956network}.
+        \texttt{src/sssp/bellman\_ford.py}; reports \texttt{NegativeCycleReport};\\100\% line coverage.
+        \\Source papers: \cite{bellman1958routing}, \cite{ford1956network}.
       \end{alertblock}
     \end{column}
   \end{columns}
@@ -165,10 +165,10 @@
 \begin{frame}{A\textsuperscript{*} (1968) -- Heuristic Guidance}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
-      \begin{block}{Problem class}
+      \begin{block}{Problem Class}
         Goal-directed shortest path with a domain-specific heuristic $h(v)$ lower-bounding $d(v, \mathrm{goal})$.
       \end{block}
-      \begin{block}{Design idea}
+      \begin{block}{Design Idea}
         Order the frontier by $f(v) = g(v) + h(v)$ instead of $g(v)$ alone; admissible $h$ preserves optimality.
       \end{block}
     \end{column}
@@ -190,10 +190,10 @@
 \begin{frame}{Thorup (1999) -- Linear-Time Undirected SSSP}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
-      \begin{block}{Problem class}
+      \begin{block}{Problem Class}
         Undirected graphs with non-negative integer edge weights; word-RAM model.
       \end{block}
-      \begin{block}{Design idea}
+      \begin{block}{Design Idea}
         Hierarchical bucket structure exploiting integer weight bits and constant-time word operations to avoid the sorting bottleneck of comparison-based SSSP.
       \end{block}
     \end{column}
@@ -202,8 +202,7 @@
         Time $O(n + m)$ in the word-RAM model.
       \end{exampleblock}
       \begin{alertblock}{Implementation}
-        \texttt{src/sssp/thorup99.py}; 11 tests, 99\% line coverage.
-        \emph{Python $\ne$ word-RAM:} documented in ADR-002. Source paper: \cite{thorup1999linear}.
+        \texttt{src/sssp/thorup99.py};\\11 tests, 99\% line coverage.\\\emph{Python $\ne$ word-RAM:} documented in ADR-002.\\Source paper: \cite{thorup1999linear}.
       \end{alertblock}
     \end{column}
   \end{columns}
@@ -229,12 +228,12 @@
       \end{block}
     \end{column}
     \begin{column}{0.44\textwidth}
-      \begin{exampleblock}{DMMSY claim}
+      \begin{exampleblock}{DMMSY Claim}
         Duan--Mao--Mao--Shu--Yin break the barrier deterministically:
         $$O\!\left(m \log^{2/3} n\right).$$
       \end{exampleblock}
-      \begin{alertblock}{Portfolio role}
-        Centerpiece algorithm. Source paper: \cite{duan2025breaking}. Implementation: \texttt{src/sssp/dmmsy/}.
+      \begin{alertblock}{Portfolio Role}
+        Centerpiece algorithm.\\Source paper: \cite{duan2025breaking}. \medskip \\Implementation: \texttt{src/sssp/dmmsy/}.
       \end{alertblock}
     \end{column}
   \end{columns}
@@ -265,7 +264,10 @@
     \draw[arr] (transform) -- (pivots);
     \draw[arr] (pivots) -- (bmssp);
     \draw[arr] (bmssp) -- (blocklist);
-    \draw[arr, bend left=25, UPForestGreen] (blocklist.north) to node[above, font=\tiny\sffamily, text=UPBlack] {bounded pulls} (bmssp.north);
+    \draw[arr, dashed, UPForestGreen, shorten <=1pt, shorten >=1pt]
+      (blocklist.north) to[out=135, in=45, looseness=1.25]
+      node[midway, above=1pt, font=\tiny\sffamily, text=UPBlack, fill=white, inner sep=1pt] {bounded pulls}
+      (bmssp.north);
   \end{tikzpicture}
   }
   \end{center}
@@ -293,7 +295,7 @@
       \end{exampleblock}
     \end{column}
     \begin{column}{0.49\textwidth}
-      \begin{alertblock}{Level $>0$}
+      \begin{alertblock}{Level > 0}
         \begin{enumerate}
           \item \textsc{FindPivots} shrinks $S$ to pivots $P$.
           \item BlockList pulls bounded batches below $B$.
@@ -314,7 +316,7 @@
   \footnotesize
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
-      \begin{exampleblock}{Paper parameterization}
+      \begin{exampleblock}{Paper Parameterization}
         \[
           k = \left\lfloor (\log_2 n)^{1/3} \right\rfloor
         \]
@@ -326,14 +328,14 @@
       \end{exampleblock}
     \end{column}
     \begin{column}{0.48\textwidth}
-      \begin{block}{Asymptotic result}
-        Deterministic directed SSSP:
+      \begin{block}{Asymptotic Result}
+        Deterministic directed SSSP:\medskip
         \[
           O\!\left(m \log^{2/3} n\right)\ \text{time}
         \]
-        Space stays $O(n+m)$.
+        \\Space stays $O(n+m)$.
       \end{block}
-      \begin{alertblock}{Python implementation boundary}
+      \begin{alertblock}{Python Implementation Boundary}
         CPython recursion overhead is real. Default large numeric benchmark runs use the documented fast path; \texttt{Weight} inputs and explicit parameters exercise recursive BMSSP.
       \end{alertblock}
     \end{column}
@@ -405,18 +407,18 @@
 
 \begin{frame}{Reflection and Integrity}
   \footnotesize
-  \begin{block}{What the comparison teaches}
+  \begin{block}{What The Comparison Teaches}
     No SSSP algorithm dominates every setting; the right choice depends on
     weight signs, direction, integer assumptions, heuristic quality, and runtime model.
   \end{block}
 
-  \begin{alertblock}{Honest DMMSY framing}
+  \begin{alertblock}{Honest DMMSY Framing}
     The centerpiece is the deterministic $O(m \log^{2/3} n)$ comparison-addition
     bound. CPython does not show a recursive BMSSP wall-clock win; large numeric
     runs use the ADR-003 fast path to keep NFR-F green.
   \end{alertblock}
 
-  \begin{exampleblock}{AI assistance disclosure}
+  \begin{exampleblock}{AI Assistance Disclosure}
     AI tools assisted with drafting, tests, artifacts, and prose. The source
     papers, validation evidence, and final judgments remain the human authors'
     responsibility.
@@ -451,7 +453,7 @@
 
   \vskip 2pt
   \begin{center}
-    \footnotesize Contribution split follows the provided commit history and the closed Rizal-assigned issues \#4 and \#5.
+    \footnotesize Contribution split follows the provided commit history\\and the closed Rizal-assigned issues \#4 and \#5.
   \end{center}
 \end{frame}
 % Speaker note (joint): use this slide to make authorship legible,
@@ -463,9 +465,9 @@
 
 % -- Closing -----------------------------------
 \thankframe{Questions?}{%
-  Zildjian E. California \quad zecalifornia.com\\
-  Rey Marvin C. Rizal\\
-  Repository: \url{https://github.com/zcalifornia-ph/sssp-modern}%
+  Zildjian E. California \quad github.com/zcalifornia-ph\\
+  Rey Marvin C. Rizal \quad github.com/marverickdev\\
+  \url{https://github.com/zcalifornia-ph/sssp-modern}%
 }
 % Speaker note (joint): leave the thankframe up during Q&A; both
 % authors field questions; California fields DMMSY questions, Rizal

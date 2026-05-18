@@ -1,6 +1,22 @@
 # Changelog
 
-Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with experimental evaluation, reflection, AI assistance disclosure, and author contributions sections plus a deduplicated bibliography; the presentation deck now has a clean-compiling title/outline spine, baseline-algorithm slides, modern-algorithm centerpiece, benchmark-results slides, reflection/integrity framing, author contributions, and Q&A evidence backup, with dry-run pacing and reproducible submission packaging still pending.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with experimental evaluation, reflection, AI assistance disclosure, and author contributions sections plus a deduplicated bibliography; the presentation deck now has a clean-compiling title/outline spine, baseline-algorithm slides, modern-algorithm centerpiece, benchmark-results slides, reflection/integrity framing, author contributions, Q&A evidence backup, and final copy-fit/layout polish, with dry-run pacing and reproducible submission packaging still pending.
+
+## v0.5.4
+
+### Added or Changed
+
+- Polished `sssp-modern/presentation/main.tex` for final deck readability: wrapped the title metadata more cleanly, simplified the venue line, normalized block-heading casing, and added deliberate line breaks in dense implementation notes.
+- Reworked the modern-algorithm architecture diagram's bounded-pulls return path into a dashed labeled loop so the annotation no longer collides with the surrounding nodes.
+- Tightened the parameter/bound, reflection, contribution, and closing frames with cleaner line breaks, better slide fit, and clearer public contact links.
+- Rebuilt `sssp-modern/presentation/main.pdf` (26 pages, 1252178 bytes) from the polished Beamer source.
+- Verified the presentation build with `latexmk -pdf -interaction=nonstopmode main.tex`: exit code 0, no LaTeX errors, no undefined citations, no undefined references, no overfull hboxes/vboxes, no LaTeX warnings, and no hyperref/pdfTeX warnings. Remaining underfull hbox diagnostics are limited to compact code-heavy slide paragraphs.
+- Updated `README.md` version, status sentence, quick-start presentation build note, repository layout, and roadmap for this release.
+- Added `docs/version-0.5.4-docs.md` with a detailed walkthrough of the presentation copy-fit/layout pass, validation evidence, and remaining dry-run/submission work.
+
+### For Deletion
+
+- None from this task context.
 
 ## v0.5.3
 
