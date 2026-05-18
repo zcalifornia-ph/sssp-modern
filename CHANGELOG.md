@@ -1,6 +1,24 @@
 # Changelog
 
-Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with experimental evaluation, reflection, role-specific AI assistance disclosure, author contributions, public-facing terminology cleanup, and a rebuilt PDF; the presentation deck now has a clean-compiling title/outline spine, baseline-algorithm slides, modern-algorithm centerpiece, benchmark-results slides, a result-evidence slide in the main talk flow with a repository citation, reflection/integrity framing, author contributions, final copy-fit/layout polish, and public-facing terminology cleanup, with dry-run pacing and reproducible submission packaging still pending.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with evidence-focused opening framing, experimental evaluation, reflection, role-specific AI assistance disclosure, author contributions, public-facing terminology cleanup, and a rebuilt PDF; the presentation deck now has a clean-compiling title/outline spine, baseline-algorithm slides, modern-algorithm centerpiece, benchmark-results slides, a result-evidence slide in the main talk flow with a repository citation, reflection/integrity framing, author contributions, final copy-fit/layout polish, and public-facing terminology cleanup, with dry-run pacing and reproducible submission packaging still pending.
+
+## v0.5.9
+
+### Added or Changed
+
+- Updated the written report header in `sssp-modern/report/report.tex` so the course title, instructor line, report date, and short title are presented with clearer hierarchy.
+- Added an opening evidence maxim to the written report and expanded the introduction with a short framing section that distinguishes asserted claims from benchmark-backed and source-backed evidence.
+- Added `sssp-modern/report/references.bib` with the local report bibliography entry needed by the new opening citation, and wired the report build to read both the shared paper bibliography and the local report bibliography.
+- Replaced one fragile section-number reference with the written section title so the source remains readable even when report layout changes.
+- Reflowed the AI assistance disclosure with local paragraph spacing while preserving the same role-specific disclosure and human responsibility statement.
+- Rebuilt `sssp-modern/report/report.pdf` (25 pages, 406577 bytes) from the revised LaTeX source.
+- Verified the report build with `latexmk -pdf -interaction=nonstopmode -f report.tex`: exit code 0, with `report.pdf` reported up to date.
+- Updated `README.md` version, status sentence, report build note, repository layout, and roadmap for this release.
+- Added `docs/version-0.5.9-docs.md` with a detailed walkthrough of the report evidence-framing update and validation evidence.
+
+### For Deletion
+
+- None from this task context.
 
 ## v0.5.8
 

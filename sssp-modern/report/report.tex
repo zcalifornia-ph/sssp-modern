@@ -63,9 +63,9 @@
 
 % ---------- Header Block ----------
 \noindent\begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
-\textbf{Zildjian E. California} & CMSC 142 -- Portfolio Study \\
-\textbf{Rey Marvin C. Rizal} & \reportshorttitle{} \\
-\reportdate{} & Assoc.\ Prof.\ Cinmayii G. Manliguez, Ph.D. \\
+\textbf{Zildjian E. California} & \textbf{CMSC 142 -- Design and Analysis of Algorithms} \\
+\textbf{Rey Marvin C. Rizal} & \textbf{Assoc.\ Prof.\ Cinmayii G. Manliguez, Ph.D.} \\
+\reportdate{} & \reportshorttitle{} \\
 \end{tabular*}
 \medskip
 
@@ -82,9 +82,20 @@
 % Author Contributions. Content blocks were completed during report drafting
 % and revision.
 
+\begin{center}
+``mere allegation is not evidence and is not equivalent to proof, the allegation is essentially self-serving and devoid of any evidentiary weight''~\cite{sillano2025}.
+\end{center}
+
 \noindent\textbf{Introduction}\phantomsection\label{sec:introduction}
 \medskip
 
+This passage, restated by Philippine Supreme Court Associate Justice Samuel H. Gaerlan as a basic rule of evidence in a Third Division labor case that itself turned on the disputed ownership of five computer programs, is presented as a moral and observational maxim that draws the line between what a claimant asserts and what a record can actually be made to carry.
+
+In the context of our algorithms portfolio, the same maxim governs. The temptation in compiling a study around a 2025 breakthrough, Duan, Mao, Mao, Shu, and Yin's deterministic sub-sorting-barrier bound for single-source shortest paths, would be to allege a corresponding empirical victory over Dijkstra on the recorded benchmarks, and the temptation in implementing five algorithms in pure-standard-library CPython would be to allege fidelity to the abstract computational models the source papers analyze. This portfolio resists both.
+
+The asymptotic bounds are reported from the source papers and the implementations are correctness-validated against a Dijkstra oracle and curated golden fixtures; every claim about realized runtime, however, is held to a stricter standard, reported only where the benchmark harness can be made to carry it, and the gaps between abstract model and CPython reality are named explicitly rather than papered over.
+
+\newpage
 The single-source shortest-path (SSSP) problem is one of the foundational problems in algorithmic graph theory. Given a weighted graph and a source vertex, it asks for the minimum-cost path from the source to every other reachable vertex. This portfolio compiles five SSSP algorithms along the historical arc from Dijkstra's 1959 greedy method~\cite{dijkstra1959note} to the deterministic comparison-addition algorithm of Duan, Mao, Mao, Shu, and Yin (DMMSY) presented at STOC~2025~\cite{duan2025breaking}. Between these two endpoints we examine the dynamic-programming approach of Bellman~\cite{bellman1958routing} and Ford~\cite{ford1956network} (1956--1958), the heuristic-guided A* search of Hart, Nilsson, and Raphael~\cite{hart1968astar} (1968), and Thorup's hierarchical-bucket algorithm for undirected non-negative integer-weighted graphs~\cite{thorup1999linear} (1999). DMMSY is the centerpiece of this study: it is the first deterministic SSSP algorithm to break the long-standing $O(m + n \log n)$ sorting barrier on directed graphs with real non-negative weights, achieving $O\!\left(m \cdot \log^{2/3} n\right)$ on the comparison-addition model.
 
 \medskip
@@ -94,7 +105,7 @@ The single-source shortest-path (SSSP) problem is one of the foundational proble
 Let $G = (V, E, w)$ be a weighted graph with $|V| = n$ vertices and $|E| = m$ edges, equipped with a weight function $w : E \rightarrow \mathbb{R}$. Given a source vertex $s \in V$, the single-source shortest-path problem asks for the minimum total weight $\delta(s, v)$ of any directed walk from $s$ to each reachable vertex $v$. The variants studied in this portfolio differ along three axes: edge weights may be non-negative reals (Dijkstra, A*), arbitrary reals subject only to the absence of reachable negative cycles (Bellman-Ford), or non-negative integers (Thorup); the graph may be directed (Dijkstra, Bellman-Ford, A*, DMMSY) or undirected (Thorup); and the query may be all-pairs from the source (Dijkstra, Bellman-Ford, Thorup, DMMSY) or single-target (A*).
 
 \newpage
-Across all five algorithms we report only reachable distances; unreachable vertices are represented by absence from the result, matching the contract of the Python reference implementations in Section~\ref{sec:implementation}.
+Across all five algorithms we report only reachable distances; unreachable vertices are represented by absence from the result, matching the contract of the Python reference implementations in the \textit{Implementation of Single-Source Shortest-Path Algorithms} section.
 
 \medskip
 \noindent\textbf{Algorithm Design}\phantomsection\label{sec:algorithm-design}
@@ -463,19 +474,20 @@ DMMSY (2025)    & $11.28\times$ & $5.87\times$ & $1.02\times$ & fast path engage
 \noindent\textbf{AI Assistance Disclosure}\phantomsection\label{sec:ai-disclosure}
 \medskip
 
+\begingroup
+\setlength{\parskip}{6pt}
+
 This portfolio was prepared with AI assistance in two distinct roles.
-\medskip
 
 Anthropic's Claude family of large language models, accessed primarily through Claude Code and equivalent assistant tooling, was used in planning the project structure, implementation sequence, report outline, and presentation outline.
-\medskip
 
 OpenAI Codex GPT 5.5 was used for programming and implementation assistance, including drafting Python implementations and unit tests for all five algorithms against the cited source papers, reviewing implementation and validation notes, drafting report and Beamer prose, and proposing structural and editorial revisions.
-\medskip
 
 AI assistance did not invent any algorithmic content: every algorithm in this study is taken from the cited source papers (Dijkstra 1959~\cite{dijkstra1959note}, Bellman 1958~\cite{bellman1958routing} and Ford 1956~\cite{ford1956network}, Hart, Nilsson, and Raphael 1968~\cite{hart1968astar}, Thorup 1999~\cite{thorup1999linear}, and Duan, Mao, Mao, Shu, and Yin 2025~\cite{duan2025breaking}), and the implementations are validated against the Dijkstra oracle, against curated golden test fixtures, and against the comparison-addition fidelity invariant enforced by the \texttt{Weight} wrapper.
-\medskip
 
-All design decisions, parameter choices, reflection paragraphs, and responses to faculty review were authored or finally adjudicated by the two human co-authors, who carry full intellectual and academic-integrity responsibility for the submitted work. This disclosure is made in compliance with the CMSC 142 syllabus's ``Statement on the Use of AI'' clause.
+All design decisions, parameter choices, reflection paragraphs, and review were authored or finally adjudicated by the two human co-authors, who carry full intellectual and academic-integrity responsibility for the submitted work. This disclosure is made in compliance with the CMSC 142 syllabus's ``Statement on the Use of AI'' clause.
+\par
+\endgroup
 
 \newpage
 \noindent\textbf{Author Contributions}\phantomsection\label{sec:author-contributions}
@@ -495,6 +507,6 @@ The foundation (graph and \texttt{Weight} types, edge-list IO, the five random g
 \newpage
 
 \bibliographystyle{IEEEtran}
-\bibliography{../papers/references}
+\bibliography{../papers/references,references}
 
 \end{document}
