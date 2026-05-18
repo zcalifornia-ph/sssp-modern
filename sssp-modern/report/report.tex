@@ -463,13 +463,34 @@ DMMSY (2025)    & $11.28\times$ & $5.87\times$ & $1.02\times$ & fast path engage
 \noindent\textbf{AI Assistance Disclosure}\phantomsection\label{sec:ai-disclosure}
 \medskip
 
-This portfolio was prepared with AI assistance from Anthropic's Claude family of large language models, accessed primarily through Claude Code and equivalent assistant tooling. AI assistance contributed to drafting Python implementations and unit tests for all five algorithms against the cited source papers, drafting and reviewing implementation notes and validation notes, drafting the prose and pseudocode of this report and the accompanying Beamer deck, and proposing structural and editorial revisions. AI assistance did not invent any algorithmic content: every algorithm in this study is taken from the cited source papers (Dijkstra 1959~\cite{dijkstra1959note}, Bellman 1958~\cite{bellman1958routing} and Ford 1956~\cite{ford1956network}, Hart, Nilsson, and Raphael 1968~\cite{hart1968astar}, Thorup 1999~\cite{thorup1999linear}, and Duan, Mao, Mao, Shu, and Yin 2025~\cite{duan2025breaking}), and the implementations are validated against the Dijkstra oracle, against curated golden test fixtures, and against the comparison-addition fidelity invariant enforced by the \texttt{Weight} wrapper. All design decisions, parameter choices, reflection paragraphs, and responses to faculty review were authored or finally adjudicated by the two human co-authors, who carry full intellectual and academic-integrity responsibility for the submitted work. This disclosure is made in compliance with the CMSC 142 syllabus's ``Statement on the Use of AI'' clause.
+This portfolio was prepared with AI assistance in two distinct roles.
+\medskip
+
+Anthropic's Claude family of large language models, accessed primarily through Claude Code and equivalent assistant tooling, was used in planning the project structure, implementation sequence, report outline, and presentation outline.
+\medskip
+
+OpenAI Codex GPT 5.5 was used for programming and implementation assistance, including drafting Python implementations and unit tests for all five algorithms against the cited source papers, reviewing implementation and validation notes, drafting report and Beamer prose, and proposing structural and editorial revisions.
+\medskip
+
+AI assistance did not invent any algorithmic content: every algorithm in this study is taken from the cited source papers (Dijkstra 1959~\cite{dijkstra1959note}, Bellman 1958~\cite{bellman1958routing} and Ford 1956~\cite{ford1956network}, Hart, Nilsson, and Raphael 1968~\cite{hart1968astar}, Thorup 1999~\cite{thorup1999linear}, and Duan, Mao, Mao, Shu, and Yin 2025~\cite{duan2025breaking}), and the implementations are validated against the Dijkstra oracle, against curated golden test fixtures, and against the comparison-addition fidelity invariant enforced by the \texttt{Weight} wrapper.
+\medskip
+
+All design decisions, parameter choices, reflection paragraphs, and responses to faculty review were authored or finally adjudicated by the two human co-authors, who carry full intellectual and academic-integrity responsibility for the submitted work. This disclosure is made in compliance with the CMSC 142 syllabus's ``Statement on the Use of AI'' clause.
 
 \newpage
 \noindent\textbf{Author Contributions}\phantomsection\label{sec:author-contributions}
 \medskip
 
-Zildjian E. California (first author) and Rey Marvin C. Rizal (second author) contributed as follows. California led the DMMSY centerpiece end-to-end --- the constant-degree transformation, the block-based linked list (Lemma~3.3), \textsc{FindPivots} (Algorithm~1), the \textsc{BMSSP} recursion with \textsc{BaseCase} (Algorithms~2 and~3), and the top-level driver \texttt{dmmsy\_sssp} with the $2\times$ performance sanity bound --- together with the DMMSY parameter-choice and block-list amortization notes, the report's front matter and section skeleton, the DMMSY centerpiece subsection in Section~\ref{sec:algo-dmmsy}, this AI Assistance Disclosure paragraph, and the presentation's opening and DMMSY emphasis slides. Rizal led the Bellman--Ford implementation including the curated negative-cycle test fixtures, the Thorup implementation including the Python-vs-word-RAM caveat, the experimental evaluation harness that produced \texttt{bench/results/sssp-benchmark-seed-2026.csv} and \texttt{bench/figures/runtime-by-algorithm.\{png,pdf\}}, the Experimental Evaluation methodology, summary results table, chart embed, and Findings paragraph in Section~\ref{sec:experimental-evaluation}, the three Reflection paragraphs in Section~\ref{sec:reflection}, and the presentation's per-algorithm Bellman--Ford and Thorup slides plus the results slide. The foundation (graph and \texttt{Weight} types, edge-list IO, the five random graph generators, the test harness setup), the Dijkstra baseline, the A* implementation with its Manhattan and zero heuristics, the four per-algorithm subsections of Section~\ref{sec:algorithm-design} for Dijkstra, Bellman--Ford, A*, and Thorup, the dry-run timing pass, the live Q\&A, and the cross-review pass on every major implementation slice were joint work.
+Zildjian E. California (first author) and Rey Marvin C. Rizal (second author) contributed as follows.
+\medskip
+
+\textbf{California} led the DMMSY centerpiece end-to-end --- the constant-degree transformation, the block-based linked list (Lemma~3.3), \textsc{FindPivots} (Algorithm~1), the \textsc{BMSSP} recursion with \textsc{BaseCase} (Algorithms~2 and~3), and the top-level driver \texttt{dmmsy\_sssp} with the $2\times$ performance sanity bound --- together with the DMMSY parameter-choice and block-list amortization notes, the report's front matter and section skeleton, the DMMSY centerpiece subsection in Section~\ref{sec:algo-dmmsy}, this AI Assistance Disclosure paragraph, and the presentation's opening and DMMSY emphasis slides.
+\medskip
+
+\textbf{Rizal} led the Bellman--Ford implementation including the curated negative-cycle test fixtures, the Thorup implementation including the Python-vs-word-RAM caveat, the experimental evaluation harness that produced \texttt{bench/results/sssp-benchmark-seed-2026.csv} and \texttt{bench/figures/runtime-by-algorithm.\{png,pdf\}}, the Experimental Evaluation methodology, summary results table, chart embed, and Findings paragraph in Section~\ref{sec:experimental-evaluation}, the three Reflection paragraphs in Section~\ref{sec:reflection}, and the presentation's per-algorithm Bellman--Ford and Thorup slides plus the results slide.
+\medskip
+
+The foundation (graph and \texttt{Weight} types, edge-list IO, the five random graph generators, the test harness setup), the Dijkstra baseline, the A* implementation with its Manhattan and zero heuristics, the four per-algorithm subsections of Section~\ref{sec:algorithm-design} for Dijkstra, Bellman--Ford, A*, and Thorup, the dry-run timing pass, the live Q\&A, and the cross-review pass on every major implementation slice were joint work.
 
 \newpage
 

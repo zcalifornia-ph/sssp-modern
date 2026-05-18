@@ -1,6 +1,22 @@
 # Changelog
 
-Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with experimental evaluation, reflection, AI assistance disclosure, author contributions, public-facing terminology cleanup, and a rebuilt PDF; the presentation deck now has a clean-compiling title/outline spine, baseline-algorithm slides, modern-algorithm centerpiece, benchmark-results slides, reflection/integrity framing, author contributions, Q&A evidence backup, final copy-fit/layout polish, and public-facing terminology cleanup, with dry-run pacing and reproducible submission packaging still pending.
+Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with experimental evaluation, reflection, role-specific AI assistance disclosure, author contributions, public-facing terminology cleanup, and a rebuilt PDF; the presentation deck now has a clean-compiling title/outline spine, baseline-algorithm slides, modern-algorithm centerpiece, benchmark-results slides, reflection/integrity framing, author contributions, Q&A evidence backup, final copy-fit/layout polish, and public-facing terminology cleanup, with dry-run pacing and reproducible submission packaging still pending.
+
+## v0.5.7
+
+### Added or Changed
+
+- Updated the AI Assistance Disclosure in `sssp-modern/report/report.tex` to distinguish the roles of the two assistant families used in the project: Claude for planning support and OpenAI Codex GPT 5.5 for programming and implementation assistance.
+- Reflowed the AI Assistance Disclosure and Author Contributions sections into shorter LaTeX paragraphs for readability while preserving their academic-integrity and contribution content.
+- Kept the academic-integrity framing intact: algorithmic content remains attributed to the cited source papers, and final responsibility remains with the two human co-authors.
+- Rebuilt `sssp-modern/report/report.pdf` (24 pages, 403173 bytes) from the updated LaTeX source.
+- Verified the report build with `pdflatex -interaction=nonstopmode -halt-on-error report.tex`: exit code 0, with no LaTeX errors. Remaining diagnostics are the same non-blocking report-layout warnings noted in the prior report release.
+- Updated `README.md` version, status sentence, and roadmap for this release.
+- Added `docs/version-0.5.7-docs.md` with a detailed walkthrough of the disclosure clarification and validation evidence.
+
+### For Deletion
+
+- None from this task context.
 
 ## v0.5.6
 
