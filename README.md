@@ -22,9 +22,9 @@
   <p align="center">
     <strong>A study of single-source shortest-path algorithms from Dijkstra's 1959 baseline to the 2025 result that broke its sorting barrier on sparse directed graphs, with reference implementations and comparative complexity analysis.</strong>
     <br />
-    Version: v0.5.5
+    Version: v0.5.9
     <br />
-    Status: Dijkstra, Bellman-Ford, A*, Thorup, and the modern directed-sparse SSSP driver are in place; benchmark timing, dataset catalog, result CSV writing, runtime chart rendering, and the completed written report are available; the presentation deck now has its title/outline spine, baseline-algorithm slides, modern-algorithm centerpiece, benchmark-results slides, reflection, author-contribution slide, Q&A evidence backup, final copy-fit/layout polish, and public-facing terminology cleanup, with dry-run pacing and submission packaging still pending
+    Status: Dijkstra, Bellman-Ford, A*, Thorup, and the modern directed-sparse SSSP driver are in place; benchmark timing, dataset catalog, result CSV writing, runtime chart rendering, and the completed written report are available; the report now opens with evidence-focused framing and a local bibliography citation, and the presentation carries the result-evidence slide in the main talk flow with a repository citation, with dry-run pacing and submission packaging still pending
     <br />
     <a href="https://github.com/zcalifornia-ph/sssp-modern"><strong>Explore the docs »</strong></a>
     <br />
@@ -92,7 +92,7 @@ Implemented and planned reference implementations and comparative notes include:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Status: Dijkstra, Bellman-Ford, A*, Thorup, and the modern directed-sparse SSSP driver are implemented (`v0.5.5`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, a binary-heap Dijkstra baseline, a Bellman-Ford implementation with negative-cycle reporting, an A* implementation with reusable heuristics, a Thorup-style hierarchical bucket reference for undirected integer-weight graphs, the top-level driver for the modern directed-sparse SSSP implementation, a reusable benchmark timing harness, a deterministic benchmark dataset catalog with cached JSON graph inputs, a benchmark result CSV writer plus pure-stdlib PNG/PDF runtime chart renderer with a DMMSY-vs-Dijkstra runtime sanity check, a complete written report manuscript whose experimental evaluation and reflection sections cite the committed CSV and runtime chart directly, and a Beamer presentation deck with the title slide, outline, problem framing, four baseline-algorithm slides, four modern-algorithm centerpiece slides, benchmark-results slides, reflection and integrity framing, author contributions, references, closing frame, Q&A evidence backup, final copy-fit/layout polish, and public-facing terminology cleanup already compiling cleanly.
+Status: Dijkstra, Bellman-Ford, A*, Thorup, and the modern directed-sparse SSSP driver are implemented (`v0.5.9`). The repository now includes pure-stdlib Python graph primitives, a comparison-addition `Weight` wrapper, deterministic JSON graph fixtures, seeded graph generators, reusable pytest scaffolding, a binary-heap Dijkstra baseline, a Bellman-Ford implementation with negative-cycle reporting, an A* implementation with reusable heuristics, a Thorup-style hierarchical bucket reference for undirected integer-weight graphs, the top-level driver for the modern directed-sparse SSSP implementation, a reusable benchmark timing harness, a deterministic benchmark dataset catalog with cached JSON graph inputs, a benchmark result CSV writer plus pure-stdlib PNG/PDF runtime chart renderer with a DMMSY-vs-Dijkstra runtime sanity check, a complete written report manuscript whose opening now frames the difference between claims and evidence, whose experimental evaluation and reflection sections cite the committed CSV and runtime chart directly, and a Beamer presentation deck with the title slide, outline, problem framing, four baseline-algorithm slides, four modern-algorithm centerpiece slides, benchmark-results slides, a result-evidence slide in the main talk flow with a repository citation, reflection and integrity framing, author contributions, references, closing frame, final copy-fit/layout polish, and public-facing terminology cleanup already compiling cleanly. The written report source has also been cleaned so report comments, implementation notes, caveats, tables, AI-use disclosure, and author contributions avoid private planning labels and use reviewer-readable wording; the AI assistance disclosure now separately identifies Claude for planning support and OpenAI Codex GPT 5.5 for programming and implementation assistance.
 
 ### Prerequisites
 
@@ -215,7 +215,7 @@ Status: Dijkstra, Bellman-Ford, A*, Thorup, and the modern directed-sparse SSSP 
     latexmk -pdf -interaction=nonstopmode -f report.tex
     ```
 
-    The build produces `report/report.pdf` (currently 22 pages) and reads the bibliography from `papers/references.bib` plus the runtime chart from `bench/figures/runtime-by-algorithm.pdf`.
+    The build produces `report/report.pdf` (currently 25 pages) and reads the bibliography from `papers/references.bib`, the local report bibliography from `report/references.bib`, and the runtime chart from `bench/figures/runtime-by-algorithm.pdf`.
 
 16. Rebuild the presentation deck PDF when needed.
 
@@ -224,7 +224,7 @@ Status: Dijkstra, Bellman-Ford, A*, Thorup, and the modern directed-sparse SSSP 
     latexmk -pdf -interaction=nonstopmode main.tex
     ```
 
-    The current deck build produces `presentation/main.pdf` (26 pages) from the polished, public-facing Beamer source and `presentation/references.bib`.
+    The current deck build produces `presentation/main.pdf` (25 pages) from the polished, public-facing Beamer source and `presentation/references.bib`.
 
 17. Review `CHANGELOG.md` for the latest notable changes.
 18. Check `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` before opening issues or pull requests.
@@ -250,8 +250,8 @@ The repository keeps governance, supporting assets, and study material in clearl
 - `sssp-modern/examples/dijkstra/`: sample Dijkstra source-distance output for the tiny directed graph.
 - `sssp-modern/examples/astar/`: small grid fixture for A* and Manhattan-heuristic inspection.
 - `sssp-modern/papers/`: shared bibliography source (`references.bib`) for the report and presentation, plus the source PDFs of the cited foundational and modern shortest-path papers.
-- `sssp-modern/report/`: written report manuscript, including the LaTeX source (`report.tex`), the compiled PDF (`report.pdf`), and the header image asset; the manuscript cites `sssp-modern/papers/references.bib` and embeds the committed runtime chart from `sssp-modern/bench/figures/`.
-- `sssp-modern/presentation/`: UP Beamer presentation source, bibliography, theme assets, logos, and compiled deck PDF; the current deck includes the title/outline spine, problem framing, baseline-algorithm slides, modern directed-sparse SSSP centerpiece slides, benchmark-results slides, reflection and integrity framing, author contributions, references, closing frame, Q&A evidence backup, final copy-fit/layout polish, and public-facing terminology cleanup.
+- `sssp-modern/report/`: written report manuscript, including the LaTeX source (`report.tex`), the local bibliography source (`references.bib`), the compiled PDF (`report.pdf`), and the header image asset; the manuscript cites `sssp-modern/papers/references.bib` plus its local report bibliography, embeds the committed runtime chart from `sssp-modern/bench/figures/`, and uses public-facing implementation and validation wording throughout.
+- `sssp-modern/presentation/`: UP Beamer presentation source, bibliography, theme assets, logos, and compiled deck PDF; the current deck includes the title/outline spine, problem framing, baseline-algorithm slides, modern directed-sparse SSSP centerpiece slides, benchmark-results slides, a result-evidence slide in the main talk flow with a repository citation, reflection and integrity framing, author contributions, references, closing frame, final copy-fit/layout polish, and public-facing terminology cleanup.
 - Dry-run pacing and reproducible submission packaging will expand from this foundation in later versions.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -284,6 +284,10 @@ The repository keeps governance, supporting assets, and study material in clearl
 - [x] v0.5.3 - Presentation results and contribution pass completed: benchmark protocol, runtime chart, Dijkstra-normalized result ratios, reflection/integrity framing, author contributions, Q&A evidence backup, and a clean 26-page Beamer PDF build.
 - [x] v0.5.4 - Presentation copy-fit/layout polish completed: title and metadata wrapping, block-heading casing, dense-slide line breaks, diagram-loop cleanup, contribution-slide wrapping, closing contact links, and a clean 26-page Beamer PDF build.
 - [x] v0.5.5 - Presentation terminology cleanup completed: speaker notes, caveat language, contribution wording, and Q&A evidence labels now use plain public-facing wording, with a clean 26-page Beamer PDF build.
+- [x] v0.5.6 - Written report terminology and layout cleanup completed: report source comments, implementation notes, caveat language, AI-use disclosure, author contributions, and tables now use plain public-facing wording, with a clean 24-page PDF build.
+- [x] v0.5.7 - Written report AI assistance disclosure clarified: Claude is identified for planning support and OpenAI Codex GPT 5.5 for programming and implementation assistance, with a rebuilt 24-page PDF.
+- [x] v0.5.8 - Presentation evidence-flow polish completed: result evidence moved into the main talk flow, the repository citation is visible on the evidence slide, and the deck compiles to a clean 25-page PDF.
+- [x] v0.5.9 - Written report evidence framing completed: the report header, opening evidence maxim, local bibliography citation, introductory framing, and AI disclosure spacing now build to a clean 25-page PDF.
 - [ ] v0.6.0 - Presentation dry-run pacing and reproducible submission packaging.
 
 See the [open issues](https://github.com/zcalifornia-ph/sssp-modern/issues) for proposed features and known gaps.

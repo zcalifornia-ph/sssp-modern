@@ -401,6 +401,25 @@
 % with the precise DMMSY caveat: the large-size ratio passes because
 % default numeric inputs use the documented shortcut.
 
+\begin{frame}{Result Evidence}
+  \footnotesize
+  \begin{block}{Notable Artifacts}
+    \begin{itemize}
+      \item Github repository: \url{https://github.com/zcalifornia-ph/sssp-modern}
+      \item CSV: \texttt{bench/results/sssp-benchmark-seed-2026.csv}
+      \item Figure: \texttt{bench/figures/runtime-by-algorithm.\{pdf,png\}}
+      \item Tests: 147-test suite passed after benchmark plot generation; the runtime check records max DMMSY/Dijkstra ratio \texttt{1.093x} for $n \ge 1000$.
+      \item Report anchors: Table \texttt{tab:results-by-class} and Figure \texttt{fig:runtime-by-algorithm}.
+    \end{itemize}
+  \end{block}
+
+  \begin{alertblock}{Final Words}
+    The portfolio centers the algorithmic result and implementation structure,
+    not a CPython timing victory: correctness and comparison-addition fidelity
+    are validated separately from the fast-path benchmark policy.
+  \end{alertblock}
+\end{frame}
+
 % ===========================================
 \section{Reflection and Author Contributions}
 % ===========================================
@@ -460,9 +479,6 @@
 % not ceremonial. California states the commit-history basis; Rizal
 % confirms the assigned Bellman-Ford and Thorup contributions.
 
-% -- Standout --------------------------
-\standoutframe{Honor. Excellence. Service.}
-
 % -- Closing -----------------------------------
 \thankframe{Questions?}{%
   Zildjian E. California \quad github.com/zcalifornia-ph\\
@@ -479,24 +495,6 @@
 
   \vskip 6pt
   \printbibliography
-\end{frame}
-
-\begin{frame}{Backup: Result Evidence}
-  \footnotesize
-  \begin{block}{Files to cite during Q\&A}
-    \begin{itemize}
-      \item CSV: \texttt{bench/results/sssp-benchmark-seed-2026.csv}
-      \item Figure: \texttt{bench/figures/runtime-by-algorithm.\{pdf,png\}}
-      \item Tests: 147-test suite passed after benchmark plot generation; the runtime check records max DMMSY/Dijkstra ratio \texttt{1.093x} for $n \ge 1000$.
-      \item Report anchors: Table \texttt{tab:results-by-class} and Figure \texttt{fig:runtime-by-algorithm}.
-    \end{itemize}
-  \end{block}
-
-  \begin{alertblock}{If asked why DMMSY is still the centerpiece}
-    The portfolio centers the algorithmic result and implementation structure,
-    not a CPython timing victory: correctness and comparison-addition fidelity
-    are validated separately from the fast-path benchmark policy.
-  \end{alertblock}
 \end{frame}
 % Speaker note (joint): this is not part of the timed talk. Use it only
 % if the Q&A asks for paths, test evidence, or the DMMSY timing caveat.
