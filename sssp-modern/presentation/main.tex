@@ -217,23 +217,131 @@
 \section{DMMSY (Centerpiece)}
 % ===========================================
 
-\begin{frame}{DMMSY Centerpiece -- To Be Filled}
-  \begin{block}{Planned content}
-    The DMMSY centerpiece will add:
-    \begin{itemize}
-      \item BMSSP recursion (Algorithm 3) and FindPivots (Algorithm 1).
-      \item Block-list (Lemma 3.3) amortization argument.
-      \item Parameter derivation: $k = \lfloor \log^{1/3} n \rfloor$, $t = \lfloor \log^{2/3} n \rfloor$.
-      \item Complexity proof sketch landing at $O(m \log^{2/3} n)$.
-      \item Comparison-addition fidelity note (NFR-E).
-    \end{itemize}
+\begin{frame}{DMMSY (2025) -- Why It Matters}
+  \small
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \begin{block}{Setting}
+        Directed SSSP with non-negative real weights; labels use only comparison and addition.
+      \end{block}
+      \begin{block}{Barrier}
+        Dijkstra-style methods still pay for global priority ordering, giving the sparse-graph comparison baseline $O(m + n \log n)$.
+      \end{block}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{exampleblock}{DMMSY claim}
+        Duan--Mao--Mao--Shu--Yin break the barrier deterministically:
+        $$O\!\left(m \log^{2/3} n\right).$$
+      \end{exampleblock}
+      \begin{alertblock}{Portfolio role}
+        Centerpiece algorithm. Source paper: \cite{duan2025breaking}. Implementation: \texttt{src/sssp/dmmsy/}.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+% Speaker note (California): make the model concrete: directed graph,
+% non-negative real weights, only comparisons and additions. The reason
+% this matters is that the paper breaks the sorting-style bottleneck
+% that makes Dijkstra the historical baseline.
+
+\begin{frame}{DMMSY Architecture}
+  \footnotesize
+  \begin{center}
+  \resizebox{0.96\textwidth}{!}{%
+  \begin{tikzpicture}[
+    node distance=0.45cm and 0.45cm,
+    box/.style={
+      rectangle, rounded corners=2pt, minimum height=1.0cm,
+      text width=2.8cm, align=center,
+      font=\scriptsize\sffamily, draw=none
+    },
+    arr/.style={->, >=stealth, semithick, UPBlack80}
+  ]
+    \node[box, fill=UPMaroon, text=white] (transform) {Constant-degree\\transform\\{\tiny paper \S2}};
+    \node[box, fill=UPForestGreen, text=white, right=of transform] (pivots) {FindPivots\\{\tiny Algorithm 1}};
+    \node[box, fill=UPYellow, text=UPBlack, right=of pivots] (bmssp) {BMSSP\\recursion\\{\tiny Algorithms 2--3}};
+    \node[box, fill=UPBlack, text=white, right=of bmssp] (blocklist) {BlockList\\frontier\\{\tiny Lemma 3.3}};
+
+    \draw[arr] (transform) -- (pivots);
+    \draw[arr] (pivots) -- (bmssp);
+    \draw[arr] (bmssp) -- (blocklist);
+    \draw[arr, bend left=25, UPForestGreen] (blocklist.north) to node[above, font=\tiny\sffamily, text=UPBlack] {bounded pulls} (bmssp.north);
+  \end{tikzpicture}
+  }
+  \end{center}
+
+  \begin{itemize}
+    \item \textbf{Transform:} reduce high-degree vertices so work charges uniformly per arc.
+    \item \textbf{FindPivots:} shrink the frontier to useful recursion roots.
+    \item \textbf{BMSSP + BlockList:} solve bounded subproblems without globally sorting every label.
+  \end{itemize}
+\end{frame}
+% Speaker note (California): walk left to right. The key message is not
+% that one component is magic; the speedup comes from making frontier
+% work local and bounded instead of globally sorted.
+
+\begin{frame}{BMSSP Recursion}
+  \scriptsize
+  \begin{block}{Contract}
+    \textsc{BMSSP}$(G,\ell,B,S,d,k,t)$ solves labels below boundary $B$ from source set $S$, then returns a smaller boundary $B'$ and settled set $U$.
   \end{block}
 
-  \vskip 6pt
-  Implementation already lives at \texttt{src/sssp/dmmsy/}; source paper~\cite{duan2025breaking}.
+  \begin{columns}[T]
+    \begin{column}{0.47\textwidth}
+      \begin{exampleblock}{Level 0}
+        \textsc{BaseCase}: bounded Dijkstra from one source, stopping after $k+1$ discoveries or boundary exhaustion.
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \begin{alertblock}{Level $>0$}
+        \begin{enumerate}
+          \item \textsc{FindPivots} shrinks $S$ to pivots $P$.
+          \item BlockList pulls bounded batches below $B$.
+          \item Recursive calls settle batches and relax outgoing edges.
+        \end{enumerate}
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+
+  \vskip 4pt
+  \textbf{Key idea:} local bounded batches replace one global sorted frontier.
 \end{frame}
-% Speaker note (California): centerpiece owner; a later content pass will populate.
-% Until then this placeholder keeps the outline complete.
+% Speaker note (California): do not read this as code. Explain the
+% recursion contract: each call solves only what is below a boundary,
+% returns a separator, and lets the next call continue from there.
+
+\begin{frame}{Parameters, Bound, and Implementation Caveat}
+  \footnotesize
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Paper parameterization}
+        \[
+          k = \left\lfloor (\log_2 n)^{1/3} \right\rfloor
+        \]
+        \[
+          t = \left\lfloor (\log_2 n)^{2/3} \right\rfloor,\qquad
+          \ell_{\max} = \left\lceil \frac{\log_2 n}{t} \right\rceil
+        \]
+        Balances pivot work, recursion depth, and block-list operations.
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Asymptotic result}
+        Deterministic directed SSSP:
+        \[
+          O\!\left(m \log^{2/3} n\right)\ \text{time}
+        \]
+        Space stays $O(n+m)$.
+      \end{block}
+      \begin{alertblock}{Python implementation boundary}
+        CPython recursion overhead is real. Default large numeric benchmark runs use the documented fast path; \texttt{Weight} inputs and explicit parameters exercise recursive BMSSP.
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+% Speaker note (California): separate theory from implementation
+% honestly. The paper result is the centerpiece; the portfolio proves a
+% faithful implementation surface while acknowledging CPython overhead.
 
 % ===========================================
 \section{Experimental Evaluation}
