@@ -1,6 +1,57 @@
 # Changelog
 
-Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with evidence-focused opening framing, experimental evaluation, reflection, role-specific AI assistance disclosure, author contributions, public-facing terminology cleanup, and a rebuilt PDF; the presentation deck now has a clean-compiling title/outline spine, baseline-algorithm slides, modern-algorithm centerpiece, benchmark-results slides, a result-evidence slide in the main talk flow with a repository citation, reflection/integrity framing, author contributions, final copy-fit/layout polish, and public-facing terminology cleanup, with dry-run pacing and reproducible submission packaging still pending.
+Status: stable release. Dijkstra, Bellman-Ford, A*, and Thorup reference implementations are in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with evidence-focused opening framing, experimental evaluation, reflection, role-specific AI assistance disclosure, author contributions, public-facing terminology cleanup, and a rebuilt PDF; the presentation deck has a clean-compiling title/outline spine, worked visual walkthroughs for Dijkstra, Bellman-Ford, A*, Thorup, and DMMSY, modern-algorithm centerpiece, benchmark-results slides, a result-evidence slide in the main talk flow with a repository citation, reflection/integrity framing, author contributions, final pacing/layout polish, and public-facing terminology cleanup.
+
+## v1.0.0
+
+### Added or Changed
+
+- Promoted the repository documentation to the `v1.0.0` stable release baseline.
+- Completed the final presentation pacing/layout pass in `sssp-modern/presentation/main.tex`, tightening connector arrows, anchors, dense labels, stale-entry notation, and diagram spacing across the worked Dijkstra, Bellman-Ford, A*, Thorup, and DMMSY visual slides.
+- Rebuilt `sssp-modern/presentation/main.pdf` (30 pages, 1317126 bytes) from the revised Beamer source.
+- Verified the presentation build with `latexmk -pdf -interaction=nonstopmode main.tex`: exit code 0, with `main.pdf` reported up to date.
+- Verified the presentation log scan found zero LaTeX errors, undefined citations, undefined references, overfull hboxes/vboxes, LaTeX warnings, hyperref warnings, or pdfTeX warnings; the runtime chart path was still rendered from the committed benchmark figure.
+- Reconciled internal project-tracking notes so the final presentation pacing/layout milestone is recorded as complete.
+- Updated `README.md` version, status sentence, quick-start deck build note, repository layout, and roadmap for the stable release.
+- Added `docs/version-1.0.0-docs.md` with a detailed walkthrough of the stable release and validation evidence.
+
+### For Deletion
+
+- None from this task context.
+
+## v0.5.11
+
+### Added or Changed
+
+- Added a worked Bellman-Ford round-by-round relaxation slide to `sssp-modern/presentation/main.tex`, showing edge scan order, a negative edge relaxation, distance-table updates, early exit, and the final cycle-check condition.
+- Added a worked A* heuristic-guided search slide that shows `g + h` frontier ordering, goal discovery, and why the dead-end branch remains unexpanded under an admissible heuristic.
+- Added a worked Thorup bucket-walk slide that visualizes integer-weight bucket indexing with most-significant differing bits, `last_min` advancement, re-binning, and stale-entry skipping.
+- Cleaned the author-contribution slide by wrapping California's dense contribution line and replacing the final contribution note with public repository and issue/PR wording.
+- Rebuilt `sssp-modern/presentation/main.pdf` (30 pages, 1317006 bytes) from the revised Beamer source.
+- Verified the presentation build with `latexmk -pdf -interaction=nonstopmode main.tex`: exit code 0, with `main.pdf` reported up to date.
+- Updated `README.md` version, status sentence, quick-start presentation build note, repository layout, and roadmap for this release.
+- Added `docs/version-0.5.11-docs.md` with a detailed walkthrough of the added baseline worked examples and validation evidence.
+
+### For Deletion
+
+- None from this task context.
+
+## v0.5.10
+
+### Added or Changed
+
+- Added a worked Dijkstra heap-relaxation slide to `sssp-modern/presentation/main.tex`, showing settled vertices, heap snapshots, edge relaxations, and stale-entry skipping in one visual sequence.
+- Added a worked DMMSY bounded-batch slide that illustrates pulling the smallest tentative labels below a boundary, settling a local batch, relaxing outgoing edges, and returning a tighter boundary.
+- Expanded the TikZ library set for the presentation source so the new diagrams can use arrowheads, coordinate calculations, fitted highlight regions, and background layers cleanly.
+- Enlarged and rebalanced the DMMSY architecture diagram, refreshed the bounded-pulls return annotation, and tuned slide font sizes for the BMSSP, results, reflection, and author-contribution frames.
+- Rebuilt `sssp-modern/presentation/main.pdf` (27 pages, 1285199 bytes) from the revised Beamer source.
+- Verified the presentation build with `latexmk -pdf -interaction=nonstopmode main.tex`: exit code 0, with `main.pdf` reported up to date after the rebuild. Remaining diagnostics are limited to underfull hbox messages on compact text/code-heavy frames.
+- Updated `README.md` version, status sentence, quick-start presentation build note, repository layout, and roadmap for this release.
+- Added `docs/version-0.5.10-docs.md` with a detailed walkthrough of the presentation visual-walkthrough update and validation evidence.
+
+### For Deletion
+
+- None from this task context.
 
 ## v0.5.9
 
