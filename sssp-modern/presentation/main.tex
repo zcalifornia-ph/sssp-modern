@@ -35,6 +35,9 @@
 \documentclass[aspectratio=169]{beamer}
 \usetheme[showlogo,english]{UP}
 
+% Extra TikZ libraries for the worked-example visuals
+\usetikzlibrary{arrows.meta, calc, fit, backgrounds}
+
 % ===========================================
 %  METADATA
 % ===========================================
@@ -136,6 +139,94 @@
 % bearing assumption; this is why Bellman-Ford follows. Mention that
 % Dijkstra is the BaseCase oracle for both DMMSY and the benchmark
 % normalization.
+
+\begin{frame}{Dijkstra -- A Worked Heap Relaxation}
+  \begin{center}
+  \resizebox{\textwidth}{!}{%
+  \begin{tikzpicture}[
+      every node/.style={font=\sffamily},
+      vx/.style={circle, draw=UPBlack, line width=0.6pt, minimum size=0.85cm,
+                 inner sep=0pt, font=\sffamily\bfseries},
+      settled/.style={vx, fill=UPForestGreen, text=white, draw=UPForestGreen},
+      frontier/.style={vx, fill=UPYellow, text=UPBlack, draw=UPYellow!80!UPBlack},
+      unseen/.style={vx, fill=white, draw=UPBlack!50},
+      we/.style={font=\footnotesize\sffamily, text=UPBlack80},
+      ed/.style={->, >={Latex[length=2.2mm]}, semithick, UPBlack80},
+      snap/.style={draw=UPBlack!25, rounded corners=2pt, inner sep=4pt,
+                   font=\footnotesize\sffamily},
+      stepttl/.style={font=\small\sffamily\bfseries, text=UPMaroon}
+  ]
+    % --- Graph (top) -------------------------------------------------
+    \node[settled] (S0) at (0,0)   {S};
+    \node[unseen]  (A0) at (2.2,0.9) {A};
+    \node[unseen]  (B0) at (2.2,-0.9){B};
+    \node[unseen]  (C0) at (4.4,0)   {C};
+    \draw[ed] (S0) -- node[we, above left=-2pt] {3} (A0);
+    \draw[ed] (S0) -- node[we, below left=-2pt] {5} (B0);
+    \draw[ed] (A0) -- node[we, right=1pt]        {1} (B0);
+    \draw[ed] (A0) -- node[we, above right=-2pt] {4} (C0);
+    \draw[ed] (B0) -- node[we, below right=-2pt] {2} (C0);
+
+    % --- Step 1 -----------------------------------------------------
+    \node[stepttl] at (7.5, 0.95) {Step 1: pop S (d=0)};
+    \node[snap, anchor=west] at (6.4, 0.0)
+      {\begin{tabular}{@{}ll@{}}
+         settled & \{S:0\} \\
+         heap    & [(3,A),(5,B)] \\
+         relaxed & S$\to$A, S$\to$B \\
+       \end{tabular}};
+
+    % --- Step 2 -----------------------------------------------------
+    \node[stepttl] at (7.5, -1.55) {Step 2: pop A (d=3)};
+    \node[snap, anchor=west] at (6.4, -2.5)
+      {\begin{tabular}{@{}ll@{}}
+         settled & \{S:0, A:3\} \\
+         heap    & [(4,B),(5,B),(7,C)] \\
+         relaxed & A$\to$B (5$\to$4), A$\to$C \\
+       \end{tabular}};
+
+    % --- Step 3 -----------------------------------------------------
+    \node[stepttl] at (12.4, 0.95) {Step 3: pop B (d=4)};
+    \node[snap, anchor=west] at (11.3, 0.0)
+      {\begin{tabular}{@{}ll@{}}
+         settled & \{S:0, A:3, B:4\} \\
+         heap    & [(5,B$^*$),(6,C),(7,C)] \\
+         relaxed & B$\to$C (7$\to$6) \\
+       \end{tabular}};
+
+    % --- Step 4 -----------------------------------------------------
+    \node[stepttl] at (12.4, -1.55) {Step 4: pop C (d=6) -- done};
+    \node[snap, anchor=west] at (11.3, -2.5)
+      {\begin{tabular}{@{}ll@{}}
+         settled & \{S:0,A:3,B:4,C:6\} \\
+         heap    & stale entries skipped \\
+         result  & all distances final \\
+       \end{tabular}};
+
+    % --- Connector arrows between steps -----------------------------
+    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
+      (5.2,  0.4) -- (6.3,  0.4);
+    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
+      (8.7, -0.4) -- (8.7, -1.05);
+    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
+      (10.1, 0.4) -- (11.2, 0.4);
+    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
+      (13.6,-0.4) -- (13.6,-1.05);
+  \end{tikzpicture}
+  }
+  \end{center}
+
+  \begin{center}
+    \footnotesize
+    \textcolor{UPForestGreen}{$\blacksquare$}~settled \quad
+    \textcolor{UPYellow!80!UPBlack}{$\blacksquare$}~frontier \quad
+    $B^*$~=~stale entry, ignored on pop
+  \end{center}
+\end{frame}
+% Speaker note (California): walk left-to-right, top-to-bottom. The
+% load-bearing intuition is that each pop settles one vertex and we
+% never revisit it. Stale heap entries are skipped, not deleted -- this
+% is the lazy-decrease-key pattern in heapq.
 
 \begin{frame}{Bellman--Ford (1958, Ford 1956) -- Edge Relaxation}
   \begin{columns}[T]
@@ -244,34 +335,39 @@
 % that makes Dijkstra the historical baseline.
 
 \begin{frame}{DMMSY Architecture}
-  \footnotesize
   \begin{center}
-  \resizebox{0.96\textwidth}{!}{%
+  \resizebox{\textwidth}{!}{%
   \begin{tikzpicture}[
-    node distance=0.45cm and 0.45cm,
+    node distance=0.7cm and 0.7cm,
     box/.style={
-      rectangle, rounded corners=2pt, minimum height=1.0cm,
-      text width=2.8cm, align=center,
-      font=\scriptsize\sffamily, draw=none
+      rectangle, rounded corners=3pt, minimum height=1.7cm,
+      text width=3.1cm, align=center,
+      font=\small\sffamily\bfseries, draw=none
     },
-    arr/.style={->, >=stealth, semithick, UPBlack80}
+    arr/.style={->, >={Latex[length=2.6mm]}, line width=0.9pt, UPBlack80}
   ]
-    \node[box, fill=UPMaroon, text=white] (transform) {Constant-degree\\transform\\{\tiny paper \S2}};
-    \node[box, fill=UPForestGreen, text=white, right=of transform] (pivots) {FindPivots\\{\tiny Algorithm 1}};
-    \node[box, fill=UPYellow, text=UPBlack, right=of pivots] (bmssp) {BMSSP\\recursion\\{\tiny Algorithms 2--3}};
-    \node[box, fill=UPBlack, text=white, right=of bmssp] (blocklist) {BlockList\\frontier\\{\tiny Lemma 3.3}};
+    \node[box, fill=UPMaroon, text=white] (transform)
+      {Constant-degree\\transform\\[2pt]{\scriptsize\mdseries paper \S2}};
+    \node[box, fill=UPForestGreen, text=white, right=of transform] (pivots)
+      {FindPivots\\[2pt]{\scriptsize\mdseries Algorithm 1}};
+    \node[box, fill=UPYellow, text=UPBlack, right=of pivots] (bmssp)
+      {BMSSP\\recursion\\[2pt]{\scriptsize\mdseries Algorithms 2--3}};
+    \node[box, fill=UPBlack, text=white, right=of bmssp] (blocklist)
+      {BlockList\\frontier\\[2pt]{\scriptsize\mdseries Lemma 3.3}};
 
     \draw[arr] (transform) -- (pivots);
     \draw[arr] (pivots) -- (bmssp);
     \draw[arr] (bmssp) -- (blocklist);
-    \draw[arr, dashed, UPForestGreen, shorten <=1pt, shorten >=1pt]
-      (blocklist.north) to[out=135, in=45, looseness=1.25]
-      node[midway, above=1pt, font=\tiny\sffamily, text=UPBlack, fill=white, inner sep=1pt] {bounded pulls}
+    \draw[arr, dashed, UPForestGreen, shorten <=2pt, shorten >=2pt]
+      (blocklist.north) to[out=135, in=45, looseness=1.2]
+      node[midway, above=1pt, font=\footnotesize\sffamily\bfseries,
+           text=UPForestGreen, fill=white, inner sep=2pt] {bounded pulls}
       (bmssp.north);
   \end{tikzpicture}
   }
   \end{center}
 
+  \vskip 4pt
   \begin{itemize}
     \item \textbf{Transform:} reduce high-degree vertices so work charges uniformly per arc.
     \item \textbf{FindPivots:} shrink the frontier to useful recursion roots.
@@ -283,7 +379,7 @@
 % work local and bounded instead of globally sorted.
 
 \begin{frame}{BMSSP Recursion}
-  \scriptsize
+  \footnotesize
   \begin{block}{Contract}
     \textsc{BMSSP}$(G,\ell,B,S,d,k,t)$ solves labels below boundary $B$ from source set $S$, then returns a smaller boundary $B'$ and settled set $U$.
   \end{block}
@@ -311,6 +407,94 @@
 % Speaker note (California): do not read this as code. Explain the
 % recursion contract: each call solves only what is below a boundary,
 % returns a separator, and lets the next call continue from there.
+
+\begin{frame}{DMMSY -- Pulling One Bounded Batch}
+  \begin{center}
+  \resizebox{\textwidth}{!}{%
+  \begin{tikzpicture}[
+      every node/.style={font=\sffamily},
+      lab/.style={circle, draw=UPBlack, line width=0.6pt,
+                  minimum size=0.95cm, inner sep=0pt,
+                  font=\small\sffamily\bfseries, fill=white},
+      settled/.style={lab, fill=UPForestGreen, text=white,
+                      draw=UPForestGreen},
+      deferred/.style={lab, fill=UPMaroonTint, draw=UPBlack!30, text=UPBlack80},
+      bnd/.style={dashed, line width=1pt, UPMaroon},
+      arr/.style={->, >={Latex[length=2.6mm]}, line width=0.8pt},
+      lbl/.style={font=\footnotesize\sffamily, text=UPBlack80}
+  ]
+    % --- Boundary line B ----------------------------------------------
+    \draw[bnd] (-0.4,2.0) -- (14.2,2.0)
+      node[right, font=\small\sffamily\bfseries, text=UPMaroon] {$B = 10$};
+
+    % --- Above-boundary labels (frozen until a smaller B') ------------
+    \node[deferred] (u4) at (1.2, 2.95) {12};
+    \node[deferred] (u6) at (3.6, 3.10) {14};
+    \node[deferred] (u7) at (6.2, 2.85) {11};
+    \node[lbl] at (8.6, 3.0)
+      {\textit{above $B$: deferred, not pulled}};
+
+    % --- Pool below B: tentative labels ------------------------------
+    \node[lab] (u1) at (1.0, 0.85) {4};
+    \node[lab] (u2) at (2.6, 0.55) {6};
+    \node[lab] (u3) at (4.2, 0.95) {8};
+    \node[lab] (u5) at (5.8, 0.30) {9};
+    \node[lab] (u8) at (7.0, 1.15) {9};
+
+    \node[lbl] at (1.0, -0.1) {$u_1$};
+    \node[lbl] at (2.6, -0.4) {$u_2$};
+    \node[lbl] at (4.2, 0.0)  {$u_3$};
+    \node[lbl] at (5.8,-0.65) {$u_5$};
+    \node[lbl] at (7.0, 0.2)  {$u_8$};
+
+    % --- The pulled batch (the k+1 smallest below B) ------------------
+    \begin{scope}[on background layer]
+      \node[draw=UPYellow!80!UPBlack, line width=0.9pt,
+            rounded corners=4pt, fill=UPYellow!18,
+            fit=(u1)(u2)(u3), inner sep=8pt] (batch) {};
+    \end{scope}
+    \node[font=\footnotesize\sffamily\bfseries, text=UPBlack,
+          above=2pt of batch.north] {Pull $k+1$ smallest below $B$};
+
+    % --- Settled batch on the right ----------------------------------
+    \node[settled] (s1) at (10.2, 1.05) {4};
+    \node[settled] (s2) at (11.6, 0.75) {6};
+    \node[settled] (s3) at (13.0, 1.05) {8};
+    \node[lbl] at (10.2, 0.05) {$u_1$};
+    \node[lbl] at (11.6,-0.25) {$u_2$};
+    \node[lbl] at (13.0, 0.05) {$u_3$};
+    \node[font=\footnotesize\sffamily\bfseries, text=UPForestGreen]
+      at (11.6, 1.95) {Settle + relax outgoing edges};
+
+    % --- Big arrow batch -> settled ----------------------------------
+    \draw[arr, UPMaroon] (batch.east) -- ++(0.6,0)
+      -- node[above, font=\footnotesize\sffamily\bfseries, text=UPMaroon]
+         {BaseCase} ($(s1.west)+(-0.4,0)$) -- (s1.west);
+
+    % --- Relaxation arrows feeding new tentative labels back ----------
+    \draw[arr, UPForestGreen, dashed]
+      (s2.south) .. controls (11.0,-0.9) and (8.5,-0.9) .. (u5.south)
+      node[pos=0.55, below=1pt, font=\footnotesize\sffamily,
+           text=UPForestGreen] {relax: $9 \to 8$};
+
+    % --- New boundary B' ---------------------------------------------
+    \draw[bnd, UPForestGreen]
+      (-0.4,-1.45) -- (14.2,-1.45)
+      node[right, font=\small\sffamily\bfseries, text=UPForestGreen]
+        {$B' = 8 < B$};
+  \end{tikzpicture}
+  }
+  \end{center}
+
+  \begin{itemize}
+    \item Pull only the $k+1$ smallest tentative labels below~$B$ -- no global sort.
+    \item Settle, relax, return a tighter boundary~$B' < B$; deferred labels stay above~$B$.
+  \end{itemize}
+\end{frame}
+% Speaker note (California): the speedup comes from never sorting the
+% whole frontier. Each pull is local and bounded; the relaxation feeds
+% smaller labels back into the pool; the new boundary B' is tighter
+% than B, which is what drives recursion downward.
 
 \begin{frame}{Parameters, Bound, and Implementation Caveat}
   \footnotesize
@@ -374,7 +558,7 @@
 % integer-undirected graph view and that Dijkstra normalizes every row.
 
 \begin{frame}{Results Against Dijkstra}
-  \scriptsize
+  \footnotesize
   \begin{block}{Median runtime ratio by size bucket}
     \begin{center}
     \begin{tabular}{lccc}
@@ -425,7 +609,7 @@
 % ===========================================
 
 \begin{frame}{Reflection and Integrity}
-  \footnotesize
+  \small
   \begin{block}{What The Comparison Teaches}
     No SSSP algorithm dominates every setting; the right choice depends on
     weight signs, direction, integer assumptions, heuristic quality, and runtime model.
@@ -448,7 +632,7 @@
 % useful because it records what CPython actually does.
 
 \begin{frame}{Author Contributions}
-  \scriptsize
+  \footnotesize
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
       \begin{block}{Zildjian E. California}
@@ -470,9 +654,9 @@
     \end{column}
   \end{columns}
 
-  \vskip 2pt
+  \vskip 1pt
   \begin{center}
-    \footnotesize Contribution split follows the provided commit history\\and the completed Rizal-assigned contributions.
+    \scriptsize Contribution split follows the provided commit history and the completed Rizal-assigned contributions.
   \end{center}
 \end{frame}
 % Speaker note (joint): use this slide to make authorship legible,
