@@ -253,6 +253,77 @@
 % baseline and is reused conceptually inside DMMSY's FindPivots. Note
 % that the curated negative-cycle fixtures verify the detection branch.
 
+\begin{frame}{Bellman--Ford -- A Worked Round-by-Round Relaxation}
+  \begin{center}
+  \resizebox{\textwidth}{!}{%
+  \begin{tikzpicture}[
+      every node/.style={font=\sffamily},
+      vx/.style={circle, draw=UPBlack, line width=0.6pt,
+                 minimum size=0.85cm, inner sep=0pt,
+                 font=\sffamily\bfseries},
+      src/.style={vx, fill=UPForestGreen, text=white, draw=UPForestGreen},
+      we/.style={font=\footnotesize\sffamily, text=UPBlack80},
+      wneg/.style={font=\footnotesize\sffamily\bfseries, text=UPMaroon},
+      ed/.style={->, >={Latex[length=2.2mm]}, semithick, UPBlack80},
+      edneg/.style={->, >={Latex[length=2.2mm]}, line width=0.9pt, UPMaroon},
+      snap/.style={draw=UPBlack!25, rounded corners=2pt, inner sep=4pt,
+                   font=\footnotesize\sffamily},
+      stepttl/.style={font=\small\sffamily\bfseries, text=UPMaroon}
+  ]
+    % --- Graph (left) -------------------------------------------------
+    \node[src]  (S) at (0,0)     {S};
+    \node[vx]   (A) at (1.8,1.2) {A};
+    \node[vx]   (B) at (1.8,-1.2){B};
+    \node[vx]   (C) at (3.8,0)   {C};
+    \draw[ed]    (S) -- node[we, above left=-2pt] {4} (A);
+    \draw[ed]    (S) -- node[we, below left=-2pt] {5} (B);
+    \draw[edneg] (A) -- node[wneg, right=2pt]      {$-2$} (B);
+    \draw[ed]    (B) -- node[we, below right=-2pt] {3} (C);
+    \draw[ed]    (A) -- node[we, above right=-2pt] {5} (C);
+
+    % --- Edge scan order -----------------------------------------
+    \node[stepttl, anchor=west] at (5.6, 1.7) {Edge scan order};
+    \node[snap, anchor=west] at (5.6, 0.0)
+      {\begin{tabular}{@{}rl@{}}
+         1. & (S,A,$+4$) \\
+         2. & (S,B,$+5$) \\
+         3. & (A,B,$-2$) \quad \textcolor{UPMaroon}{$\leftarrow$ key relaxation} \\
+         4. & (B,C,$+3$) \\
+         5. & (A,C,$+5$) \\
+       \end{tabular}};
+
+    % --- Round table on the right ------------------------------------
+    \node[stepttl, anchor=west] at (10.6, 1.7)
+      {Distance after each round};
+    \node[snap, anchor=west] at (10.6, -0.4)
+      {\begin{tabular}{@{}lcccc@{}}
+         vertex     & init      & R1                & R2  \\ \hline
+         S          & $0$       & $0$               & $0$ \\
+         A          & $\infty$  & $4$               & $4$ \\
+         B          & $\infty$  & $5 \rightarrow 2$ & $2$ \\
+         C          & $\infty$  & $5$               & $5$ \\
+       \end{tabular}};
+
+    % --- Connector arrows --------------------------------------------
+    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
+      (4.5, 0) -- (5.5, 0);
+    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
+      (9.7, 0) -- (10.5, 0);
+  \end{tikzpicture}
+  }
+  \end{center}
+
+  \begin{itemize}
+    \item Each round sweeps every edge once; relaxing $(A,B,-2)$ \emph{after} $(S,B,5)$ lowers $d[B]$ from $5$ to $2$.
+    \item R2 produces no update $\Rightarrow$ early-exit; the final cycle-check pass also relaxes nothing $\Rightarrow$ \texttt{has\_cycle = False}.
+  \end{itemize}
+\end{frame}
+% Speaker note (Rizal): the punchline is that order matters within a
+% round but not across rounds -- after n-1 rounds every shortest
+% simple path is discovered, and the extra pass diagnoses any reachable
+% negative cycle. The "src/sssp/bellman_ford.py" early-exit on a
+% no-update round is a documented deviation from the textbook variant.
+
 \begin{frame}{A\textsuperscript{*} (1968) -- Heuristic Guidance}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
@@ -278,6 +349,107 @@
 % Dijkstra; the zero-heuristic test makes that explicit. Mention the
 % Manhattan grid demo as evidence of admissibility.
 
+\begin{frame}{A\textsuperscript{*} -- A Worked Heuristic-Guided Search}
+  \begin{center}
+  \resizebox{\textwidth}{!}{%
+  \begin{tikzpicture}[
+      every node/.style={font=\sffamily},
+      vx/.style={circle, draw=UPBlack, line width=0.6pt,
+                 minimum size=0.95cm, inner sep=0pt,
+                 font=\sffamily\bfseries},
+      src/.style={vx, fill=UPForestGreen, text=white, draw=UPForestGreen},
+      goal/.style={vx, fill=UPMaroon, text=white, draw=UPMaroon},
+      starved/.style={vx, fill=UPMaroonTint, draw=UPBlack!30, text=UPBlack80},
+      we/.style={font=\footnotesize\sffamily, text=UPBlack80},
+      hlbl/.style={font=\footnotesize\sffamily\bfseries, text=UPForestGreen},
+      ed/.style={->, >={Latex[length=2.2mm]}, semithick, UPBlack80},
+      snap/.style={draw=UPBlack!25, rounded corners=2pt, inner sep=4pt,
+                   font=\footnotesize\sffamily},
+      stepttl/.style={font=\small\sffamily\bfseries, text=UPMaroon}
+  ]
+    % --- Grid chain (top row): S - A - B - C - G ---------------------
+    \node[src]      (S) at (0.0,0)   {S};
+    \node[vx]       (A) at (1.5,0)   {A};
+    \node[vx]       (B) at (3.0,0)   {B};
+    \node[vx]       (C) at (4.5,0)   {C};
+    \node[goal]     (G) at (6.0,0)   {G};
+    \node[starved]  (X) at (0.0,-1.6){X};
+
+    \draw[ed] (S) -- node[we, above] {1} (A);
+    \draw[ed] (A) -- node[we, above] {1} (B);
+    \draw[ed] (B) -- node[we, above] {1} (C);
+    \draw[ed] (C) -- node[we, above] {1} (G);
+    \draw[ed] (S) -- node[we, left]  {5} (X);
+
+    % h(v) labels under each grid cell
+    \node[hlbl] at (0.0, 0.95) {$h{=}4$};
+    \node[hlbl] at (1.5, 0.95) {$h{=}3$};
+    \node[hlbl] at (3.0, 0.95) {$h{=}2$};
+    \node[hlbl] at (4.5, 0.95) {$h{=}1$};
+    \node[hlbl] at (6.0, 0.95) {$h{=}0$};
+    \node[hlbl] at (0.0,-2.45) {$h{=}5$ (admissible, loose)};
+
+    \node[font=\scriptsize\sffamily, text=UPBlack80] at (3.0,-1.6)
+      {Manhattan heuristic to G; weights all $1$ on the chain};
+
+    % --- Snapshots on the right --------------------------------------
+    \node[stepttl, anchor=west] at (7.8, 0.95) {Pop S~~(f$=$0$+$4$=$4)};
+    \node[snap, anchor=west] at (7.8, 0.0)
+      {\begin{tabular}{@{}ll@{}}
+         settled & \{S\} \\
+         heap    & [(4,A), (10,X)] \\
+         relaxed & S$\to$A (g$=$1), S$\to$X (g$=$5) \\
+       \end{tabular}};
+
+    \node[stepttl, anchor=west] at (12.6, 0.95) {Pop A~~(f$=$4)};
+    \node[snap, anchor=west] at (12.6, 0.0)
+      {\begin{tabular}{@{}ll@{}}
+         settled & \{S, A\} \\
+         heap    & [(4,B), (10,X)] \\
+         relaxed & A$\to$B (g$=$2) \\
+       \end{tabular}};
+
+    \node[stepttl, anchor=west] at (7.8, -1.55)
+      {Pops B then C~~(both f$=$4)};
+    \node[snap, anchor=west] at (7.8, -2.5)
+      {\begin{tabular}{@{}ll@{}}
+         settled & \{S, A, B, C\} \\
+         heap    & [(4,G), (10,X)] \\
+         relaxed & B$\to$C, C$\to$G \\
+       \end{tabular}};
+
+    \node[stepttl, anchor=west] at (12.6, -1.55) {Pop G~~$=$~goal};
+    \node[snap, anchor=west] at (12.6, -2.5)
+      {\begin{tabular}{@{}ll@{}}
+         path  & S, A, B, C, G \\
+         cost  & $4$ \\
+         X     & \emph{never popped} (f$=$10) \\
+       \end{tabular}};
+
+    % --- Connectors --------------------------------------------------
+    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
+      (6.6, 0.4) -- (7.7, 0.4);
+    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
+      (11.5, 0.4) -- (12.5, 0.4);
+    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
+      (10.0, -0.45) -- (10.0, -1.10);
+    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
+      (11.5, -2.1) -- (12.5, -2.1);
+  \end{tikzpicture}
+  }
+  \end{center}
+
+  \begin{itemize}
+    \item Every chain vertex has $f = g + h = 4$, so A$^{*}$ pops them in order and \alert{never expands the dead-end branch~X} (its $f = 5 + 5 = 10$).
+    \item Set $h \equiv 0$ and A$^{*}$ degenerates to Dijkstra -- the equivalence is asserted as a correctness test in \texttt{tests/test\_astar.py}.
+  \end{itemize}
+\end{frame}
+% Speaker note (California): the load-bearing claim is that an
+% admissible heuristic preserves optimality while pruning the frontier.
+% On this example the heuristic is tight on the chain (h equals true
+% remaining cost) and loose but still admissible at X, so X is
+% effectively starved and never settled.
+
 \begin{frame}{Thorup (1999) -- Linear-Time Undirected SSSP}
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
@@ -302,6 +474,92 @@
 % Big-Integer arithmetic does not preserve Thorup's linear-time
 % guarantee. The implementation is faithful to the paper, not the
 % asymptotic. This matters for the Experimental Evaluation discussion.
+
+\begin{frame}{Thorup -- A Worked MSDB Bucket Walk}
+  \begin{center}
+  \resizebox{\textwidth}{!}{%
+  \begin{tikzpicture}[
+      every node/.style={font=\sffamily},
+      vx/.style={circle, draw=UPBlack, line width=0.6pt,
+                 minimum size=0.85cm, inner sep=0pt,
+                 font=\sffamily\bfseries},
+      src/.style={vx, fill=UPForestGreen, text=white, draw=UPForestGreen},
+      we/.style={font=\footnotesize\sffamily, text=UPBlack80},
+      uedge/.style={line width=0.7pt, UPBlack80},
+      bkt/.style={rectangle, rounded corners=2pt, draw=UPBlack!40,
+                  fill=white, minimum width=2.2cm, minimum height=0.7cm,
+                  font=\footnotesize\sffamily, inner sep=3pt, align=center},
+      bktlbl/.style={font=\footnotesize\sffamily\bfseries, text=UPMaroon},
+      lminlbl/.style={font=\footnotesize\sffamily\bfseries, text=UPForestGreen},
+      snap/.style={draw=UPBlack!25, rounded corners=2pt, inner sep=4pt,
+                   font=\footnotesize\sffamily},
+      stepttl/.style={font=\small\sffamily\bfseries, text=UPMaroon}
+  ]
+    % --- Graph (left) -------------------------------------------------
+    \node[src] (S) at (0,0.6)   {S};
+    \node[vx]  (A) at (1.7,1.5) {A};
+    \node[vx]  (B) at (1.7,-0.3){B};
+    \draw[uedge] (S) -- node[we, above left=-2pt] {1} (A);
+    \draw[uedge] (S) -- node[we, below left=-2pt] {4} (B);
+    \draw[uedge] (A) -- node[we, right=1pt]       {2} (B);
+    \node[font=\scriptsize\sffamily, text=UPBlack80]
+      at (1.0, -1.45) {undirected, integer weights};
+
+    % --- Snapshot 1 ---------------------------------------------------
+    \node[stepttl, anchor=west] at (3.6, 1.95) {After popping S};
+    \node[lminlbl, anchor=west] at (3.6, 1.4) {last\_min~$=$~0};
+    \node[bktlbl, anchor=west] at (3.6, 0.85) {bucket 1};
+    \node[bkt, anchor=west]    at (4.7, 0.85) {A : $d{=}1$};
+    \node[bktlbl, anchor=west] at (3.6, 0.20) {bucket 3};
+    \node[bkt, anchor=west]    at (4.7, 0.20) {B : $d{=}4$};
+    \node[font=\scriptsize\sffamily\itshape, anchor=west, text=UPBlack80]
+      at (3.6, -0.45)
+      {msdb($1,0$)$=$1; msdb($4,0$)$=$3};
+
+    % --- Snapshot 2 ---------------------------------------------------
+    \node[stepttl, anchor=west] at (7.6, 1.95) {Advance, settle A, relax};
+    \node[lminlbl, anchor=west] at (7.6, 1.4) {last\_min~$=$~1};
+    \node[bktlbl, anchor=west] at (7.6, 0.85) {bucket 0};
+    \node[bkt, anchor=west, fill=UPForestGreen!18, draw=UPForestGreen]
+                                at (8.7, 0.85) {A settled};
+    \node[bktlbl, anchor=west] at (7.6, 0.20) {bucket 2};
+    \node[bkt, anchor=west, fill=UPYellow!22, draw=UPYellow!80!UPBlack]
+                                at (8.7, 0.20) {B : $4 \rightarrow 3$};
+    \node[bktlbl, anchor=west] at (7.6,-0.45) {bucket 3};
+    \node[bkt, anchor=west, fill=UPMaroonTint, draw=UPBlack!30]
+                                at (8.7,-0.45) {B$^*$ stale};
+
+    % --- Snapshot 3 ---------------------------------------------------
+    \node[stepttl, anchor=west] at (11.6, 1.95) {Advance, settle B};
+    \node[lminlbl, anchor=west] at (11.6, 1.4) {last\_min~$=$~3};
+    \node[bktlbl, anchor=west] at (11.6, 0.85) {bucket 0};
+    \node[bkt, anchor=west, fill=UPForestGreen!18, draw=UPForestGreen]
+                                at (12.7, 0.85) {B settled};
+    \node[bktlbl, anchor=west] at (11.6, 0.20) {result};
+    \node[bkt, anchor=west, minimum width=2.4cm]
+                                at (12.7, 0.20) {$d{=}\{S{:}0, A{:}1, B{:}3\}$};
+    \node[font=\scriptsize\sffamily\itshape, anchor=west, text=UPBlack80]
+      at (11.6, -0.45) {stale B$^*$ skipped on pop};
+
+    % --- Connector arrows --------------------------------------------
+    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
+      (7.0, 0.55) -- (7.5, 0.55);
+    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
+      (11.0, 0.55) -- (11.5, 0.55);
+  \end{tikzpicture}
+  }
+  \end{center}
+
+  \begin{itemize}
+    \item Buckets are keyed by $\mathrm{msdb}(d(v),\, \mathit{last\_min})$ -- the most-significant differing bit between a tentative label and the current minimum.
+    \item Advancing \texttt{last\_min} re-bins live entries; lazy-stale entries (B$^*$) are skipped on pop. Word-RAM gives $O(m+n)$; CPython does not.
+  \end{itemize}
+\end{frame}
+% Speaker note (Rizal): the bucket index is the only place integer-bit
+% structure enters the algorithm -- this is what the paper trades the
+% global heap for. On the word-RAM model the bit_length and bucket
+% lookup are O(1); under CPython they are not, which is why the
+% benchmark ratio sits above Dijkstra.
 
 % ===========================================
 \section{DMMSY (Centerpiece)}
@@ -637,7 +895,7 @@
     \begin{column}{0.48\textwidth}
       \begin{block}{Zildjian E. California}
         \begin{itemize}
-          \item Repository foundation, root documentation, graph/weight/IO/generator base, Dijkstra, A*, DMMSY, benchmarks, report, and deck authorship.
+          \item Repository foundation, root documentation, graph/weight/IO/generator base, Dijkstra, A*, DMMSY, benchmarks,\\report, and deck authorship.
           \item DMMSY centerpiece: transform, block list, pivots, BMSSP, driver, written rationale, and presentation opening/centerpiece.
           \item Current commit history: authored the foundation, Dijkstra/A*, DMMSY stack, benchmark files, report manuscript, and deck scaffold.
         \end{itemize}
@@ -656,7 +914,7 @@
 
   \vskip 1pt
   \begin{center}
-    \scriptsize Contribution split follows the provided commit history and the completed Rizal-assigned contributions.
+    \scriptsize Contribution split follows the GitHub repository commit history and the closed issues and pull requests.
   \end{center}
 \end{frame}
 % Speaker note (joint): use this slide to make authorship legible,
