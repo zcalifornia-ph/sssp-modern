@@ -154,12 +154,13 @@
       ed/.style={->, >={Latex[length=2.2mm]}, semithick, UPBlack80},
       snap/.style={draw=UPBlack!25, rounded corners=2pt, inner sep=4pt,
                    font=\footnotesize\sffamily},
-      stepttl/.style={font=\small\sffamily\bfseries, text=UPMaroon}
+      stepttl/.style={font=\small\sffamily\bfseries, text=UPMaroon},
+      flow/.style={->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt}
   ]
     % --- Graph (top) -------------------------------------------------
     \node[settled] (S0) at (0,0)   {S};
-    \node[unseen]  (A0) at (2.2,0.9) {A};
-    \node[unseen]  (B0) at (2.2,-0.9){B};
+    \node[frontier] (A0) at (2.2,0.9) {A};
+    \node[frontier] (B0) at (2.2,-0.9){B};
     \node[unseen]  (C0) at (4.4,0)   {C};
     \draw[ed] (S0) -- node[we, above left=-2pt] {3} (A0);
     \draw[ed] (S0) -- node[we, below left=-2pt] {5} (B0);
@@ -168,8 +169,8 @@
     \draw[ed] (B0) -- node[we, below right=-2pt] {2} (C0);
 
     % --- Step 1 -----------------------------------------------------
-    \node[stepttl] at (7.5, 0.95) {Step 1: pop S (d=0)};
-    \node[snap, anchor=west] at (6.4, 0.0)
+    \node[stepttl, anchor=west] at (6.4, 0.95) {Step 1: pop S (d=0)};
+    \node[snap, anchor=west] (stepone) at (6.4, 0.0)
       {\begin{tabular}{@{}ll@{}}
          settled & \{S:0\} \\
          heap    & [(3,A),(5,B)] \\
@@ -177,17 +178,17 @@
        \end{tabular}};
 
     % --- Step 2 -----------------------------------------------------
-    \node[stepttl] at (7.5, -1.55) {Step 2: pop A (d=3)};
-    \node[snap, anchor=west] at (6.4, -2.5)
+    \node[stepttl, anchor=west] at (6.4, -1.55) {Step 2: pop A (d=3)};
+    \node[snap, anchor=west] (steptwo) at (6.4, -2.5)
       {\begin{tabular}{@{}ll@{}}
          settled & \{S:0, A:3\} \\
-         heap    & [(4,B),(5,B),(7,C)] \\
+         heap    & [(4,B),(5,B$^*$),(7,C)] \\
          relaxed & A$\to$B (5$\to$4), A$\to$C \\
        \end{tabular}};
 
     % --- Step 3 -----------------------------------------------------
-    \node[stepttl] at (12.4, 0.95) {Step 3: pop B (d=4)};
-    \node[snap, anchor=west] at (11.3, 0.0)
+    \node[stepttl, anchor=west] at (11.3, 0.95) {Step 3: pop B (d=4)};
+    \node[snap, anchor=west] (stepthree) at (11.3, 0.0)
       {\begin{tabular}{@{}ll@{}}
          settled & \{S:0, A:3, B:4\} \\
          heap    & [(5,B$^*$),(6,C),(7,C)] \\
@@ -195,8 +196,8 @@
        \end{tabular}};
 
     % --- Step 4 -----------------------------------------------------
-    \node[stepttl] at (12.4, -1.55) {Step 4: pop C (d=6) -- done};
-    \node[snap, anchor=west] at (11.3, -2.5)
+    \node[stepttl, anchor=west] at (11.3, -1.55) {Step 4: pop C (d=6) -- done};
+    \node[snap, anchor=west] (stepfour) at (11.3, -2.5)
       {\begin{tabular}{@{}ll@{}}
          settled & \{S:0,A:3,B:4,C:6\} \\
          heap    & stale entries skipped \\
@@ -204,14 +205,12 @@
        \end{tabular}};
 
     % --- Connector arrows between steps -----------------------------
-    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
-      (5.2,  0.4) -- (6.3,  0.4);
-    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
-      (8.7, -0.4) -- (8.7, -1.05);
-    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
-      (10.1, 0.4) -- (11.2, 0.4);
-    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
-      (13.6,-0.4) -- (13.6,-1.05);
+    \draw[flow] (5.2, 0.4) -- (6.4, 0.4);
+    \draw[flow] (stepone.south west) to[out=-140,in=170,looseness=0.9] (steptwo.west);
+    \draw[flow] (10.35,-2.1) to[out=55,in=210] (11.2,0.2);
+    \coordinate (s34bend) at ([xshift=0.55cm]stepfour.east |- stepthree.east);
+    \coordinate (s34down) at ([xshift=0.55cm]stepfour.east);
+    \draw[flow] (stepthree.east) -- (s34bend) -- (s34down) -- (stepfour.east);
   \end{tikzpicture}
   }
   \end{center}
@@ -223,7 +222,7 @@
     $B^*$~=~stale entry, ignored on pop
   \end{center}
 \end{frame}
-% Speaker note (California): walk left-to-right, top-to-bottom. The
+% Speaker note (California): walk graph -> Step 1 -> Step 2 -> Step 3 -> Step 4. The
 % load-bearing intuition is that each pop settles one vertex and we
 % never revisit it. Stale heap entries are skipped, not deleted -- this
 % is the lazy-decrease-key pattern in heapq.
@@ -268,7 +267,8 @@
       edneg/.style={->, >={Latex[length=2.2mm]}, line width=0.9pt, UPMaroon},
       snap/.style={draw=UPBlack!25, rounded corners=2pt, inner sep=4pt,
                    font=\footnotesize\sffamily},
-      stepttl/.style={font=\small\sffamily\bfseries, text=UPMaroon}
+      stepttl/.style={font=\small\sffamily\bfseries, text=UPMaroon},
+      flow/.style={->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt}
   ]
     % --- Graph (left) -------------------------------------------------
     \node[src]  (S) at (0,0)     {S};
@@ -282,8 +282,8 @@
     \draw[ed]    (A) -- node[we, above right=-2pt] {5} (C);
 
     % --- Edge scan order -----------------------------------------
-    \node[stepttl, anchor=west] at (5.6, 1.7) {Edge scan order};
-    \node[snap, anchor=west] at (5.6, 0.0)
+    \node[stepttl, anchor=west] at (5.0, 1.7) {Edge scan order};
+    \node[snap, anchor=west] (edgescanbox) at (5.0, 0.0)
       {\begin{tabular}{@{}rl@{}}
          1. & (S,A,$+4$) \\
          2. & (S,B,$+5$) \\
@@ -295,7 +295,7 @@
     % --- Round table on the right ------------------------------------
     \node[stepttl, anchor=west] at (10.6, 1.7)
       {Distance after each round};
-    \node[snap, anchor=west] at (10.6, -0.4)
+    \node[snap, anchor=west] (roundtablebox) at (10.6, -0.4)
       {\begin{tabular}{@{}lcccc@{}}
          vertex     & init      & R1                & R2  \\ \hline
          S          & $0$       & $0$               & $0$ \\
@@ -305,10 +305,9 @@
        \end{tabular}};
 
     % --- Connector arrows --------------------------------------------
-    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
-      (4.5, 0) -- (5.5, 0);
-    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
-      (9.7, 0) -- (10.5, 0);
+    \draw[flow] (4.5, 0) -- (edgescanbox.west);
+    \coordinate (bfjoiny) at (0, -0.55);
+    \draw[flow] (edgescanbox.east |- bfjoiny) -- (roundtablebox.west |- bfjoiny);
   \end{tikzpicture}
   }
   \end{center}
@@ -365,7 +364,8 @@
       ed/.style={->, >={Latex[length=2.2mm]}, semithick, UPBlack80},
       snap/.style={draw=UPBlack!25, rounded corners=2pt, inner sep=4pt,
                    font=\footnotesize\sffamily},
-      stepttl/.style={font=\small\sffamily\bfseries, text=UPMaroon}
+      stepttl/.style={font=\small\sffamily\bfseries, text=UPMaroon},
+      flow/.style={->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt}
   ]
     % --- Grid chain (top row): S - A - B - C - G ---------------------
     \node[src]      (S) at (0.0,0)   {S};
@@ -389,19 +389,20 @@
     \node[hlbl] at (6.0, 0.95) {$h{=}0$};
     \node[hlbl] at (0.0,-2.45) {$h{=}5$ (admissible, loose)};
 
-    \node[font=\scriptsize\sffamily, text=UPBlack80] at (3.0,-1.6)
+    \node[font=\scriptsize\sffamily, text=UPBlack80, anchor=west] at (0.85,-1.6)
       {Manhattan heuristic to G; weights all $1$ on the chain};
 
     % --- Snapshots on the right --------------------------------------
-    \node[stepttl, anchor=west] at (7.8, 0.95) {Pop S~~(f$=$0$+$4$=$4)};
+    \node[stepttl, anchor=west] at (7.8, 1.22) {Pop S~~(f$=$0$+$4$=$4)};
     \node[snap, anchor=west] at (7.8, 0.0)
       {\begin{tabular}{@{}ll@{}}
          settled & \{S\} \\
          heap    & [(4,A), (10,X)] \\
-         relaxed & S$\to$A (g$=$1), S$\to$X (g$=$5) \\
+         relaxed & S$\to$A (g$=$1) \\
+                 & S$\to$X (g$=$5) \\
        \end{tabular}};
 
-    \node[stepttl, anchor=west] at (12.6, 0.95) {Pop A~~(f$=$4)};
+    \node[stepttl, anchor=west] at (12.6, 1.22) {Pop A~~(f$=$4)};
     \node[snap, anchor=west] at (12.6, 0.0)
       {\begin{tabular}{@{}ll@{}}
          settled & \{S, A\} \\
@@ -427,14 +428,10 @@
        \end{tabular}};
 
     % --- Connectors --------------------------------------------------
-    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
-      (6.6, 0.4) -- (7.7, 0.4);
-    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
-      (11.5, 0.4) -- (12.5, 0.4);
-    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
-      (10.0, -0.45) -- (10.0, -1.10);
-    \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
-      (11.5, -2.1) -- (12.5, -2.1);
+    \draw[flow] (6.6, 0.4) -- (7.7, 0.4);
+    \draw[flow] (11.5, 0.4) -- (12.5, 0.4);
+    \draw[flow] (14.4, -0.55) -- (14.4, -1.35) -- (12.15, -1.35) -- (12.15, -2.10) -- (11.5, -2.10);
+    \draw[flow] (11.5, -2.28) -- (12.5, -2.28);
   \end{tikzpicture}
   }
   \end{center}
@@ -509,9 +506,9 @@
     \node[stepttl, anchor=west] at (3.6, 1.95) {After popping S};
     \node[lminlbl, anchor=west] at (3.6, 1.4) {last\_min~$=$~0};
     \node[bktlbl, anchor=west] at (3.6, 0.85) {bucket 1};
-    \node[bkt, anchor=west]    at (4.7, 0.85) {A : $d{=}1$};
+    \node[bkt, anchor=west]    at (5.15, 0.85) {A : $d{=}1$};
     \node[bktlbl, anchor=west] at (3.6, 0.20) {bucket 3};
-    \node[bkt, anchor=west]    at (4.7, 0.20) {B : $d{=}4$};
+    \node[bkt, anchor=west]    at (5.15, 0.20) {B : $d{=}4$};
     \node[font=\scriptsize\sffamily\itshape, anchor=west, text=UPBlack80]
       at (3.6, -0.45)
       {msdb($1,0$)$=$1; msdb($4,0$)$=$3};
@@ -521,31 +518,31 @@
     \node[lminlbl, anchor=west] at (7.6, 1.4) {last\_min~$=$~1};
     \node[bktlbl, anchor=west] at (7.6, 0.85) {bucket 0};
     \node[bkt, anchor=west, fill=UPForestGreen!18, draw=UPForestGreen]
-                                at (8.7, 0.85) {A settled};
+                                at (9.15, 0.85) {A settled};
     \node[bktlbl, anchor=west] at (7.6, 0.20) {bucket 2};
     \node[bkt, anchor=west, fill=UPYellow!22, draw=UPYellow!80!UPBlack]
-                                at (8.7, 0.20) {B : $4 \rightarrow 3$};
+                                at (9.15, 0.20) {B : $4 \rightarrow 3$};
     \node[bktlbl, anchor=west] at (7.6,-0.45) {bucket 3};
     \node[bkt, anchor=west, fill=UPMaroonTint, draw=UPBlack!30]
-                                at (8.7,-0.45) {B$^*$ stale};
+                                at (9.15,-0.45) {B$^*$ stale};
 
     % --- Snapshot 3 ---------------------------------------------------
     \node[stepttl, anchor=west] at (11.6, 1.95) {Advance, settle B};
     \node[lminlbl, anchor=west] at (11.6, 1.4) {last\_min~$=$~3};
     \node[bktlbl, anchor=west] at (11.6, 0.85) {bucket 0};
     \node[bkt, anchor=west, fill=UPForestGreen!18, draw=UPForestGreen]
-                                at (12.7, 0.85) {B settled};
+                                at (13.15, 0.85) {B settled};
     \node[bktlbl, anchor=west] at (11.6, 0.20) {result};
     \node[bkt, anchor=west, minimum width=2.4cm]
-                                at (12.7, 0.20) {$d{=}\{S{:}0, A{:}1, B{:}3\}$};
+                                at (13.15, 0.20) {$d{=}\{S{:}0, A{:}1, B{:}3\}$};
     \node[font=\scriptsize\sffamily\itshape, anchor=west, text=UPBlack80]
       at (11.6, -0.45) {stale B$^*$ skipped on pop};
 
     % --- Connector arrows --------------------------------------------
     \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
-      (7.0, 0.55) -- (7.5, 0.55);
+      (7.45, 0.55) -- (7.7, 0.55);
     \draw[->, >={Latex[length=2mm]}, UPMaroon, line width=0.6pt]
-      (11.0, 0.55) -- (11.5, 0.55);
+      (11.45, 0.55) -- (11.7, 0.55);
   \end{tikzpicture}
   }
   \end{center}
@@ -682,28 +679,28 @@
       lbl/.style={font=\footnotesize\sffamily, text=UPBlack80}
   ]
     % --- Boundary line B ----------------------------------------------
-    \draw[bnd] (-0.4,2.0) -- (14.2,2.0)
+    \draw[bnd] (-0.4,2.55) -- (14.6,2.55)
       node[right, font=\small\sffamily\bfseries, text=UPMaroon] {$B = 10$};
 
     % --- Above-boundary labels (frozen until a smaller B') ------------
-    \node[deferred] (u4) at (1.2, 2.95) {12};
-    \node[deferred] (u6) at (3.6, 3.10) {14};
-    \node[deferred] (u7) at (6.2, 2.85) {11};
-    \node[lbl] at (8.6, 3.0)
+    \node[deferred] (u4) at (1.2, 3.55) {12};
+    \node[deferred] (u6) at (3.7, 3.70) {14};
+    \node[deferred] (u7) at (6.5, 3.45) {11};
+    \node[lbl, anchor=west] at (7.0, 3.55)
       {\textit{above $B$: deferred, not pulled}};
 
     % --- Pool below B: tentative labels ------------------------------
-    \node[lab] (u1) at (1.0, 0.85) {4};
-    \node[lab] (u2) at (2.6, 0.55) {6};
-    \node[lab] (u3) at (4.2, 0.95) {8};
-    \node[lab] (u5) at (5.8, 0.30) {9};
-    \node[lab] (u8) at (7.0, 1.15) {9};
+    \node[lab] (u1) at (1.1, 0.90) {4};
+    \node[lab] (u2) at (2.7, 0.55) {6};
+    \node[lab] (u3) at (4.3, 0.90) {8};
+    \node[lab] (u5) at (5.8,-0.65) {9};
+    \node[lab] (u8) at (7.4, 0.20) {9};
 
-    \node[lbl] at (1.0, -0.1) {$u_1$};
-    \node[lbl] at (2.6, -0.4) {$u_2$};
-    \node[lbl] at (4.2, 0.0)  {$u_3$};
-    \node[lbl] at (5.8,-0.65) {$u_5$};
-    \node[lbl] at (7.0, 0.2)  {$u_8$};
+    \node[lbl] at (1.1, -0.05) {$u_1$};
+    \node[lbl] at (2.7, -0.45) {$u_2$};
+    \node[lbl] at (4.3, -0.05) {$u_3$};
+    \node[lbl] at (5.8,-1.55) {$u_5$};
+    \node[lbl] at (7.4,-0.70) {$u_8$};
 
     % --- The pulled batch (the k+1 smallest below B) ------------------
     \begin{scope}[on background layer]
@@ -711,33 +708,35 @@
             rounded corners=4pt, fill=UPYellow!18,
             fit=(u1)(u2)(u3), inner sep=8pt] (batch) {};
     \end{scope}
-    \node[font=\footnotesize\sffamily\bfseries, text=UPBlack,
-          above=2pt of batch.north] {Pull $k+1$ smallest below $B$};
+    \node[font=\footnotesize\sffamily\bfseries, text=UPBlack]
+      at (2.7, 1.95) {Pull $k+1$ smallest below $B$};
 
     % --- Settled batch on the right ----------------------------------
-    \node[settled] (s1) at (10.2, 1.05) {4};
-    \node[settled] (s2) at (11.6, 0.75) {6};
-    \node[settled] (s3) at (13.0, 1.05) {8};
-    \node[lbl] at (10.2, 0.05) {$u_1$};
-    \node[lbl] at (11.6,-0.25) {$u_2$};
-    \node[lbl] at (13.0, 0.05) {$u_3$};
+    \node[settled] (s1) at (10.2, 0.95) {4};
+    \node[settled] (s2) at (11.6, 0.65) {6};
+    \node[settled] (s3) at (13.0, 0.95) {8};
+    \node[lbl] at (10.2, -0.05) {$u_1$};
+    \node[lbl] at (11.6,-0.35) {$u_2$};
+    \node[lbl] at (13.0, -0.05) {$u_3$};
     \node[font=\footnotesize\sffamily\bfseries, text=UPForestGreen]
       at (11.6, 1.95) {Settle + relax outgoing edges};
 
     % --- Big arrow batch -> settled ----------------------------------
-    \draw[arr, UPMaroon] (batch.east) -- ++(0.6,0)
-      -- node[above, font=\footnotesize\sffamily\bfseries, text=UPMaroon]
-         {BaseCase} ($(s1.west)+(-0.4,0)$) -- (s1.west);
+    \draw[arr, UPMaroon]
+      ([yshift=3pt]batch.east) .. controls (6.5,1.30) and (8.4,1.25) ..
+      node[pos=0.55, above=2pt, font=\footnotesize\sffamily\bfseries,
+           text=UPMaroon] {BaseCase}
+      ([xshift=-0.25cm]s1.west) -- (s1.west);
 
     % --- Relaxation arrows feeding new tentative labels back ----------
     \draw[arr, UPForestGreen, dashed]
-      (s2.south) .. controls (11.0,-0.9) and (8.5,-0.9) .. (u5.south)
-      node[pos=0.55, below=1pt, font=\footnotesize\sffamily,
+      (s2.south) .. controls (11.0,-1.30) and (8.0,-1.35) .. (u5.south)
+      node[pos=0.56, below=2pt, font=\footnotesize\sffamily,
            text=UPForestGreen] {relax: $9 \to 8$};
 
     % --- New boundary B' ---------------------------------------------
     \draw[bnd, UPForestGreen]
-      (-0.4,-1.45) -- (14.2,-1.45)
+      (-0.4,-2.05) -- (14.6,-2.05)
       node[right, font=\small\sffamily\bfseries, text=UPForestGreen]
         {$B' = 8 < B$};
   \end{tikzpicture}
@@ -758,14 +757,18 @@
   \footnotesize
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
+      \vspace{0.7cm}
       \begin{exampleblock}{Paper Parameterization}
         \[
           k = \left\lfloor (\log_2 n)^{1/3} \right\rfloor
         \]
         \[
-          t = \left\lfloor (\log_2 n)^{2/3} \right\rfloor,\qquad
+          t = \left\lfloor (\log_2 n)^{2/3} \right\rfloor
+        \]
+        \[
           \ell_{\max} = \left\lceil \frac{\log_2 n}{t} \right\rceil
         \]
+        \vspace{2pt}
         Balances pivot work, recursion depth, and block-list operations.
       \end{exampleblock}
     \end{column}
@@ -851,7 +854,6 @@
       \item CSV: \texttt{bench/results/sssp-benchmark-seed-2026.csv}
       \item Figure: \texttt{bench/figures/runtime-by-algorithm.\{pdf,png\}}
       \item Tests: 147-test suite passed after benchmark plot generation; the runtime check records max DMMSY/Dijkstra ratio \texttt{1.093x} for $n \ge 1000$.
-      \item Report anchors: Table \texttt{tab:results-by-class} and Figure \texttt{fig:runtime-by-algorithm}.
     \end{itemize}
   \end{block}
 

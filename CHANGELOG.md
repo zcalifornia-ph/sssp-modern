@@ -1,6 +1,23 @@
 # Changelog
 
-Status: Dijkstra, Bellman-Ford, A*, and Thorup reference implementations in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with evidence-focused opening framing, experimental evaluation, reflection, role-specific AI assistance disclosure, author contributions, public-facing terminology cleanup, and a rebuilt PDF; the presentation deck now has a clean-compiling title/outline spine, baseline-algorithm slides, worked visual walkthroughs for Dijkstra, Bellman-Ford, A*, Thorup, and DMMSY, modern-algorithm centerpiece, benchmark-results slides, a result-evidence slide in the main talk flow with a repository citation, reflection/integrity framing, author contributions, final copy-fit/layout polish, and public-facing terminology cleanup, with dry-run pacing and reproducible submission packaging still pending.
+Status: stable release. Dijkstra, Bellman-Ford, A*, and Thorup reference implementations are in place; the modern directed-sparse SSSP reference implementation provides a top-level public driver; reusable benchmark timing, dataset catalog, benchmark result CSV writing, and runtime chart rendering are available with a DMMSY-vs-Dijkstra runtime sanity check; the written report manuscript is complete with evidence-focused opening framing, experimental evaluation, reflection, role-specific AI assistance disclosure, author contributions, public-facing terminology cleanup, and a rebuilt PDF; the presentation deck has a clean-compiling title/outline spine, worked visual walkthroughs for Dijkstra, Bellman-Ford, A*, Thorup, and DMMSY, modern-algorithm centerpiece, benchmark-results slides, a result-evidence slide in the main talk flow with a repository citation, reflection/integrity framing, author contributions, final pacing/layout polish, and public-facing terminology cleanup.
+
+## v1.0.0
+
+### Added or Changed
+
+- Promoted the repository documentation to the `v1.0.0` stable release baseline.
+- Completed the final presentation pacing/layout pass in `sssp-modern/presentation/main.tex`, tightening connector arrows, anchors, dense labels, stale-entry notation, and diagram spacing across the worked Dijkstra, Bellman-Ford, A*, Thorup, and DMMSY visual slides.
+- Rebuilt `sssp-modern/presentation/main.pdf` (30 pages, 1317126 bytes) from the revised Beamer source.
+- Verified the presentation build with `latexmk -pdf -interaction=nonstopmode main.tex`: exit code 0, with `main.pdf` reported up to date.
+- Verified the presentation log scan found zero LaTeX errors, undefined citations, undefined references, overfull hboxes/vboxes, LaTeX warnings, hyperref warnings, or pdfTeX warnings; the runtime chart path was still rendered from the committed benchmark figure.
+- Reconciled internal project-tracking notes so the final presentation pacing/layout milestone is recorded as complete.
+- Updated `README.md` version, status sentence, quick-start deck build note, repository layout, and roadmap for the stable release.
+- Added `docs/version-1.0.0-docs.md` with a detailed walkthrough of the stable release and validation evidence.
+
+### For Deletion
+
+- None from this task context.
 
 ## v0.5.11
 
